@@ -5,23 +5,57 @@
  */
 package lactoseintolerant;
 
+import java.awt.Graphics;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
  *
  * @author 0001058857
  */
-public class GameFlow extends GameFrame{
+public class GameFlow { //main game flow
     private GamePanel gamePanel;
+    private GaragePanel garagePanel=new GaragePanel();
+    private JFrame frame;
     
-    public GameFlow(){
+    public GameFlow(JFrame f){ //initialize frame/panel/KeyListener relation aspects
+        frame=f;
         
-        this.setVisible(false);
-        gamePanel=new GamePanel();
-        this.add(gamePanel);
-        this.setVisible(true);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().repaint();
         
-        this.addKeyListener(gamePanel);
+        frame.setVisible(false);
+        frame.add(gamePanel=new GamePanel(){
+            @Override
+            public void paintComponent(Graphics p){
+                gamePanel.paintC(p);
+                
+                try{Thread.sleep(40);}
+                catch(Exception e){ErrorLogger.logError(e,"paintComponent-GameFlow-");}
+                repaint();
+            }
+        });
+        frame.setVisible(true);
+        
+        frame.addKeyListener(gamePanel);
     }
+    
+    private void switchToGamePanel(){ 
+        frame.setVisible(false);
+        frame.remove(garagePanel);
+        frame.add(gamePanel);
+        frame.setVisible(true);
+    }
+    
+    private void switchtoGaragePanel(){
+        frame.setVisible(false);
+        frame.remove(gamePanel);
+        frame.add(garagePanel);
+        frame.setVisible(true);
+    }
+    
+    
+    
+    
     
 }

@@ -23,7 +23,7 @@ public class StartGameFlow extends GameFrame{
             catch(Exception e){ErrorLogger.logError(e,"GameFlow");}
         }
         
-        setNewPanelType(new MainMenu());
+        setNewPanelType(new MainMenu(this));
     }
     
     private void setNewPanelType(CPanel cp){    

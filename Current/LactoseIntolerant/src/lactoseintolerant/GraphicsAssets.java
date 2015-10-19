@@ -27,12 +27,15 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             //opening images::
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/WizzardsOpening-01.png"))));//0
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/openingName-01.png"))));//1
+            
+            //temporary car:: 
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Temporary/TemporaryCar.png"))));//2
         } catch(Exception e){
             ErrorLogger.logError(e,"importImages");
         }
     }
     
-    public static BufferedImage get(int index){
+    public static BufferedImage getImage(int index){
         return images.get(index);
     }
     

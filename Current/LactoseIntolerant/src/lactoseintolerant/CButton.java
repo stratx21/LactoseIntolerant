@@ -23,6 +23,7 @@ public class CButton extends JButton implements MouseListener{
         super.setBounds(x,y,xs,ys);
         if(a!=null)
             super.setText(a);
+        this.addMouseListener(this);
     }
     
     public CButton(int x,int y,int xs,int ys){

@@ -8,6 +8,7 @@ package lactoseintolerant;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 /**
  *
@@ -15,7 +16,9 @@ import javax.swing.JButton;
  */
 public class MainMenu extends Menu{
     
-    public MainMenu(){
+    public MainMenu(JFrame f){
+        
+        
         this.setLayout(null);
         
         this.add(new CButton(120,120,100,100,"start"){
@@ -25,7 +28,7 @@ public class MainMenu extends Menu{
             public void pressed(){}
             @Override
             public void released(){
-                GameFlow g=new GameFlow(); //initialize the main game flow
+                GameFlow g=new GameFlow(f); //initialize the main game flow
             }
             @Override
             public void entered(){}

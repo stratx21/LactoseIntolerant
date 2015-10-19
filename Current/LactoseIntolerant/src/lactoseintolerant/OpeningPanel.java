@@ -21,8 +21,7 @@ public class OpeningPanel extends CPanel{
     
     public OpeningPanel(){
         for(int i=0;i<totalStates;i++)
-            images.add(GraphicsAssets.get(i));
-        
+            images.add(GraphicsAssets.getImage(i));
     }
     
     @Override
@@ -33,9 +32,10 @@ public class OpeningPanel extends CPanel{
             currentState++;
         }else if(currentState==totalStates)
             currentState++;
-        else done=true;
+        else 
+            done=true;
             
-        if(!done)
+        if(!done&&currentState!=0)
         try{Thread.sleep(4000);
         }catch(Exception e){
             ErrorLogger.logError(e,"OpeningPanel");

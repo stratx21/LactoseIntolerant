@@ -7,15 +7,8 @@ package lactoseintolerant;
 
 /**
  *
- * @author Josh Holland
+ * @author Josh
  */
-public class PlayerCars extends Car{
-    
-    
-    public PlayerCars(){
-        spec=new double[NUMBER_OF_TYPES=5][5];
-        
-        
-    }
+public class GaragePanel extends CPanel{
     
 }
