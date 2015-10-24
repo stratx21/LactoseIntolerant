@@ -27,6 +27,8 @@ public class PlayerStat {
     public double speed=40;
     public double angle=25,ANGLE_MIN=-25,ANGLE_MAX=25,angleIncrement=5; //angle 0=straight up
     public double health,moneyHolding;
+    public double noEffectDecrease=3;
+    public int currentTurnRate=0;
     
     public float distanceTravelled=0;
     public Rectangle displaySpan=new Rectangle(200,400,76,93);

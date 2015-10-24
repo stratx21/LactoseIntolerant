@@ -20,19 +20,19 @@ public class Player extends PlayerStat{
         cars.CURRENT_TYPE=CAR_TYPE=0;
         currentImage=GraphicsAssets.getImage(2);
         
-        health=cars.getTopSpeed();
-        ACCELERATION=cars.getAcceleration();
-        TOP_SPEED=cars.getTopSpeed();
+        health=100;//cars.getTopSpeed();
+        ACCELERATION=10;//cars.getAcceleration();
+        TOP_SPEED=70;//cars.getTopSpeed();
     }
     
     public Player(int t){
         cars.CURRENT_TYPE=CAR_TYPE=t;
-        //switch(t){//actually no dont use switch case, just add to the index of getImage for each since car images are right next to each other.
-        currentImage=GraphicsAssets.getImage(2); 
         
-        health=cars.getTopSpeed();
-        ACCELERATION=cars.getAcceleration();
-        TOP_SPEED=cars.getTopSpeed();
+        currentImage=GraphicsAssets.getImage(2);
+        
+        health=100;//cars.getTopSpeed();
+        ACCELERATION=10;//cars.getAcceleration();
+        TOP_SPEED=70;//cars.getTopSpeed();
     }
     
     
@@ -40,26 +40,33 @@ public class Player extends PlayerStat{
     *guys dont bother reading thru all this it can get pretty messy but
     *ill try to add in some comments for reference, but it is mainly just
     *the logic flow for Player.
-    
+    *
     *@param Graphics p the graphics class used in the game's frame, used in the function to draw the vehicle.
     */
     public void draw(Graphics p){
+        currentTurnRate=(int)speed/9;
+        
         if(accelerating){ //speed in kilometers per hour
+            System.out.println("accelerating:: "+speed+","+TOP_SPEED);
             if(speed<TOP_SPEED){
                 speed+=ACCELERATION;
-                if(speed>TOP_SPEED)
-                    speed=TOP_SPEED;
-            }
+                System.out.println("going up");
+            }else if(speed>TOP_SPEED)
+                speed=TOP_SPEED;
+        } else if(!brakes){//not accelerating and is not applying brakes
+            if(speed>0)
+                speed-=noEffectDecrease;
+            else speed=0;
         }
         
         if(turningLeft){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
             if(angle>ANGLE_MIN)
                 angle-=angleIncrement;
-            displaySpan.x-=Math.abs(angle)/2;
+            displaySpan.x-=currentTurnRate*(Math.abs(angle)/5);
         }else if(turningRight){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
-            displaySpan.x+=Math.abs(angle)/2;
+            displaySpan.x+=currentTurnRate*(Math.abs(angle)/5);
         }else if(shouldCheckStoppedTurning){ //and is not turning anyways
             if(angle<0)
                 angle+=angleIncrement;
