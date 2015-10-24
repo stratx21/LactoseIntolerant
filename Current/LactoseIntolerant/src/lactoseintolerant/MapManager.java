@@ -24,20 +24,20 @@ public class MapManager extends MapInfo{
         resetTypeOne();
         resetTypeTwo();
         
+        startLocationTwo[1]=startLocationOne[1]-currentPixelLengthTwo;
+        
     }
     
     
     public void draw(Graphics p){
-        System.out.println("1: "+startLocationOne[1]+"  2: "+startLocationTwo[1]);
+        //System.out.println("1: "+startLocationOne[1]+"  2: "+startLocationTwo[1]);
         if(startLocationOne[1]>700){ //one expires
-            startLocationOne[1]=startLocationTwo[1]-currentPixelLengthTwo;//reset start
             resetTypeOne();
-            System.out.println("one just passed");
+            startLocationOne[1]=startLocationTwo[1]-currentPixelLengthOne;//reset start
         }
         if(startLocationTwo[1]>700){ //two expires
-            startLocationTwo[1]=startLocationOne[1]-currentPixelLengthOne;//reset start
             resetTypeTwo();
-            System.out.println("two just passed");
+            startLocationTwo[1]=startLocationOne[1]-currentPixelLengthTwo;//reset start
         }
         
         p.drawImage(imageOne,startLocationOne[0],startLocationOne[1],null);
@@ -51,10 +51,10 @@ public class MapManager extends MapInfo{
                 imageOne=imageStraight;
                 break;
             case 1: currentPixelLengthOne=MEDIAN_LENGTH_PIXELS;
-                imageOne=imageStraight;
+                imageOne=imageMedian;
                 break;
             case 2: currentPixelLengthOne=INTERSECTION_LENGTH_PIXELS;
-                imageOne=imageStraight;
+                imageOne=imageIntersection;
                 break;
         }
     }
@@ -65,10 +65,10 @@ public class MapManager extends MapInfo{
                 imageTwo=imageStraight;
                 break;
             case 1: currentPixelLengthTwo=MEDIAN_LENGTH_PIXELS;
-                imageTwo=imageStraight;
+                imageTwo=imageMedian;
                 break;
             case 2: currentPixelLengthTwo=INTERSECTION_LENGTH_PIXELS;
-                imageTwo=imageStraight;
+                imageTwo=imageIntersection;
                 break;
         }
     }

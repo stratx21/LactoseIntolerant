@@ -41,6 +41,18 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Maps/ground/straight.png"))));//12 - intersection
             
             images.add((BufferedImage)(null));//13
+            images.add((BufferedImage)(null));
+            images.add((BufferedImage)(null));//15
+            
+            images.add((BufferedImage)(null));//16
+            images.add((BufferedImage)(null));
+            images.add((BufferedImage)(null));//18
+            
+            images.add((BufferedImage)(null));//19
+            images.add((BufferedImage)(null));
+            images.add((BufferedImage)(null));//21
+            
+            
             
             
             
