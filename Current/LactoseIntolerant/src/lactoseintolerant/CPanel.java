@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  */
 public class CPanel extends JPanel{
     public int DELAY=40;
-    public final int X_SIZE=1350;
+    public final int X_SIZE=1000;
     public final int Y_SIZE=700;
     public boolean done=false;
     

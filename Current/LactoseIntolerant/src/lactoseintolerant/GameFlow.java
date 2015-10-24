@@ -38,9 +38,11 @@ public class GameFlow { //main game flow
         frame.setVisible(true);
         
         frame.addKeyListener(gamePanel);
+        
+        frame.requestFocus();
     }
     
-    private void switchToGamePanel(){ 
+    private void switchToGamePanel(){
         frame.setVisible(false);
         frame.remove(garagePanel);
         frame.add(gamePanel);

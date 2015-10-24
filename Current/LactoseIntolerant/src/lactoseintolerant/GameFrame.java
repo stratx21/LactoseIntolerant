@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  * @author 0001058857
  */
 public class GameFrame extends JFrame{
-    public final int X_SIZE=1350;
+    public final int X_SIZE=1000;
     public final int Y_SIZE=700;
     
     public GameFrame(){

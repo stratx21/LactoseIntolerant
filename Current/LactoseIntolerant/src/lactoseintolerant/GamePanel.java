@@ -8,7 +8,6 @@ package lactoseintolerant;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,25 +18,50 @@ public class GamePanel extends CPanel implements KeyListener{
     //public ArrayList<Character> heldKeys=new ArrayList<Character>();
     
     public Player player=new Player();
+    public MapManager map=new MapManager(0); //here and set to 0 for now
+    
+    public int mapMoveDown=0;
     
     public GamePanel(){
         
     }
     
-    public void paintC(Graphics p){
-        player.draw(p);
+    public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument
+        mapDraw(p);
+        playerDraw(p);
     }
+    
+    
     
     //GRAPHICS FUNCTIONS:: (to break up into parts)::
     //======================================================================VVVV
+    private void drawSpeedBar(Graphics p){
+        // length of one color on top of the other  (green on gray) :: (player.speed/player.topSpeed[or whatever it was])*totalLength
+        //make it pretty thin, and maybe top right or lower left bottom. Think of The Heist 2 style
+    }
+    
+    private void playerDraw(Graphics p){
+        player.draw(p);
+        
+    }
+    
+    private void mapDraw(Graphics p){
+        int t;
+        map.startLocationOne[1]+=(t=player.getMapDown());
+        map.startLocationTwo[1]+=t;
+        map.draw(p);
+    }
     
     
-
+    
+    
+    //KEY LISTENER RESOURCES:: 
+    //=====================================================================VVVVV
     @Override
     public void keyTyped(KeyEvent e) {
         
     }
-
+    
     @Override
     public void keyPressed(KeyEvent e) {
         switch(Character.toUpperCase(e.getKeyChar())){
@@ -62,10 +86,9 @@ public class GamePanel extends CPanel implements KeyListener{
                     player.canAttack=false;
                 }
                 break;
-            
         }
     }
-
+    
     @Override
     public void keyReleased(KeyEvent e) {
         switch(Character.toUpperCase(e.getKeyChar())){
@@ -77,9 +100,11 @@ public class GamePanel extends CPanel implements KeyListener{
                 break;
             case 'A':
                 player.turningLeft=false;
+                player.shouldCheckStoppedTurning=true;
                 break;
             case 'D':
                 player.turningRight=false;
+                player.shouldCheckStoppedTurning=true;
                 break;
 //            case ' ':
 //                player.attacking=false;

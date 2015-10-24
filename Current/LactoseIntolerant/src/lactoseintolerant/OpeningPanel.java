@@ -5,6 +5,7 @@
  */
 package lactoseintolerant;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -26,9 +27,10 @@ public class OpeningPanel extends CPanel{
     
     @Override
     public void paintComponent(Graphics g){
-        g.clearRect(0,0,X_SIZE,Y_SIZE);
+        g.setColor(Color.black);
+        g.fillRect(0,0,X_SIZE,Y_SIZE);
         if(currentState<totalStates){
-            g.drawImage(images.get(currentState),0,0,X_SIZE,Y_SIZE,null);
+            g.drawImage(images.get(currentState),0,100,X_SIZE,Y_SIZE-200,null);
             currentState++;
         }else if(currentState==totalStates)
             currentState++;

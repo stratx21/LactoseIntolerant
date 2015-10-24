@@ -10,5 +10,14 @@ package lactoseintolerant;
  * @author 0001058857
  */
 public class LevelManager extends LevelInfo{
+    //0-straight, 1-median, 2-intersection
+    public byte[] levelInfo={0,0,1,0,2,0,1,0,2,0,1,0}; //testing level
+    public int MAX_DISTANCE;
+    public int currentIndex=-1;
     
+    public int getNextType(){
+        int t=levelInfo[++currentIndex];
+                System.out.println(t);
+        return t;
+    }
 }

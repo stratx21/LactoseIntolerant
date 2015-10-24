@@ -14,14 +14,18 @@ public class StartGameFlow extends GameFrame{
     
     
     public StartGameFlow(){
+        
+        
+        
+        //for full game and intro and stuff:: (also uncomment in MainMenu) ::
         currentPanel=new OpeningPanel();
         this.add(currentPanel);
-        super.setVisible(true);
+        super.setVisible(true);//keep this statement always!!
         
-        while(!currentPanel.done){
-            try{Thread.sleep(100);}
-            catch(Exception e){ErrorLogger.logError(e,"GameFlow");}
-        }
+//        while(!currentPanel.done){
+//            try{Thread.sleep(100);}
+//            catch(Exception e){ErrorLogger.logError(e,"GameFlow");}
+//        }
         
         setNewPanelType(new MainMenu(this));
     }

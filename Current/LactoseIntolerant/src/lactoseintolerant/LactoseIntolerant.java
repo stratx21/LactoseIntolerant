@@ -19,4 +19,6 @@ public class LactoseIntolerant {
         StartGameFlow g=new StartGameFlow();
     }
     
+    //to go to menu and everything, toggle commented parts in StartGameFlow.
+    
 }

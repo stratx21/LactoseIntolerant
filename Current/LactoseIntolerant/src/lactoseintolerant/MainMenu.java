@@ -17,24 +17,26 @@ import javax.swing.JFrame;
 public class MainMenu extends Menu{
     
     public MainMenu(JFrame f){
+        GameFlow g=new GameFlow(f);//comment out to not auto-go to game
         
         
         this.setLayout(null);
         
-        this.add(new CButton(120,120,100,100,"start"){
-            @Override
-            public void clicked(){}
-            @Override
-            public void pressed(){}
-            @Override
-            public void released(){
-                GameFlow g=new GameFlow(f); //initialize the main game flow
-            }
-            @Override
-            public void entered(){}
-            @Override
-            public void exited(){}
-        });
+        //uncomment for full game:: 
+//        this.add(new CButton(120,120,100,100,"start"){
+//            @Override
+//            public void clicked(){}
+//            @Override
+//            public void pressed(){}
+//            @Override
+//            public void released(){
+//                GameFlow g=new GameFlow(f); //initialize the main game flow
+//            }
+//            @Override
+//            public void entered(){}
+//            @Override
+//            public void exited(){}
+//        });
         
     }
     

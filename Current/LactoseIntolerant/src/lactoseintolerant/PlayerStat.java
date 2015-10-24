@@ -5,6 +5,9 @@
  */
 package lactoseintolerant;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author 0001058857
@@ -19,12 +22,21 @@ public class PlayerStat {
     public boolean attacking=false,canAttack=true,isDoneWithAttack=false;
     public int canAttackPing=0,attackReachPing=50;
     
-    public double speed=0;
-    public double angle=0; //straight up
-    public double health;
+    public boolean shouldCheckStoppedTurning=true;
+    
+    public double speed=40;
+    public double angle=25,ANGLE_MIN=-25,ANGLE_MAX=25,angleIncrement=5; //angle 0=straight up
+    public double health,moneyHolding;
     
     public float distanceTravelled=0;
-    public int[] screenLocation=new int[2];
+    public Rectangle displaySpan=new Rectangle(200,400,76,93);
+    public Rectangle collisionSpan=new Rectangle();
+    
+    public BufferedImage currentImage=null;
+    
+    public int downRemainder=0;
+    
+    
     
     
 }
