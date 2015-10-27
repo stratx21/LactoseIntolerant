@@ -5,7 +5,13 @@
  */
 package lactoseintolerant;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -22,7 +28,7 @@ public class Player extends PlayerStat{
         
         health=100;//cars.getTopSpeed();
         ACCELERATION=10;//cars.getAcceleration();
-        TOP_SPEED=70;//cars.getTopSpeed();
+        TOP_SPEED=55;//cars.getTopSpeed();
     }
     
     public Player(int t){
@@ -32,7 +38,7 @@ public class Player extends PlayerStat{
         
         health=100;//cars.getTopSpeed();
         ACCELERATION=10;//cars.getAcceleration();
-        TOP_SPEED=70;//cars.getTopSpeed();
+        TOP_SPEED=55;//cars.getTopSpeed();
     }
     
     
@@ -44,10 +50,9 @@ public class Player extends PlayerStat{
     *@param Graphics p the graphics class used in the game's frame, used in the function to draw the vehicle.
     */
     public void draw(Graphics p){
-        currentTurnRate=(int)speed/9;
+        updateCollisionPolygon(p);
         
         if(accelerating){ //speed in kilometers per hour
-            System.out.println("accelerating:: "+speed+","+TOP_SPEED);
             if(speed<TOP_SPEED){
                 speed+=ACCELERATION;
                 System.out.println("going up");
@@ -59,14 +64,21 @@ public class Player extends PlayerStat{
             else speed=0;
         }
         
+        if(brakes){
+            if(speed>-1*TOP_SPEED/2)
+                speed-=brakeDecrease;
+        }
+        
         if(turningLeft){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
             if(angle>ANGLE_MIN)
                 angle-=angleIncrement;
-            displaySpan.x-=currentTurnRate*(Math.abs(angle)/5);
+            currentTurnRate=(int)speed/12;//update turn rate
+            distancePixels[0]-=currentTurnRate*(Math.abs(angle)/5);
         }else if(turningRight){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
-            displaySpan.x+=currentTurnRate*(Math.abs(angle)/5);
+            currentTurnRate=(int)speed/12;//update turn rate
+            distancePixels[0]+=currentTurnRate*(Math.abs(angle)/5);
         }else if(shouldCheckStoppedTurning){ //and is not turning anyways
             if(angle<0)
                 angle+=angleIncrement;
@@ -95,7 +107,7 @@ public class Player extends PlayerStat{
         }
         
         //draw actual car::
-        p.drawImage(ImageUtils.rotateImage(currentImage,angle),displaySpan.x,displaySpan.y,displaySpan.width,displaySpan.height,null);
+        p.drawImage(ImageUtils.rotateImage(currentImage,angle),distancePixels[0],distancePixels[1],imageSize[0],imageSize[1],null);
     
     }
     
@@ -111,5 +123,9 @@ public class Player extends PlayerStat{
             
     }
     
+    private void updateCollisionPolygon(Graphics p){
+        
+        
+    }
     
 }

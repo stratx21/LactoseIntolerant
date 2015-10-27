@@ -6,6 +6,7 @@
 package lactoseintolerant;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 /**
  *
@@ -71,5 +72,9 @@ public class MapManager extends MapInfo{
                 imageTwo=imageIntersection;
                 break;
         }
+    }
+    
+    public boolean checkIfHitsMap(Rectangle r){ //to edit
+        return false;
     }
 }

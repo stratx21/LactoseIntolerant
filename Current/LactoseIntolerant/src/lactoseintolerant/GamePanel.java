@@ -27,6 +27,7 @@ public class GamePanel extends CPanel implements KeyListener{
     }
     
     public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument
+        checkPlayerMapCollisions();
         mapDraw(p);
         playerDraw(p);
     }
@@ -45,10 +46,15 @@ public class GamePanel extends CPanel implements KeyListener{
         
     }
     
+    private void checkPlayerMapCollisions(){
+        
+    }
+    
     private void mapDraw(Graphics p){
         int t;
         map.startLocationOne[1]+=(t=player.getMapDown());
         map.startLocationTwo[1]+=t;
+        player.distancePixelsTotal+=t;
         map.draw(p);
     }
     

@@ -5,6 +5,7 @@
  */
 package lactoseintolerant;
 
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -27,14 +28,18 @@ public class PlayerStat {
     public double speed=40;
     public double angle=25,ANGLE_MIN=-25,ANGLE_MAX=25,angleIncrement=5; //angle 0=straight up
     public double health,moneyHolding;
-    public double noEffectDecrease=3;
+    public double noEffectDecrease=3,brakeDecrease=5;
     public int currentTurnRate=0;
     
     public float distanceTravelled=0;
-    public Rectangle displaySpan=new Rectangle(200,400,76,93);
-    public Rectangle collisionSpan=new Rectangle();
+    public int[] distancePixels={200,400};
+    public int[] imageSize={76,93};
+    public Polygon collisionSpan=new Polygon();
+    public long distancePixelsTotal=400;
     
     public BufferedImage currentImage=null;
+    
+    public boolean collidedMap=false;
     
     public int downRemainder=0;
     
