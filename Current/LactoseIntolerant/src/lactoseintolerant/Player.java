@@ -8,6 +8,7 @@ package lactoseintolerant;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -50,7 +51,10 @@ public class Player extends PlayerStat{
     *@param Graphics p the graphics class used in the game's frame, used in the function to draw the vehicle.
     */
     public void draw(Graphics p){
-        updateCollisionPolygon(p);
+        if(lastAngle!=angle)
+            updateCollisionPolygon(p);
+        
+        lastAngle=angle;
         
         if(accelerating){ //speed in kilometers per hour
             if(speed<TOP_SPEED){
@@ -109,6 +113,11 @@ public class Player extends PlayerStat{
         //draw actual car::
         p.drawImage(ImageUtils.rotateImage(currentImage,angle),distancePixels[0],distancePixels[1],imageSize[0],imageSize[1],null);
     
+        
+        //if(lastAngle!=angle)
+            //updateCollisionPolygon(p);
+        
+        //lastAngle=angle;
     }
     
     int divideBy=3,t;
@@ -124,8 +133,29 @@ public class Player extends PlayerStat{
     }
     
     private void updateCollisionPolygon(Graphics p){
+        angle*=2;
         
+        int tt;
+        if(angle!=0)
+            tt=1;
+        else tt=0;
+        int m=(int)Math.round(((Math.sin(Math.toRadians((180-angle)/2)))*(carPixelsHorizontal))/(Math.cos(Math.toRadians(a))))*tt;
+        double n=(180-angle)/2-a;
+        int dX=(int)Math.round(Math.cos(Math.toRadians(n))*m);
+        int dY=(int)Math.round(Math.sin(Math.toRadians(n))*m)-32*tt;
         
+        if(angle<=0)
+            collisionSpan=new Polygon(new int[]{distancePixels[0]+originalPoints[0][0]+dX,distancePixels[0]+originalPoints[1][0]+dX,distancePixels[0]+originalPoints[2][0]-dX,distancePixels[0]+originalPoints[3][0]-dX},
+                                      new int[]{distancePixels[1]+originalPoints[0][1]-dY,distancePixels[1]+originalPoints[1][1]+dY,distancePixels[1]+originalPoints[2][1]+dY,distancePixels[1]+originalPoints[3][1]-dY},
+                                      4);
+        else //angle>0
+            collisionSpan=new Polygon(new int[]{distancePixels[0]+originalPoints[0][0]+dX,distancePixels[0]+originalPoints[1][0]+dX,distancePixels[0]+originalPoints[2][0]-dX,distancePixels[0]+originalPoints[3][0]-dX},
+                                      new int[]{distancePixels[1]+originalPoints[0][1]+dY,distancePixels[1]+originalPoints[1][1]-dY,distancePixels[1]+originalPoints[2][1]-dY,distancePixels[1]+originalPoints[3][1]+dY},
+                                      4);
+//        p.setColor(Color.blue);
+//        p.fillPolygon(collisionSpan);
+        
+        angle/=2;
     }
     
 }
