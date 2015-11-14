@@ -25,7 +25,7 @@ public class GameFlow { //main game flow
         frame.getContentPane().repaint();
         
         frame.setVisible(false);
-        frame.add(gamePanel=new GamePanel(){
+        frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()}){
             @Override
             public void paintComponent(Graphics p){
                 gamePanel.paintC(p);

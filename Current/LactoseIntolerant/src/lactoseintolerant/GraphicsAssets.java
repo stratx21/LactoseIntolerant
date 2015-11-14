@@ -7,6 +7,7 @@ package lactoseintolerant;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
@@ -20,6 +21,7 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
     
     public static void importImages(){
         try{
+            System.out.println("importing images...");
             //opening images::
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/WizzardsOpening-01.png"))));//0
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/openingName-01.png"))));//1
@@ -52,6 +54,9 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(null));
             images.add((BufferedImage)(null));//21
             
+            //Civilian cars::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Temporary/tempCivilianCar.png"))));//22   - temp
+            
             
             
             
@@ -64,6 +69,14 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
     
     public static BufferedImage getImage(int index){
         return images.get(index);
+    }
+    
+    public static BufferedImage getFirstImage()throws IOException{
+        return (BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/WizzardsOpening-01.png")));//0 (not added)
+    }
+    
+    public static BufferedImage getSecondImage()throws IOException{
+        return (BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/openingName-01.png")));//1 (not added)
     }
     
 }

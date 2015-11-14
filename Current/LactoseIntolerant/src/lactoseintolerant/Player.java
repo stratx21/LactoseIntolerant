@@ -44,22 +44,15 @@ public class Player extends PlayerStat{
     
     
     /*
-    *guys dont bother reading thru all this it can get pretty messy but
-    *ill try to add in some comments for reference, but it is mainly just
-    *the logic flow for Player.
+    * Logic flow for the Player class::
     *
     *@param Graphics p the graphics class used in the game's frame, used in the function to draw the vehicle.
     */
     public void draw(Graphics p){
-        if(lastAngle!=angle)
-            updateCollisionPolygon(p);
-        
-        lastAngle=angle;
         
         if(accelerating){ //speed in kilometers per hour
             if(speed<TOP_SPEED){
                 speed+=ACCELERATION;
-                System.out.println("going up");
             }else if(speed>TOP_SPEED)
                 speed=TOP_SPEED;
         } else if(!brakes){//not accelerating and is not applying brakes
@@ -73,16 +66,18 @@ public class Player extends PlayerStat{
                 speed-=brakeDecrease;
         }
         
-        if(turningLeft){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
-            if(angle>ANGLE_MIN)
+        if(canTurnLeft&&turningLeft){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
+            if(angle>ANGLE_MIN) // over min (do a regular turn)
                 angle-=angleIncrement;
+            else if(angle<ANGLE_MIN) //under min
+                angle=ANGLE_MIN;
             currentTurnRate=(int)speed/12;//update turn rate
-            distancePixels[0]-=currentTurnRate*(Math.abs(angle)/5);
-        }else if(turningRight){
+            locationPixels[0]-=currentTurnRate*(Math.abs(angle)/5);
+        }else if(canTurnRight&&turningRight){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
             currentTurnRate=(int)speed/12;//update turn rate
-            distancePixels[0]+=currentTurnRate*(Math.abs(angle)/5);
+            locationPixels[0]+=currentTurnRate*(Math.abs(angle)/5);
         }else if(shouldCheckStoppedTurning){ //and is not turning anyways
             if(angle<0)
                 angle+=angleIncrement;
@@ -111,13 +106,15 @@ public class Player extends PlayerStat{
         }
         
         //draw actual car::
-        p.drawImage(ImageUtils.rotateImage(currentImage,angle),distancePixels[0],distancePixels[1],imageSize[0],imageSize[1],null);
-    
+        p.drawImage(ImageUtils.rotateImage(currentImage,angle),locationPixels[0],locationPixels[1],imageSize[0],imageSize[1],null);
         
-        //if(lastAngle!=angle)
-            //updateCollisionPolygon(p);
+        updateCollisionRectangles(); //keep last
         
-        //lastAngle=angle;
+//        p.setColor(Color.pink);
+//        p.fillRect(upperSpan.x,upperSpan.y,upperSpan.width,upperSpan.height);
+//        p.setColor(Color.blue);
+//        p.fillRect(lowerSpan.x,lowerSpan.y,lowerSpan.width,lowerSpan.height);
+        
     }
     
     int divideBy=3,t;
@@ -132,30 +129,36 @@ public class Player extends PlayerStat{
             
     }
     
-    private void updateCollisionPolygon(Graphics p){
-        angle*=2;
-        
-        int tt;
-        if(angle!=0)
-            tt=1;
-        else tt=0;
-        int m=(int)Math.round(((Math.sin(Math.toRadians((180-angle)/2)))*(carPixelsHorizontal))/(Math.cos(Math.toRadians(a))))*tt;
-        double n=(180-angle)/2-a;
-        int dX=(int)Math.round(Math.cos(Math.toRadians(n))*m);
-        int dY=(int)Math.round(Math.sin(Math.toRadians(n))*m)-32*tt;
-        
-        if(angle<=0)
-            collisionSpan=new Polygon(new int[]{distancePixels[0]+originalPoints[0][0]+dX,distancePixels[0]+originalPoints[1][0]+dX,distancePixels[0]+originalPoints[2][0]-dX,distancePixels[0]+originalPoints[3][0]-dX},
-                                      new int[]{distancePixels[1]+originalPoints[0][1]-dY,distancePixels[1]+originalPoints[1][1]+dY,distancePixels[1]+originalPoints[2][1]+dY,distancePixels[1]+originalPoints[3][1]-dY},
-                                      4);
-        else //angle>0
-            collisionSpan=new Polygon(new int[]{distancePixels[0]+originalPoints[0][0]+dX,distancePixels[0]+originalPoints[1][0]+dX,distancePixels[0]+originalPoints[2][0]-dX,distancePixels[0]+originalPoints[3][0]-dX},
-                                      new int[]{distancePixels[1]+originalPoints[0][1]+dY,distancePixels[1]+originalPoints[1][1]-dY,distancePixels[1]+originalPoints[2][1]-dY,distancePixels[1]+originalPoints[3][1]+dY},
-                                      4);
+//    private void updateCollisionPolygon(Graphics p){
+//        angle*=2;
+//        
+//        int tt;
+//        if(angle!=0)
+//            tt=1;
+//        else tt=0;
+//        int m=(int)Math.round(((Math.sin(Math.toRadians((180-angle)/2)))*(CAR_PIXELS_HORIZONTAL))/(Math.cos(Math.toRadians(a))))*tt;
+//        double n=(180-angle)/2-a;
+//        int dX=(int)Math.round(Math.cos(Math.toRadians(n))*m);
+//        int dY=(int)Math.round(Math.sin(Math.toRadians(n))*m)-32*tt;
+//        
+//        if(angle<=0)
+//            collisionSpan=new Polygon(new int[]{locationPixels[0]+originalPoints[0][0]+dX,locationPixels[0]+originalPoints[1][0]+dX,locationPixels[0]+originalPoints[2][0]-dX,locationPixels[0]+originalPoints[3][0]-dX},
+//                                      new int[]{locationPixels[1]+originalPoints[0][1]-dY,locationPixels[1]+originalPoints[1][1]+dY,locationPixels[1]+originalPoints[2][1]+dY,locationPixels[1]+originalPoints[3][1]-dY},
+//                                      4);
+//        else //angle>0
+//            collisionSpan=new Polygon(new int[]{locationPixels[0]+originalPoints[0][0]+dX,locationPixels[0]+originalPoints[1][0]+dX,locationPixels[0]+originalPoints[2][0]-dX,locationPixels[0]+originalPoints[3][0]-dX},
+//                                      new int[]{locationPixels[1]+originalPoints[0][1]+dY,locationPixels[1]+originalPoints[1][1]-dY,locationPixels[1]+originalPoints[2][1]-dY,locationPixels[1]+originalPoints[3][1]+dY},
+//                                      4);
 //        p.setColor(Color.blue);
 //        p.fillPolygon(collisionSpan);
-        
-        angle/=2;
+//        
+//        angle/=2;
+//    }
+    
+    private void updateCollisionRectangles(){
+        xInc=(int)(angle/5);
+        upperSpan=ShapeUtils.getRectByPoint(locationPixels[0]+xInc+addForOriginRect[0],locationPixels[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
+        lowerSpan=ShapeUtils.getRectByPoint(locationPixels[0]-xInc+addForOriginRect[0],locationPixels[1]+rectSize[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
     }
     
 }

@@ -8,6 +8,7 @@ package lactoseintolerant;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,8 +22,10 @@ public class OpeningPanel extends CPanel{
     private ArrayList<BufferedImage> images=new ArrayList<BufferedImage>();
     
     public OpeningPanel(){
-        for(int i=0;i<totalStates;i++)
-            images.add(GraphicsAssets.getImage(i));
+        try{
+            images.add(GraphicsAssets.getFirstImage());
+            images.add(GraphicsAssets.getSecondImage());
+        }catch(IOException e){ErrorLogger.logIOError(e,"OpeningPanel()");}
     }
     
     @Override
@@ -34,14 +37,17 @@ public class OpeningPanel extends CPanel{
             currentState++;
         }else if(currentState==totalStates)
             currentState++;
-        else 
+        else{
+            GraphicsAssets.importImages();
             done=true;
+        }
             
         if(!done&&currentState!=0)
         try{Thread.sleep(4000);
         }catch(Exception e){
             ErrorLogger.logError(e,"OpeningPanel");
         }
+            
         repaint();
     }
     

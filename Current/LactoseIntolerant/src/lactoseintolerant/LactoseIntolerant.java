@@ -20,5 +20,11 @@ public class LactoseIntolerant {
     }
     
     //to go to menu and everything, toggle commented parts in StartGameFlow.
+    //^also remove the first line in the main, GraphicsAssets.importImages() for running the full game.
+    
+    /**
+     * other stuff to do!!!::
+     * - in Player, make it so when stopped the car cannot turn at all. Modify max and min turn rate based on speed?
+     */
     
 }
