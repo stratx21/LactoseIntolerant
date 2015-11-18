@@ -17,11 +17,16 @@ import java.awt.Rectangle;
  */
 public class ShapeUtils {
     
-    /** **** can be used for the Player/AI/Civilian vehicles to test if they 
+    /** **function is, thus far, obsolete since the Player collision span will 
+     * now be represented by two Rectangle objects 
+     * (from a recent update in 11.2015)
+     * 
+     *  Can be used for the Player/AI/Civilian vehicles to test if they 
      *  hit the median; there are two Polygons used there; will put here 
      *  (hopefully) if there are more that can/should be used by this function. 
-     *  It will not work if there is a chance of two sides of two Polygons 
-     *  running into each other without contact by the points.
+     * 
+     *  It will not work if there is a chance of a side of one of the Polygon 
+     *  objects being inside the other Polygon but the point is outside.
      * 
      * @param one Polygon one to compare
      * @param two Polygon two to compare

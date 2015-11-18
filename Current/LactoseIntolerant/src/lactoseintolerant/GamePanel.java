@@ -7,10 +7,12 @@ package lactoseintolerant;
 
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import javax.swing.Timer;
 
@@ -82,20 +84,72 @@ public class GamePanel extends CPanel implements KeyListener{
     }
     
     private void mapDraw(Graphics p){
-        map.startLocationOne[1]+=(playerScreenChange=player.getMapDown());
-        map.startLocationTwo[1]+=playerScreenChange;
-        player.distancePixelsTotal+=playerScreenChange;
+        map. moveAllDown(playerScreenChange=player.getMapDown());
         map.draw(p);
     }
     
-    private void checkCollisions(){
-        checkPlayerMapCollisions();
+    private void checkCollisions(){ //note:: for Player/Map collisions it activates a boolean that disables turning; more will need to be added for the more aspects that are added that require the Player car to not be able to turn
+        if(!checkPlayerMapCollisions()){
+            player.canTurnRight=true;
+            player.canTurnLeft=true;
+        }
     }
     
-    public final int RUNNING_INTO_SIDE_DAMAGE_NUM=5,HIT_MEDIAN_FRONT_ANGLE_CHANGE=20; //maybe change the physics later to having a velocity to the side to bounce off? The intensity is also somwhat represented by the angle though.
+    public final int RUNNING_INTO_SIDE_DAMAGE_NUM=5,HIT_MEDIAN_FRONT_ANGLE_CHANGE=20,HIT_MEDIAN_FROM_TOP_CHANGE=20,MEDIAN_ANGLE=5; //maybe change the physics later to having a velocity to the side to bounce off? The intensity is also somwhat represented by the angle though.
     public final double TURNING_AWAY_DAMAGE=0.3,ANYWAY_DAMAGE=0.4;
-    private void checkPlayerMapCollisions(){
+    private boolean checkPlayerMapCollisions(){
+        boolean b=false;
+        Rectangle r;
+        Polygon p;
+        //side collisions::
+        if(player.lowerSpan.intersects(map.leftSide)||player.upperSpan.intersects(map.leftSide)){//left side/player collision::
+            hittingLeftFromRight(MEDIAN_ANGLE);
+            b=true;
+        } else if(player.lowerSpan.intersects(map.rightSide)||player.upperSpan.intersects(map.rightSide)){//right side/player collsion::
+            hittingRightFromLeft(-1*MEDIAN_ANGLE);
+            b=true;
+        }
         
+        //median collisions::
+        else if(map.rLeft1!=null||map.rLeft2!=null){
+                if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rLeft1)||player.upperSpan.intersects(r)))
+                    ||(map.rLeft2!=null&&(player.lowerSpan.intersects(r=map.rLeft2)||player.upperSpan.intersects(r)))){ 
+                    //car hit left side of median
+                    hittingRightFromLeft(-1*MEDIAN_ANGLE);
+                    b=true;
+                    
+                }else if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rRight1)||player.upperSpan.intersects(r)))
+                        ||(map.rLeft2!=null&&(player.lowerSpan.intersects(r=map.rRight2)||player.upperSpan.intersects(r)))){
+                    //car hit right side of median
+                    hittingLeftFromRight(MEDIAN_ANGLE);
+                    b=true;
+                    
+                }else if((map.rLeft1!=null&&((p=map.upTri1).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))
+                        ||(map.rLeft2!=null&&((p=map.upTri2).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))){
+                    //car hit the upper triangular point of the median
+                    if(player.locationPixels[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN)
+                        hittingLeftFromRight(HIT_MEDIAN_FROM_TOP_CHANGE);
+                    else 
+                        hittingRightFromLeft(HIT_MEDIAN_FROM_TOP_CHANGE);
+                    
+                    b=true;
+                    
+                }else if((map.rLeft1!=null&&((p=map.downTri1).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))
+                        ||(map.rLeft2!=null&&((p=map.downTri2).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))){
+                    //car hit the lower triangular point of the median
+                    if(player.locationPixels[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN)
+                        hittingLeftFromRight(HIT_MEDIAN_FRONT_ANGLE_CHANGE);
+                    else 
+                        hittingRightFromLeft(HIT_MEDIAN_FRONT_ANGLE_CHANGE);
+                    
+                    b=true;
+                }
+        }
+        
+        
+        
+        
+        return b;
     }
     
     private void hittingRightFromLeft(int an){

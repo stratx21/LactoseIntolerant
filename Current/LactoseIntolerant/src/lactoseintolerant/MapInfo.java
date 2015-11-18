@@ -7,7 +7,9 @@ package lactoseintolerant;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,14 +20,24 @@ public class MapInfo {
     public int typeOne=0,typeTwo=0;
     public BufferedImage imageStraight=null,imageMedian=null,
             imageIntersection=null,imageOne=null,imageTwo=null;
-    public int[] startLocationOne=new int[2];
-    public int[] startLocationTwo=new int[2];
+    public int[] startLocation=new int[2];
     
-    public int STRAIGHT_LENGTH_PIXELS=2005;
-    public int MEDIAN_LENGTH_PIXELS=4011;
-    public int INTERSECTION_LENGTH_PIXELS=2005;
-    public int HORIZONTAL_SIZE=1032;
+    public final int 
+            STRAIGHT_LENGTH_PIXELS=2005,
+            MEDIAN_LENGTH_PIXELS=4011,
+            INTERSECTION_LENGTH_PIXELS=2005,
+            HORIZONTAL_SIZE=1032,
+            CENTER_OF_MEDIAN=505;
+    
     public int currentPixelLengthTwo=0,currentPixelLengthOne=0;
+    
+    
+    public Polygon[] medianSpan=new Polygon[2];
+    public ArrayList<BufferedImage> images=new ArrayList<BufferedImage>();
+    public ArrayList<Integer> yLoc=new ArrayList<Integer>();
+    
+    public Rectangle rLeft1,rLeft2,rRight1,rRight2;
+    public Polygon upTri1,upTri2,downTri1,downTri2;
     
     
     

@@ -18,6 +18,8 @@ public class PlayerStat {
     public double ACCELERATION,TOP_SPEED,BRAKE_SPEED;
     public boolean turningLeft=false,turningRight=false;
     
+    public boolean collidingWithMap=false;
+    
     public boolean accelerating=false,brakes=false;
     
     public boolean attacking=false,canAttack=true,isDoneWithAttack=false;

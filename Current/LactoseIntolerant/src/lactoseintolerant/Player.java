@@ -66,14 +66,16 @@ public class Player extends PlayerStat{
                 speed-=brakeDecrease;
         }
         
-        if(canTurnLeft&&turningLeft){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
+        if(//canTurnLeft&&
+                turningLeft){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
             if(angle>ANGLE_MIN) // over min (do a regular turn)
                 angle-=angleIncrement;
             else if(angle<ANGLE_MIN) //under min
                 angle=ANGLE_MIN;
             currentTurnRate=(int)speed/12;//update turn rate
             locationPixels[0]-=currentTurnRate*(Math.abs(angle)/5);
-        }else if(canTurnRight&&turningRight){
+        }else if(//canTurnRight&&
+                turningRight){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
             currentTurnRate=(int)speed/12;//update turn rate
