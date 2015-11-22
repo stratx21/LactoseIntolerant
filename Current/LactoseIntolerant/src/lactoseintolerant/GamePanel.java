@@ -20,7 +20,12 @@ import javax.swing.Timer;
  *
  * @author 0001058857
  */
-public class GamePanel extends CPanel implements KeyListener{
+public class GamePanel extends CPanel implements KeyListener,Runnable{
+    
+//    public Timer calcTimer=new Timer(40, (ActionEvent e) -> {
+//        calcFlow();
+//    });
+    
     private int civilianSpeed=30,remainder=0,playerScreenChange=0;
     
     public int[] FRAME_SIZE; //not used yet, may want to remove later!                                           <-----
@@ -42,6 +47,8 @@ public class GamePanel extends CPanel implements KeyListener{
     public int mapMoveDown=0;
     
     public GamePanel(int[] size){
+        //calcTimer.start();
+        (new Thread(this)).start();
         AIPopulationCheck.start();
         FRAME_SIZE=size;
         
@@ -50,12 +57,20 @@ public class GamePanel extends CPanel implements KeyListener{
     }
     
     public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument
-        checkCollisions();
+        
         mapDraw(p);
         playerDraw(p);
         civiliansDraw(p);
         drawSpeedBar(p);
         drawHealthBar(p);
+    }
+    
+    private void calcFlow(){
+        player.calculate();
+        map.moveAllDown(playerScreenChange=player.getMapDown());
+        map.calculate();
+        checkCollisions();
+        changeScreenLocationAllCivilians(-1*(getHowFarGoesUpForCivilians()-playerScreenChange));
     }
     
     
@@ -79,23 +94,20 @@ public class GamePanel extends CPanel implements KeyListener{
     private void civiliansDraw(Graphics p){
         for(int i=0;i<civilians.size();i++)
             civilians.get(i).draw(p);
-        
-        changeScreenLocationAllCivilians(-1*(getHowFarGoesUpForCivilians()-playerScreenChange));
     }
     
     private void mapDraw(Graphics p){
-        map. moveAllDown(playerScreenChange=player.getMapDown());
         map.draw(p);
     }
     
     private void checkCollisions(){ //note:: for Player/Map collisions it activates a boolean that disables turning; more will need to be added for the more aspects that are added that require the Player car to not be able to turn
-        if(!checkPlayerMapCollisions()){
+        if(!(player.colliding=checkPlayerMapCollisions())){
             player.canTurnRight=true;
             player.canTurnLeft=true;
-        }
+        } else player.colliding=false;
     }
     
-    public final int RUNNING_INTO_SIDE_DAMAGE_NUM=5,HIT_MEDIAN_FRONT_ANGLE_CHANGE=20,HIT_MEDIAN_FROM_TOP_CHANGE=20,MEDIAN_ANGLE=5; //maybe change the physics later to having a velocity to the side to bounce off? The intensity is also somwhat represented by the angle though.
+    public final int RUNNING_INTO_SIDE_DAMAGE_NUM=5,HIT_MEDIAN_FRONT_ANGLE_CHANGE=20,HIT_MEDIAN_FROM_TOP_CHANGE=20,MEDIAN_ANGLE=0; //maybe change the physics later to having a velocity to the side to bounce off? The intensity is also somwhat represented by the angle though.
     public final double TURNING_AWAY_DAMAGE=0.3,ANYWAY_DAMAGE=0.4;
     private boolean checkPlayerMapCollisions(){
         boolean b=false;
@@ -104,30 +116,20 @@ public class GamePanel extends CPanel implements KeyListener{
         //side collisions::
         if(player.lowerSpan.intersects(map.leftSide)||player.upperSpan.intersects(map.leftSide)){//left side/player collision::
             hittingLeftFromRight(MEDIAN_ANGLE);
+            player.location[0]=132-10;
             b=true;
         } else if(player.lowerSpan.intersects(map.rightSide)||player.upperSpan.intersects(map.rightSide)){//right side/player collsion::
             hittingRightFromLeft(-1*MEDIAN_ANGLE);
+            player.location[0]=872-player.IMG_BLANK_SPACE[0]-player.CAR_PIXELS_HORIZONTAL;
             b=true;
         }
         
         //median collisions::
         else if(map.rLeft1!=null||map.rLeft2!=null){
-                if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rLeft1)||player.upperSpan.intersects(r)))
-                    ||(map.rLeft2!=null&&(player.lowerSpan.intersects(r=map.rLeft2)||player.upperSpan.intersects(r)))){ 
-                    //car hit left side of median
-                    hittingRightFromLeft(-1*MEDIAN_ANGLE);
-                    b=true;
-                    
-                }else if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rRight1)||player.upperSpan.intersects(r)))
-                        ||(map.rLeft2!=null&&(player.lowerSpan.intersects(r=map.rRight2)||player.upperSpan.intersects(r)))){
-                    //car hit right side of median
-                    hittingLeftFromRight(MEDIAN_ANGLE);
-                    b=true;
-                    
-                }else if((map.rLeft1!=null&&((p=map.upTri1).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))
+                if((map.rLeft1!=null&&((p=map.upTri1).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))
                         ||(map.rLeft2!=null&&((p=map.upTri2).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))){
                     //car hit the upper triangular point of the median
-                    if(player.locationPixels[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN)
+                    if(player.location[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN)
                         hittingLeftFromRight(HIT_MEDIAN_FROM_TOP_CHANGE);
                     else 
                         hittingRightFromLeft(HIT_MEDIAN_FROM_TOP_CHANGE);
@@ -137,12 +139,31 @@ public class GamePanel extends CPanel implements KeyListener{
                 }else if((map.rLeft1!=null&&((p=map.downTri1).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))
                         ||(map.rLeft2!=null&&((p=map.downTri2).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))){
                     //car hit the lower triangular point of the median
-                    if(player.locationPixels[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN)
+                    if(player.location[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN){//right part
                         hittingLeftFromRight(HIT_MEDIAN_FRONT_ANGLE_CHANGE);
-                    else 
-                        hittingRightFromLeft(HIT_MEDIAN_FRONT_ANGLE_CHANGE);
+                        player.location[0]+=5;
+                        player.speed=5;
+                    }else {                                                             //left part
+                        hittingRightFromLeft(-1*HIT_MEDIAN_FRONT_ANGLE_CHANGE);
+                        player.location[0]-=5;
+                        player.speed=5;
+                    }
                     
                     b=true;
+                }else if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rLeft1)||player.upperSpan.intersects(r)))
+                    ||(map.rLeft2!=null&&(player.lowerSpan.intersects(r=map.rLeft2)||player.upperSpan.intersects(r)))){ 
+                    //car hit left side of median
+                    hittingRightFromLeft(-1*MEDIAN_ANGLE);
+                    player.location[0]=420-player.IMG_BLANK_SPACE[0]-player.CAR_PIXELS_HORIZONTAL;
+                    b=true;
+                    
+                }else if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rRight1)||player.upperSpan.intersects(r)))
+                        ||(map.rLeft2!=null&&(player.lowerSpan.intersects(r=map.rRight2)||player.upperSpan.intersects(r)))){
+                    //car hit right side of median
+                    hittingLeftFromRight(MEDIAN_ANGLE);
+                    player.location[0]=590-player.IMG_BLANK_SPACE[0];
+                    b=true;
+                    
                 }
         }
         
@@ -156,18 +177,20 @@ public class GamePanel extends CPanel implements KeyListener{
         player.canTurnRight=false;
         if(player.turningRight){
             player.health-=Math.abs(player.angle)/RUNNING_INTO_SIDE_DAMAGE_NUM+ANYWAY_DAMAGE;
-            player.angle=an;
+            
         }else
             player.health-=TURNING_AWAY_DAMAGE;
+        player.angle=an;
     }
     
     private void hittingLeftFromRight(int an){
         player.canTurnLeft=false;
         if(player.turningLeft){
             player.health-=Math.abs(player.angle)/RUNNING_INTO_SIDE_DAMAGE_NUM+ANYWAY_DAMAGE;
-            player.angle=an;
+            
         }else
             player.health-=TURNING_AWAY_DAMAGE;
+        player.angle=an;
     }
     
     int divideBy=3,te;
@@ -242,5 +265,14 @@ public class GamePanel extends CPanel implements KeyListener{
     public Timer AIPopulationCheck=new Timer(7500, (ActionEvent e) -> {
         
     });
+
+    public int calcDelay=40;
+    @Override
+    public void run() {
+        calcFlow();
+        try{Thread.sleep(calcDelay);}
+        catch(Exception e){ErrorLogger.logError(e,"run");}
+        run();
+    }
     
 }

@@ -29,7 +29,8 @@ public class Player extends PlayerStat{
         
         health=100;//cars.getTopSpeed();
         ACCELERATION=10;//cars.getAcceleration();
-        TOP_SPEED=55;//cars.getTopSpeed();
+        ORIGINAL_TOP_SPEED=TOP_SPEED=55;//cars.getTopSpeed();
+        speed=30;
     }
     
     public Player(int t){
@@ -39,7 +40,8 @@ public class Player extends PlayerStat{
         
         health=100;//cars.getTopSpeed();
         ACCELERATION=10;//cars.getAcceleration();
-        TOP_SPEED=55;//cars.getTopSpeed();
+        ORIGINAL_TOP_SPEED=TOP_SPEED=55;//cars.getTopSpeed();
+        speed=30;
     }
     
     
@@ -49,6 +51,28 @@ public class Player extends PlayerStat{
     *@param Graphics p the graphics class used in the game's frame, used in the function to draw the vehicle.
     */
     public void draw(Graphics p){
+        
+        
+        //draw actual car::
+        if(angle==0)
+            p.drawImage(currentImage,location[0],location[1],imageSize[0],imageSize[1],null);
+        else
+            p.drawImage(ImageUtils.rotateImage(currentImage,angle),location[0],location[1],imageSize[0],imageSize[1],null);
+        
+        
+        
+//        p.setColor(Color.pink);
+//        p.fillRect(upperSpan.x,upperSpan.y,upperSpan.width,upperSpan.height);
+//        p.setColor(Color.blue);
+//        p.fillRect(lowerSpan.x,lowerSpan.y,lowerSpan.width,lowerSpan.height);
+        
+    }
+    
+    public void calculate(){
+        
+        TOP_SPEED=ORIGINAL_TOP_SPEED-angle/7;
+        
+//        System.out.println(TOP_SPEED);
         
         if(accelerating){ //speed in kilometers per hour
             if(speed<TOP_SPEED){
@@ -73,14 +97,14 @@ public class Player extends PlayerStat{
             else if(angle<ANGLE_MIN) //under min
                 angle=ANGLE_MIN;
             currentTurnRate=(int)speed/12;//update turn rate
-            locationPixels[0]-=currentTurnRate*(Math.abs(angle)/5);
+            location[0]-=currentTurnRate*(Math.abs(angle)/5);
         }else if(//canTurnRight&&
                 turningRight){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
             currentTurnRate=(int)speed/12;//update turn rate
-            locationPixels[0]+=currentTurnRate*(Math.abs(angle)/5);
-        }else if(shouldCheckStoppedTurning){ //and is not turning anyways
+            location[0]+=currentTurnRate*(Math.abs(angle)/5);
+        }else if(shouldCheckStoppedTurning&&!colliding){ //and is not turning anyways
             if(angle<0)
                 angle+=angleIncrement;
             else if(angle>0)
@@ -107,15 +131,7 @@ public class Player extends PlayerStat{
             attacking=false; //after all attacking code has been run so that the player is not attacking again and the canAttack boolean flow may initialize.
         }
         
-        //draw actual car::
-        p.drawImage(ImageUtils.rotateImage(currentImage,angle),locationPixels[0],locationPixels[1],imageSize[0],imageSize[1],null);
-        
         updateCollisionRectangles(); //keep last
-        
-//        p.setColor(Color.pink);
-//        p.fillRect(upperSpan.x,upperSpan.y,upperSpan.width,upperSpan.height);
-//        p.setColor(Color.blue);
-//        p.fillRect(lowerSpan.x,lowerSpan.y,lowerSpan.width,lowerSpan.height);
         
     }
     
@@ -159,8 +175,8 @@ public class Player extends PlayerStat{
     
     private void updateCollisionRectangles(){
         xInc=(int)(angle/5);
-        upperSpan=ShapeUtils.getRectByPoint(locationPixels[0]+xInc+addForOriginRect[0],locationPixels[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
-        lowerSpan=ShapeUtils.getRectByPoint(locationPixels[0]-xInc+addForOriginRect[0],locationPixels[1]+rectSize[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
+        upperSpan=ShapeUtils.getRectByPoint(location[0]+xInc+addForOriginRect[0],location[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
+        lowerSpan=ShapeUtils.getRectByPoint(location[0]-xInc+addForOriginRect[0],location[1]+rectSize[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
     }
     
 }

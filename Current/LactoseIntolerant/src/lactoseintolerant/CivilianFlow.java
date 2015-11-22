@@ -40,12 +40,6 @@ public class CivilianFlow extends AIFlow{
      * @param p Graphics instance used by the active CPanel GamePanel
      */
     public void draw(Graphics p){
-        
-        
-        
-        
-        
-        
         if(angle==0)
             p.drawImage(currentImage,locationPixels[0],locationPixels[1],imageSize[0],imageSize[1],null);
         else //aka angle is not 0

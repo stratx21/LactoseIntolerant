@@ -15,10 +15,10 @@ import java.awt.image.BufferedImage;
  */
 public class PlayerStat {
     public int CAR_TYPE;
-    public double ACCELERATION,TOP_SPEED,BRAKE_SPEED;
+    public double ACCELERATION,TOP_SPEED,BRAKE_SPEED,ORIGINAL_TOP_SPEED;
     public boolean turningLeft=false,turningRight=false;
     
-    public boolean collidingWithMap=false;
+    public boolean collidingWithMap=false;// unused?????????????????????????????????????????????????????
     
     public boolean accelerating=false,brakes=false;
     
@@ -34,12 +34,13 @@ public class PlayerStat {
     public int currentTurnRate=0;
     public boolean canTurnRight=true,canTurnLeft=true;
     
-    public float distanceTravelled=0;
-    public int[] locationPixels={200,400};
+    public float distanceTravelled=0;  //unused????????????????????????????????????????????????????  
+    
+    public int[] location={200,400};
     public int[] imageSize={76,93};
     //public Polygon collisionSpan=new Polygon();
     public long distancePixelsTotal=400;
-    public int[] COL_LOC=new int[]{22,11}; //how much blank space there is
+    public int[] IMG_BLANK_SPACE=new int[]{22,11}; //how much blank space there is
     
     public int[][] originalPoints=new int[][]{{22,10},{53,10},{53,82},{22,82}};
     
@@ -55,6 +56,8 @@ public class PlayerStat {
     public Rectangle upperSpan=new Rectangle(),lowerSpan=new Rectangle();
     public int[] rectSize=new int[]{31,36},addForOriginRect=new int[]{7,-7};
     public int xInc=0; //how much the x value should increase by for moving the upperSpan and lowerSpan Rectangle objects
+    
+    public boolean colliding=false;
     
     
     

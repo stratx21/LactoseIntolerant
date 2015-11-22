@@ -25,6 +25,8 @@ public class MapManager extends MapInfo{
     
     private boolean firstMedianExists=false,secondMedianExists=false;
     
+    public boolean drawSecond=false;
+    
 //    public boolean hitFromLeft=true;
     
     
@@ -77,8 +79,8 @@ public class MapManager extends MapInfo{
         }
     }
     
-    int curIndex=0;
-    public void draw(Graphics p){
+    public int curIndex=0;
+    public void calculate(){
         //System.out.println("1: "+startLocationOne[1]+"  2: "+startLocationTwo[1]);
 //        if(startLocationOne[1]>700){ //one expires
 //            resetTypeOne();
@@ -95,7 +97,7 @@ public class MapManager extends MapInfo{
 //        
 //        updateMedianPolygons(p);
         
-        boolean go=true,drawSecond=false;
+        boolean go=true;
         int temDis,//temporary distance (y)
                 temp;//temp used after while ends
         while(go){
@@ -111,12 +113,15 @@ public class MapManager extends MapInfo{
             } else go=false;  
         }
         
-        p.drawImage(images.get(curIndex),0,(temp=yLoc.get(curIndex)),null);
-        if(currentLevel.levelInfo[curIndex]==1){
+        if(curIndex>0&&currentLevel.levelInfo[curIndex-1]==1){
 //            medianSpan[0]=new Polygon(new int[]{505,      420,      420,    506,    592,    592      },
 //                                      new int[]{temp+4000,temp+3948,temp+85,temp+34,temp+85,temp+3948},
 //                                      6);
-            System.out.println("oneee "+temp);
+            temp=yLoc.get(curIndex-1)-MEDIAN_LENGTH_PIXELS;
+//            System.out.println("oneee "+temp);
+            
+            
+            //temp-=MEDIAN_LENGTH_PIXELS;
             
             rLeft1=new Rectangle(420,temp+88,85,3857);
             rRight1=new Rectangle(505,temp+88,85,3857);
@@ -127,15 +132,6 @@ public class MapManager extends MapInfo{
                                  new int[]{temp+3948,temp+4000,temp+3948},
                                  3);
             
-            p.setColor(Color.blue);
-            p.fillRect(rLeft1.x,rLeft1.y,rLeft1.width,rLeft1.height);
-            p.setColor(Color.red);
-            p.fillRect(rRight1.x,rRight1.y,rRight1.width,rRight1.height);
-            p.setColor(Color.pink);
-            p.fillPolygon(upTri1);
-            p.setColor(Color.yellow);
-            p.fillPolygon(downTri1);
-            
             
         } else if(rLeft1!=null){
             rLeft1=null;
@@ -145,12 +141,16 @@ public class MapManager extends MapInfo{
         }
         
         if(drawSecond){
-            p.drawImage(images.get(curIndex+1),0,(temp=yLoc.get(curIndex+1)),null);
-            if(currentLevel.levelInfo[curIndex+1]==1){
+            if(currentLevel.levelInfo[curIndex]==1){
 //                medianSpan[1]=new Polygon(new int[]{505,      420,      420,    506,    592,    592      },
 //                                          new int[]{temp+4000,temp+3948,temp+85,temp+34,temp+85,temp+3948},
 //                                          6);
-                System.out.println("twoooo "+temp);
+                temp=yLoc.get(curIndex)-MEDIAN_LENGTH_PIXELS;
+                
+                //temp-=MEDIAN_LENGTH_PIXELS;
+                
+//                System.out.println("twoooo "+temp);
+                
                 rLeft2=new Rectangle(420,temp+88,85,3857);
                 rRight2=new Rectangle(505,temp+88,85,3857);
                 upTri2=new Polygon  (new int[]{420,      505,      592},
@@ -159,16 +159,15 @@ public class MapManager extends MapInfo{
                 downTri2=new Polygon(new int[]{420,      505,      592},
                                      new int[]{temp+3948,temp+4000,temp+3948},
                                      3);
-                System.out.println("twoooo "+temp);
                 
-                p.setColor(Color.blue);
-                p.fillRect(rLeft2.x,rLeft2.y,rLeft2.width,rLeft2.height);
-                p.setColor(Color.red);
-                p.fillRect(rRight2.x,rRight2.y,rRight2.width,rRight2.height);
-                p.setColor(Color.pink);
-                p.fillPolygon(upTri2);
-                p.setColor(Color.yellow);
-                p.fillPolygon(downTri2);
+//                p.setColor(Color.blue);
+//                p.fillRect(rLeft2.x,rLeft2.y,rLeft2.width,rLeft2.height);
+//                p.setColor(Color.red);
+//                p.fillRect(rRight2.x,rRight2.y,rRight2.width,rRight2.height);
+//                p.setColor(Color.pink);
+//                p.fillPolygon(upTri2);
+//                p.setColor(Color.yellow);
+//                p.fillPolygon(downTri2);
                 
                 
             } else if(rLeft2!=null){
@@ -179,6 +178,23 @@ public class MapManager extends MapInfo{
             }
         }
         
+//        if(rLeft1!=null){
+//                p.setColor(Color.blue);
+//                p.fillRect(rLeft1.x,rLeft1.y,rLeft1.width,rLeft1.height);
+//                p.setColor(Color.red);
+//                p.fillRect(rRight1.x,rRight1.y,rRight1.width,rRight1.height);
+//                p.setColor(Color.pink);
+//                p.fillPolygon(upTri1);
+//                p.setColor(Color.yellow);
+//                p.fillPolygon(downTri1);
+//            }
+        
+    }
+    
+    public void draw(Graphics p){
+        p.drawImage(images.get(curIndex),0,yLoc.get(curIndex),null);
+        if(drawSecond)
+            p.drawImage(images.get(curIndex+1),0,yLoc.get(curIndex+1),null);
     }
         
     public void resetTypeOne(){

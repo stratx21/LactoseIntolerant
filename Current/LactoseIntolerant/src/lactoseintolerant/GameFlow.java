@@ -18,6 +18,8 @@ public class GameFlow { //main game flow
     private GaragePanel garagePanel=new GaragePanel();
     private JFrame frame;
     
+    private int frameRateMilliseconds=40;
+    
     public GameFlow(JFrame f){ //initialize frame/panel/KeyListener relation aspects
         frame=f;
         
@@ -30,7 +32,7 @@ public class GameFlow { //main game flow
             public void paintComponent(Graphics p){
                 gamePanel.paintC(p);
                 
-                try{Thread.sleep(40);}
+                try{Thread.sleep(frameRateMilliseconds);}
                 catch(Exception e){ErrorLogger.logError(e,"paintComponent-GameFlow-");}
                 repaint();
             }
