@@ -20,44 +20,105 @@ import java.util.ArrayList;
  *
  * @author 0001058857
  */
-public class Player extends PlayerStat{
+public class Player{
+    
     private PlayerCars cars=new PlayerCars();
     
+    public int CAR_TYPE;
+    public double ACCELERATION,TOP_SPEED,BRAKE_SPEED,ORIGINAL_TOP_SPEED;
+    public boolean turningLeft=false,turningRight=false;
+    
+    public boolean collidingWithMap=false;// unused?????????????????????????????????????????????????????
+    
+    public boolean accelerating=false,brakes=false;
+    
+    public boolean attacking=false,canAttack=true,isDoneWithAttack=false;
+    
+    public int canAttackPing=0,attackReachPing=50;
+    
+    public boolean shouldCheckStoppedTurning=true;
+    
+    public double speedChange=0;
+    
+    public double speed=40;
+    public double angle=25,ANGLE_MIN=-25,ANGLE_MAX=25,angleIncrement=5; //angle 0=straight up
+    public double health,moneyHolding;
+    public double noEffectDecrease=3,brakeDecrease=5;
+    public int currentTurnRate=0,stoppedTurningTurnRate=1;
+    public boolean canTurnRight=true,canTurnLeft=true;
+    
+    public float distanceTravelled=0;  //unused????????????????????????????????????????????????????  
+    
+    public int[] screenLocation={200,400};
+    public int[] imageSize={76,93};
+    //public Polygon collisionSpan=new Polygon();
+    
+    public long distancePixelsTotal=400;//unused?????????????????????????????????????????
+    
+    public int[] IMG_BLANK_SPACE=new int[]{22,11}; //how much blank space there is
+    
+    public int[][] originalPoints=new int[][]{{22,10},{53,10},{53,82},{22,82}};
+    
+//    public double a=Math.atan(Math.toRadians(45/16));
+    
+    public int CAR_PIXELS_HORIZONTAL=33;
+    
+    public BufferedImage currentImage=null;
+    
+    public boolean collidedMap=false;
+    
+    public int downRemainder=0;
+    
+    public Rectangle upperSpan=new Rectangle(),lowerSpan=new Rectangle();
+    public int[] rectSize=new int[]{31,36},
+            addForOriginRect=new int[]{7,-7};//what is this variable? is it just something i used to figure it out once i looked
+                                                //at the drawn rectangles in the game??
+    
+    
+    public int xInc=0; //how much the x value should increase by for moving the upperSpan and lowerSpan Rectangle objects
+    
+    public boolean colliding=false;
+    
     public Player(){ //temporary ::
-        cars.CURRENT_TYPE=CAR_TYPE=0;
-        currentImage=GraphicsAssets.getImage(2);
-        
-        health=100;//cars.getTopSpeed();
-        ACCELERATION=10;//cars.getAcceleration();
-        ORIGINAL_TOP_SPEED=TOP_SPEED=55;//cars.getTopSpeed();
-        speed=30;
+        this(0);
     }
     
     public Player(int t){
-        cars.CURRENT_TYPE=CAR_TYPE=t;
+        switch(cars.CURRENT_TYPE=CAR_TYPE=t){ //original sudan that Gabe made the graphics for
+            case 0:
+                currentImage=GraphicsAssets.getImage(2);
+                health=100;//cars.getTopSpeed();
+                ACCELERATION=7;//cars.getAcceleration();
+                ORIGINAL_TOP_SPEED=TOP_SPEED=55;//cars.getTopSpeed();
+                speed=40;
+                imageSize=new int[]{76,93};
+                IMG_BLANK_SPACE=new int[]{22,11};
+                originalPoints=new int[][]{{22,10},{53,10},{53,82},{22,82}};
+                CAR_PIXELS_HORIZONTAL=33;
+                rectSize=new int[]{31,36};
+                addForOriginRect=new int[]{7,-7};
+                break;
+        }
         
-        currentImage=GraphicsAssets.getImage(2);
         
-        health=100;//cars.getTopSpeed();
-        ACCELERATION=10;//cars.getAcceleration();
-        ORIGINAL_TOP_SPEED=TOP_SPEED=55;//cars.getTopSpeed();
-        speed=30;
+        
+        
     }
     
     
     /*
-    * Logic flow for the Player class::
+    * Draw the image::
     *
     *@param Graphics p the graphics class used in the game's frame, used in the function to draw the vehicle.
     */
-    public void draw(Graphics p){
+    public void draw(Graphics p,int dY){
         
         
         //draw actual car::
         if(angle==0)
-            p.drawImage(currentImage,location[0],location[1],imageSize[0],imageSize[1],null);
+            p.drawImage(currentImage,screenLocation[0],screenLocation[1]+dY,imageSize[0],imageSize[1],null);
         else
-            p.drawImage(ImageUtils.rotateImage(currentImage,angle),location[0],location[1],imageSize[0],imageSize[1],null);
+            p.drawImage(ImageUtils.rotateImage(currentImage,angle*(speed/TOP_SPEED)),screenLocation[0],screenLocation[1]+dY,imageSize[0],imageSize[1],null);
         
         
         
@@ -68,26 +129,36 @@ public class Player extends PlayerStat{
         
     }
     
-    public void calculate(){
+    /**
+     *Logic flow for player::
+     */
+    public int calculate(int dY){
         
         TOP_SPEED=ORIGINAL_TOP_SPEED-angle/7;
         
 //        System.out.println(TOP_SPEED);
         
         if(accelerating){ //speed in kilometers per hour
+            speedChange=ACCELERATION;
             if(speed<TOP_SPEED){
                 speed+=ACCELERATION;
-            }else if(speed>TOP_SPEED)
+            }else if(speed>TOP_SPEED){
                 speed=TOP_SPEED;
+            }
         } else if(!brakes){//not accelerating and is not applying brakes
             if(speed>0)
                 speed-=noEffectDecrease;
-            else speed=0;
+            else if(speed<0){
+                speed+=noEffectDecrease;
+            }
+            speedChange=0;
         }
         
         if(brakes){
-            if(speed>-1*TOP_SPEED/2)
-                speed-=brakeDecrease;
+            speedChange=-1*brakeDecrease;
+            if(speed>-1*TOP_SPEED/2){
+                speed+=speedChange;
+            }
         }
         
         if(//canTurnLeft&&
@@ -97,19 +168,21 @@ public class Player extends PlayerStat{
             else if(angle<ANGLE_MIN) //under min
                 angle=ANGLE_MIN;
             currentTurnRate=(int)speed/12;//update turn rate
-            location[0]-=currentTurnRate*(Math.abs(angle)/5);
+            screenLocation[0]-=currentTurnRate*(Math.abs(angle)/5);
         }else if(//canTurnRight&&
                 turningRight){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
             currentTurnRate=(int)speed/12;//update turn rate
-            location[0]+=currentTurnRate*(Math.abs(angle)/5);
+            screenLocation[0]+=currentTurnRate*(Math.abs(angle)/5);
         }else if(shouldCheckStoppedTurning&&!colliding){ //and is not turning anyways
-            if(angle<0)
+            if(angle<0){
                 angle+=angleIncrement;
-            else if(angle>0)
+                screenLocation[0]-=stoppedTurningTurnRate*(Math.abs(angle)/5);
+            }else if(angle>0){
                 angle-=angleIncrement;
-            else shouldCheckStoppedTurning=false;
+                screenLocation[0]+=stoppedTurningTurnRate*(Math.abs(angle)/5);
+            }else shouldCheckStoppedTurning=false;
         }
         
         //flow for canAttack boolean::
@@ -131,7 +204,9 @@ public class Player extends PlayerStat{
             attacking=false; //after all attacking code has been run so that the player is not attacking again and the canAttack boolean flow may initialize.
         }
         
-        updateCollisionRectangles(); //keep last
+        updateCollisionRectangles(dY); //keep last
+        
+        return (int)speedChange;
         
     }
     
@@ -173,10 +248,10 @@ public class Player extends PlayerStat{
 //        angle/=2;
 //    }
     
-    private void updateCollisionRectangles(){
+    private void updateCollisionRectangles(int dY){
         xInc=(int)(angle/5);
-        upperSpan=ShapeUtils.getRectByPoint(location[0]+xInc+addForOriginRect[0],location[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
-        lowerSpan=ShapeUtils.getRectByPoint(location[0]-xInc+addForOriginRect[0],location[1]+rectSize[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
+        upperSpan=ShapeUtils.getRectByPoint(screenLocation[0]+xInc+addForOriginRect[0],dY+screenLocation[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
+        lowerSpan=ShapeUtils.getRectByPoint(screenLocation[0]-xInc+addForOriginRect[0],dY+screenLocation[1]+rectSize[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
     }
     
 }

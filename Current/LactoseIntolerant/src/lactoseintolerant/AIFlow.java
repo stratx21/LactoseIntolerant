@@ -15,24 +15,11 @@ import java.awt.image.BufferedImage;
  * @author 0001058857
  */
 public class AIFlow {
+    public boolean wipedOut=false,exploded=false;
     
-    /**
-     * for each type of vehicle, make sure to change these variables depending on type::
-     * 
-     * a - is the angle [THETA] A in the math in the spiral for the Polygon equation
-     * 
-     * 
-     * 
-     * should be the same::
-     * 
-     * TOP_SPEED         (--
-     * ACCELERATION      (--   Doesn't matter much
-     * BRAKE_SPEED       (-- 
-     * 
-     */
     //keep the same between types::::              VVVVVVVVVV
     public int TYPE;
-    public double ACCELERATION,TOP_SPEED,BRAKE_SPEED;
+    public double ACCELERATION,TOP_SPEED=30,BRAKE_SPEED;
     
     public boolean turningLeft=false,turningRight=false,shouldCheckStoppedTurning=true;
         
@@ -49,8 +36,11 @@ public class AIFlow {
     public double noEffectDecrease=3,brakeDecrease=5;
     public int currentTurnRate=0;
     
+    public int angleIncrement=5;
+    
     public float distanceTravelled=0;
-    public int[] locationPixels={200,400};
+    public int[] screenLocation={180,400};
+    public int[] IMG_BLANK_SPACE=new int[2];
     
     public Polygon collisionSpan=new Polygon();
     public long locationPixelsTotal=400;
@@ -58,7 +48,7 @@ public class AIFlow {
     //should change based on the car type::                         VVVVVVVV
     public double health;
     
-    
+    public Rectangle upperSpan=new Rectangle(),lowerSpan=new Rectangle();
     
     public Rectangle fullImageSpan;  //UPDATE!!! VV
     public double a;
@@ -69,37 +59,41 @@ public class AIFlow {
     
     public BufferedImage currentImage=null;
     
+    public int xInc=0;
+    public int[] addForOriginRect=new int[]{7,-7};
+    public int[] rectSize=new int[2];
+    
     public boolean collidedMap=false;
     
     public int downRemainder=0;
     
     
     
-    public void updateCollisionPolygon(Graphics p){
-        angle*=2;
-        
-        int tt;
-        if(angle!=0)
-            tt=1;
-        else tt=0;
-        int m=(int)Math.round(((Math.sin(Math.toRadians((180-angle)/2)))*(CAR_PIXELS_HORIZONTAL))/(Math.cos(Math.toRadians(a))))*tt;
-        double n=(180-angle)/2-a;
-        int dX=(int)Math.round(Math.cos(Math.toRadians(n))*m);
-        int dY=(int)Math.round(Math.sin(Math.toRadians(n))*m)-32*tt;
-        
-        if(angle<=0)
-            collisionSpan=new Polygon(new int[]{locationPixels[0]+originalPoints[0][0]+dX,locationPixels[0]+originalPoints[1][0]+dX,locationPixels[0]+originalPoints[2][0]-dX,locationPixels[0]+originalPoints[3][0]-dX},
-                                      new int[]{locationPixels[1]+originalPoints[0][1]-dY,locationPixels[1]+originalPoints[1][1]+dY,locationPixels[1]+originalPoints[2][1]+dY,locationPixels[1]+originalPoints[3][1]-dY},
-                                      4);
-        else //angle>0
-            collisionSpan=new Polygon(new int[]{locationPixels[0]+originalPoints[0][0]+dX,locationPixels[0]+originalPoints[1][0]+dX,locationPixels[0]+originalPoints[2][0]-dX,locationPixels[0]+originalPoints[3][0]-dX},
-                                      new int[]{locationPixels[1]+originalPoints[0][1]+dY,locationPixels[1]+originalPoints[1][1]-dY,locationPixels[1]+originalPoints[2][1]-dY,locationPixels[1]+originalPoints[3][1]+dY},
-                                      4);
-//        p.setColor(Color.blue);
-//        p.fillPolygon(collisionSpan);
-        
-        angle/=2;
-    }
+//    public void updateCollisionPolygon(Graphics p){
+//        angle*=2;
+//        
+//        int tt;
+//        if(angle!=0)
+//            tt=1;
+//        else tt=0;
+//        int m=(int)Math.round(((Math.sin(Math.toRadians((180-angle)/2)))*(CAR_PIXELS_HORIZONTAL))/(Math.cos(Math.toRadians(a))))*tt;
+//        double n=(180-angle)/2-a;
+//        int dX=(int)Math.round(Math.cos(Math.toRadians(n))*m);
+//        int dY=(int)Math.round(Math.sin(Math.toRadians(n))*m)-32*tt;
+//        
+//        if(angle<=0)
+//            collisionSpan=new Polygon(new int[]{screenLocation[0]+originalPoints[0][0]+dX,screenLocation[0]+originalPoints[1][0]+dX,screenLocation[0]+originalPoints[2][0]-dX,screenLocation[0]+originalPoints[3][0]-dX},
+//                                      new int[]{screenLocation[1]+originalPoints[0][1]-dY,screenLocation[1]+originalPoints[1][1]+dY,screenLocation[1]+originalPoints[2][1]+dY,screenLocation[1]+originalPoints[3][1]-dY},
+//                                      4);
+//        else //angle>0
+//            collisionSpan=new Polygon(new int[]{screenLocation[0]+originalPoints[0][0]+dX,screenLocation[0]+originalPoints[1][0]+dX,screenLocation[0]+originalPoints[2][0]-dX,screenLocation[0]+originalPoints[3][0]-dX},
+//                                      new int[]{screenLocation[1]+originalPoints[0][1]+dY,screenLocation[1]+originalPoints[1][1]-dY,screenLocation[1]+originalPoints[2][1]-dY,screenLocation[1]+originalPoints[3][1]+dY},
+//                                      4);
+////        p.setColor(Color.blue);
+////        p.fillPolygon(collisionSpan);
+//        
+//        angle/=2;
+//    }
     
     
     

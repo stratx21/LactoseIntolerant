@@ -25,6 +25,8 @@ public class MapManager extends MapInfo{
     
     private boolean firstMedianExists=false,secondMedianExists=false;
     
+    private int yDistort=0;
+    
     public boolean drawSecond=false;
     
 //    public boolean hitFromLeft=true;
@@ -191,10 +193,10 @@ public class MapManager extends MapInfo{
         
     }
     
-    public void draw(Graphics p){
-        p.drawImage(images.get(curIndex),0,yLoc.get(curIndex),null);
+    public void draw(Graphics p,int dY){
+        p.drawImage(images.get(curIndex),0,yLoc.get(curIndex)+(yDistort=dY),null);
         if(drawSecond)
-            p.drawImage(images.get(curIndex+1),0,yLoc.get(curIndex+1),null);
+            p.drawImage(images.get(curIndex+1),0,yLoc.get(curIndex+1)+dY,null);
     }
         
     public void resetTypeOne(){

@@ -55,7 +55,7 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(null));//21
             
             //Civilian cars::
-            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Temporary/tempCivilianCar.png"))));//22   - temp
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Civilian/RaceCar.png"))));//22   - temp
             
             
             

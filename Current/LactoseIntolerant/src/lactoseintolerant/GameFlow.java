@@ -33,7 +33,7 @@ public class GameFlow { //main game flow
                 gamePanel.paintC(p);
                 
                 try{Thread.sleep(frameRateMilliseconds);}
-                catch(Exception e){ErrorLogger.logError(e,"paintComponent-GameFlow-");}
+                catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
                 repaint();
             }
         });
