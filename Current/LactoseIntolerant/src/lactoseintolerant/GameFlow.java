@@ -20,7 +20,7 @@ public class GameFlow { //main game flow
     
     private int level=1;
     
-    private int frameRateMilliseconds=40;
+    private int frameRateMilliseconds=16;
     
     public GameFlow(JFrame f){ //initialize frame/panel/KeyListener relation aspects
         frame=f;

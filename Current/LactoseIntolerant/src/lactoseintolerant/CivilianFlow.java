@@ -22,6 +22,8 @@ public class CivilianFlow extends AIFlow{
     
     public boolean contactWithPlayer=false;
     
+    public boolean rightNextToSide=false;
+    
     public boolean shouldHeadLeft=false,shouldHeadRight=false;
     
     /**

@@ -63,6 +63,9 @@ public class AIFlow {
     
     public BufferedImage currentImage=null;
     
+    public boolean collidingWithPlayer=false,fromSidePlayer=false,
+                    collidingWithMap=false,fromLeftMap=false;
+    
     public int xInc=0;
     public int[] addForOriginRect=new int[]{7,-7};
     public int[] rectSize=new int[2];
