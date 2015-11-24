@@ -18,6 +18,8 @@ public class GameFlow { //main game flow
     private GaragePanel garagePanel=new GaragePanel();
     private JFrame frame;
     
+    private int level=1;
+    
     private int frameRateMilliseconds=40;
     
     public GameFlow(JFrame f){ //initialize frame/panel/KeyListener relation aspects
@@ -27,7 +29,7 @@ public class GameFlow { //main game flow
         frame.getContentPane().repaint();
         
         frame.setVisible(false);
-        frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()}){
+        frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},level){
             @Override
             public void paintComponent(Graphics p){
                 gamePanel.paintC(p);

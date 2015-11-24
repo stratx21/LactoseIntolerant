@@ -21,7 +21,7 @@ public class MapManager extends MapInfo{
     //note:: instead of having the two images, either make it so the player can't go backwards or make it an ArrayList of images.
     
     //0-straight, 1-median, 2-intersection
-    LevelManager currentLevel=new LevelManager();
+    LevelManager currentLevel=null;
     
     private boolean firstMedianExists=false,secondMedianExists=false;
     
@@ -35,7 +35,9 @@ public class MapManager extends MapInfo{
     
     private int tempPixels;
     
-    public MapManager(int type){//starts on 0
+    public MapManager(int type,int lv){//starts on 0
+        currentLevel=new LevelManager(lv);
+        
         imageStraight=GraphicsAssets.getImage(10+(TYPE=type));//    V   x3
         imageMedian=GraphicsAssets.getImage(11+(TYPE));
         imageIntersection=GraphicsAssets.getImage(12+(TYPE)); //constant images^

@@ -19,7 +19,7 @@ public class AIFlow {
     
     //keep the same between types::::              VVVVVVVVVV
     public int TYPE;
-    public double ACCELERATION,TOP_SPEED=30,BRAKE_SPEED;
+    public double ACCELERATION=5,TOP_SPEED=30,BRAKE_SPEED;
     
     public boolean turningLeft=false,turningRight=false,shouldCheckStoppedTurning=true;
         
@@ -45,6 +45,8 @@ public class AIFlow {
     public Polygon collisionSpan=new Polygon();
     public long locationPixelsTotal=400;
     
+    public int SLOWING_DOWN_SPEED=4;
+    
     //should change based on the car type::                         VVVVVVVV
     public double health;
     
@@ -52,7 +54,9 @@ public class AIFlow {
     
     public Rectangle fullImageSpan;  //UPDATE!!! VV
     public double a;
-    public int CAR_PIXELS_HORIZONTAL; 
+    public int CAR_PIXELS_HORIZONTAL,CAR_PIXELS_VERTICAL; 
+    public int ADD_FOR_HTNG_R_SIDE=45,ADD_FOR_HTNG_L_SIDE=23;
+    public int ADD_FOR_LEFT_MEDIAN=45,ADD_FOR_RIGHT_MEDIAN=25;
     public int[] imageSize;
     public int[][] originalPoints;//for polygon
                                                        //^^^^^

@@ -61,7 +61,7 @@ public class Player{
     
 //    public double a=Math.atan(Math.toRadians(45/16));
     
-    public int CAR_PIXELS_HORIZONTAL=33;
+    public int CAR_PIXELS_HORIZONTAL=33,CAR_PIXELS_VERTICAL=72;
     
     public BufferedImage currentImage=null;
     
@@ -146,10 +146,16 @@ public class Player{
                 speed=TOP_SPEED;
             }
         } else if(!brakes){//not accelerating and is not applying brakes
-            if(speed>0)
-                speed-=noEffectDecrease;
-            else if(speed<0){
-                speed+=noEffectDecrease;
+            if(speed>0){
+                if(speed>noEffectDecrease)
+                    speed-=noEffectDecrease;
+                else 
+                    speed=0;
+            } else if(speed<0){
+                if(speed<-1*noEffectDecrease)
+                    speed+=noEffectDecrease;
+                else 
+                    speed=0;
             }
             speedChange=0;
         }
@@ -161,8 +167,10 @@ public class Player{
             }
         }
         
+        
+        
         if(//canTurnLeft&&
-                turningLeft){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
+                turningLeft&&speed!=0){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
             if(angle>ANGLE_MIN) // over min (do a regular turn)
                 angle-=angleIncrement;
             else if(angle<ANGLE_MIN) //under min
@@ -170,18 +178,27 @@ public class Player{
             currentTurnRate=(int)speed/12;//update turn rate
             screenLocation[0]-=currentTurnRate*(Math.abs(angle)/5);
         }else if(//canTurnRight&&
-                turningRight){
+                turningRight&&speed!=0){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
             currentTurnRate=(int)speed/12;//update turn rate
             screenLocation[0]+=currentTurnRate*(Math.abs(angle)/5);
         }else if(shouldCheckStoppedTurning&&!colliding){ //and is not turning anyways
+            currentTurnRate=(int)speed/12;
             if(angle<0){
-                angle+=angleIncrement;
-                screenLocation[0]-=stoppedTurningTurnRate*(Math.abs(angle)/5);
+                if(angle<-1*angleIncrement)
+                    angle+=angleIncrement;
+                else
+                    angle=0;
+                
+                screenLocation[0]+=stoppedTurningTurnRate*(angle/5);
             }else if(angle>0){
-                angle-=angleIncrement;
-                screenLocation[0]+=stoppedTurningTurnRate*(Math.abs(angle)/5);
+                if(angle>angleIncrement)
+                    angle-=angleIncrement;
+                else
+                    angle=0;
+                
+                screenLocation[0]+=stoppedTurningTurnRate*(angle/5);
             }else shouldCheckStoppedTurning=false;
         }
         

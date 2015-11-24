@@ -18,7 +18,11 @@ public class CivilianFlow extends AIFlow{
     public Rectangle outerSpan=new Rectangle();
     public boolean goingForward=true;
     
+    public boolean colliding=false;
+    
     public boolean contactWithPlayer=false;
+    
+    public boolean shouldHeadLeft=false,shouldHeadRight=false;
     
     /**
      *
@@ -29,12 +33,15 @@ public class CivilianFlow extends AIFlow{
             case 0: //race car! :)
                 IMG_BLANK_SPACE=new int[]{50,30};
                 CAR_PIXELS_HORIZONTAL=57;
+                CAR_PIXELS_VERTICAL=74;
                 imageSize=new int[]{90,99};
                 rectSize=new int[]{32,33};
                 fullImageSpan=new Rectangle(30,60);
                 currentImage=GraphicsAssets.getImage(22);
                 originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
                 addForOriginRect=new int[]{10,1};
+                speed=TOP_SPEED=30;
+                SLOWING_DOWN_SPEED=4;
                 
                 break;
         }
@@ -62,15 +69,28 @@ public class CivilianFlow extends AIFlow{
         screenLocation[1]+=cy;
         
         if(angle!=0&&!contactWithPlayer){
-            angle-=angle/5;
+            screenLocation[0]+=angle/5;
             if(angle<0){
+                if(angle<-5)
+                    angle+=5;
+                else angle=0;
 //                angle+=angleIncrement;
                 screenLocation[0]-=currentTurnRate*(Math.abs(angle)/5);
             }else if(angle>0){
+                if(angle>5)
+                    angle-=5;
+                else angle=0;
+                
 //                angle-=angleIncrement;
                 screenLocation[0]+=currentTurnRate*(Math.abs(angle)/5);
             }
         }
+        
+        
+        if(speed>TOP_SPEED)
+            speed-=SLOWING_DOWN_SPEED;
+        else if(speed<TOP_SPEED)
+            speed+=ACCELERATION;
         
         updateSpanRectangles(dY);
     }
