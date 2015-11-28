@@ -23,7 +23,7 @@ import javax.swing.Timer;
  */
 public class GamePanel extends CPanel implements KeyListener,Runnable{
     public int screenDistortY=0; //for if the player stops, then the screen goes up to follow then bounces back, etc.
-    public int MAX_CIVILIANS=1;
+    public int MAX_CIVILIANS=5;
     
     public final int[] laneStarts=new int[]{201,248,294,340,628,674,720,766};
     

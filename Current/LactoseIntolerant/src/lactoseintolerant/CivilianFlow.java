@@ -20,6 +20,8 @@ public class CivilianFlow extends AIFlow{
     
     public boolean colliding=false;
     
+    public boolean hittingRightSideOfMap=false;
+    
     public boolean contactWithPlayer=false;
     
     public boolean rightNextToSide=false;
