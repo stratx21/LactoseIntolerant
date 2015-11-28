@@ -5,6 +5,7 @@
  */
 package lactoseintolerant;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -22,9 +23,11 @@ import javax.swing.Timer;
  */
 public class GamePanel extends CPanel implements KeyListener,Runnable{
     public int screenDistortY=0; //for if the player stops, then the screen goes up to follow then bounces back, etc.
-    public int MAX_CIVILIANS=5;
+    public int MAX_CIVILIANS=1;
     
     public final int[] laneStarts=new int[]{201,248,294,340,628,674,720,766};
+    
+    public ArrayList<Explosion> explosions=new ArrayList<Explosion>();
     
 //    public Timer calcTimer=new Timer(40, (ActionEvent e) -> {
 //        calcFlow();
@@ -104,8 +107,16 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     }
     
     private void civiliansDraw(Graphics p){
-        for(int i=0;i<civilians.size();i++)
-            civilians.get(i).draw(p,screenDistortY);
+        for(int i=0;i<civilians.size();i++){
+            CivilianFlow civ;
+            (civ=civilians.get(i)).draw(p,screenDistortY);
+            //black=player goes to right of civ
+            p.setColor(Color.black);
+            p.fillRect(civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0],0,2,700);
+            //player goes to left of civ
+            p.setColor(Color.blue);
+            p.fillRect(civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace,0,2,700);
+        }
     }
     
     private void mapDraw(Graphics p){
@@ -211,6 +222,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             civ.angle*=-1/2;
             civ.screenLocation[0]=map.rightSide.x-civ.IMG_BLANK_SPACE[0]-civ.CAR_PIXELS_HORIZONTAL+civ.ADD_FOR_HTNG_R_SIDE;
             civ.rightNextToSide=true;
+            civ.hittingRightSideOfMap=true;
             b=true;
         }
         
@@ -268,7 +280,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     }
     
     private final double REAR_ENDED_DAMAGE=1.5,verticalDetectRatio=9.0/16;
-    private final int extraSpaceBetweenCarsOnHitLeft=4,extraSpaceBetweenCarsOnHitRight=4,MAP_CIV_MARGIN=5;
+    private final int extraSpaceBetweenCarsOnHitLeft=4,extraSpaceBetweenCarsOnHitRight=4,MAP_CIV_MARGIN=5,sideExtraSpace=100,leftExtraSpace=22;
     private void checkPlayerCivilianCollisions(CivilianFlow civ){
         boolean uNu=player.upperSpan.intersects(civ.upperSpan),
                 lNl=player.lowerSpan.intersects(civ.lowerSpan);
@@ -301,7 +313,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     civ.hitPlayerFromSide=false;
                     swapVA(civ);
                 }else{             //is from the side
-                    civ.hitPlayerFromSide=true;
+                    civ.hitPlayerFromSide=true; 
 //                  System.out.println("hit, middle!!!!!!"+player.speed+", "+player.angle);
                 //was not hit from the bottom or the top; was the side::    VVVVVVVV
                     
@@ -327,58 +339,23 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 
                 
             
-            } else{//was previously colliding with the player and is still colliding
-//                if(uNu&&lNl){
-//                    if(playerIsToRightOfCiv(civ)){
-//                        player.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0];
-//                        player.angle=-7;
-//                    } else{
-//                        player.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0];
-//                        player.angle=-7;
-//                    }
-//                } else 
-                if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]+(verticalDetectRatio)*player.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){
-                    civ.hitPlayerFromSide=false;
-                    swapVA(civ);
-                } else if(playerIsToRightOfCiv(civ)){ //player is to the right::
-                    
-                    if(civ.collidingWithMap){
-                        if(civ.fromLeftMap){ //the collided map part is to the right of the civilian, and the player being to the left
-                            //else there is a glitch
-                            System.out.println("glitch in checkPlayerCivilianCollisions - code 001");
-                            player.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0];
-                            player.angle=-7;
-                        } else{
-                            player.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0];
-                            player.angle=-7;
-                            System.out.println("reached!!1");
-                        }
-                    } else if(civ.hitPlayerFromSide){
-                        System.out.println("aaaaaaaaaaaaaaaaaa");
-                        if(player.screenLocation[0]+player.IMG_BLANK_SPACE[0]<civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+civ.CAR_PIXELS_HORIZONTAL)
-                            civ.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]-civ.imageSize[0]-extraSpaceBetweenCarsOnHitRight;
-                    }
-                } else{               //the player is to the left of the civ::
-                    if(civ.collidingWithMap){
-                        if(civ.fromLeftMap){ //the collided map part is to the right of the civilian, and the player being to the left
-                            player.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0];
-                            player.angle=-7;
-                            System.out.println("reached!!2");
-                        } else{
-                            player.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0];
-                            player.angle=-7;
-                            //else there is a glitch
-                            System.out.println("glitch in checkPlayerCivilianCollisions - code 002");
-                        }
-                    } else if(civ.hitPlayerFromSide){
-                        System.out.println("aaaaaaaaaa11111111111111111111111");
-                        if(player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+player.CAR_PIXELS_HORIZONTAL>civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0])
-                            civ.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-civ.IMG_BLANK_SPACE[0];
-                    }
+            } else{ //was previously colliding::
+                if((playerIsToRightOfCiv(civ)||(civ.rightNextToSide&&!civ.fromLeftMap))&&!civ.hittingRightSideOfMap){
+                    player.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0];
+                    if(civ.rightNextToSide)
+                        player.screenLocation[0]+=15;
+                } else{
+                    player.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace;
+                    if(civ.rightNextToSide)
+                        player.screenLocation[0]-=5;
                 }
             }
             
-        } else civ.collidingWithPlayer=false;
+        } else {
+            civ.collidingWithPlayer=false;
+            player.canTurnRight=true;
+            player.canTurnLeft=true;
+        }
         
         
         
@@ -530,7 +507,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             civilians.add(toAdd);
     }
 
-    public int calcDelay=200;
+    public int calcDelay=40;
     @Override
     public void run() {
         calcFlow();
