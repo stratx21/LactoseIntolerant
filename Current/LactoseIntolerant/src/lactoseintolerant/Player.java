@@ -32,6 +32,8 @@ public class Player{
     
     public boolean accelerating=false,brakes=false;
     
+    public boolean hittingSideMap=false;
+    
     public boolean attacking=false,canAttack=true,isDoneWithAttack=false;
     
     public int canAttackPing=0,attackReachPing=50;

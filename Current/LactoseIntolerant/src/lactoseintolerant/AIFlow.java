@@ -63,7 +63,7 @@ public class AIFlow {
     
     public BufferedImage currentImage=null;
     
-    public boolean collidingWithPlayer=false,fromSidePlayer=false,
+    public boolean collidingWithPlayer=false,hitPlayerFromSide=false,
                     collidingWithMap=false,fromLeftMap=false;
     
     public int xInc=0;
