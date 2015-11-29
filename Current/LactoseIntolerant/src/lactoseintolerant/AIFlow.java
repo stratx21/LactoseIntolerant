@@ -48,7 +48,7 @@ public class AIFlow {
     public int SLOWING_DOWN_SPEED=4;
     
     //should change based on the car type::                         VVVVVVVV
-    public double health;
+    public double health=100;
     
     public Rectangle upperSpan=new Rectangle(),lowerSpan=new Rectangle();
     

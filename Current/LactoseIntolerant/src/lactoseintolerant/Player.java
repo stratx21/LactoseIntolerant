@@ -25,7 +25,7 @@ public class Player{
     private PlayerCars cars=new PlayerCars();
     
     public int CAR_TYPE;
-    public double ACCELERATION,TOP_SPEED,BRAKE_SPEED,ORIGINAL_TOP_SPEED;
+    public double ACCELERATION,TOP_SPEED,BRAKE_SPEED,ORIGINAL_TOP_SPEED,ORIGINAL_HEALTH;
     public boolean turningLeft=false,turningRight=false;
     
     public boolean collidingWithMap=false;// unused?????????????????????????????????????????????????????
@@ -99,6 +99,7 @@ public class Player{
                 CAR_PIXELS_HORIZONTAL=33;
                 rectSize=new int[]{31,36};
                 addForOriginRect=new int[]{7,-7};
+                ORIGINAL_HEALTH=100.0;
                 break;
         }
         
@@ -123,8 +124,8 @@ public class Player{
             p.drawImage(ImageUtils.rotateImage(currentImage,angle*(speed/TOP_SPEED)),screenLocation[0],screenLocation[1]+dY,imageSize[0],imageSize[1],null);
         
         
-        p.setColor(Color.pink);
-        p.fillRect(screenLocation[0],0,2,700);
+//        p.setColor(Color.pink);
+//        p.fillRect(screenLocation[0],0,2,700);
         
 //        p.setColor(Color.pink);
 //        p.fillRect(upperSpan.x,upperSpan.y,upperSpan.width,upperSpan.height);
