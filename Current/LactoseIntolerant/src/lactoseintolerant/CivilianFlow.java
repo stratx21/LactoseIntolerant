@@ -32,7 +32,7 @@ public class CivilianFlow extends AIFlow{
      *
      * @param t the type of Civilian car
      */
-    public CivilianFlow(int t){
+    public CivilianFlow(int t){//CAR_PIXELS_HORIZONTAL is actually wrong but got it working while it was wrong so compensated
         switch(TYPE=t){
             case 0: //race car! :)
                 IMG_BLANK_SPACE=new int[]{50,30};
@@ -44,9 +44,22 @@ public class CivilianFlow extends AIFlow{
                 currentImage=GraphicsAssets.getImage(22);
                 originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
                 addForOriginRect=new int[]{10,1};
-                speed=TOP_SPEED=30;
+                speed=TOP_SPEED=35;
                 SLOWING_DOWN_SPEED=4;
                 
+                break;
+            case 1:
+                IMG_BLANK_SPACE=new int[]{50,30};
+                CAR_PIXELS_HORIZONTAL=57;
+                CAR_PIXELS_VERTICAL=74;
+                imageSize=new int[]{90,99};
+                rectSize=new int[]{32,33};
+                fullImageSpan=new Rectangle(30,60);
+                currentImage=GraphicsAssets.getImage(23);
+                originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
+                addForOriginRect=new int[]{10,1};
+                speed=TOP_SPEED=27.5;
+                SLOWING_DOWN_SPEED=2;
                 break;
         }
         

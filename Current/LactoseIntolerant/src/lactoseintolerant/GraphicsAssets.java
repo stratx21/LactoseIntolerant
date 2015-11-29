@@ -56,7 +56,7 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             
             //Civilian cars::
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Civilian/RaceCar.png"))));//22
-            images.add(null);//23
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Civilian/Van.png"))));//23
             images.add(null);//24
             
             //explosion::

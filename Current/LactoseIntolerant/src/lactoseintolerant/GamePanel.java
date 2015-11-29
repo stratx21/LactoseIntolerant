@@ -577,11 +577,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     }
     
     private void spawnCivilian(){
-          CivilianFlow toAdd;
-          toAdd=new CivilianFlow(0);//temp till there are more types of civilian vehicles
-//        switch((int)(Math.random()*5)){ //for types of civilian to spawn
-            
-//        }
+          CivilianFlow toAdd=new CivilianFlow((int)(Math.random()*2));
         
             toAdd.screenLocation[0]=laneStarts[(int)(Math.random()*8)]-toAdd.IMG_BLANK_SPACE[0]+28;
             
