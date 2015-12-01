@@ -82,6 +82,16 @@ public class CivilianFlow extends AIFlow{
 //        p.fillRect(lowerSpan.x,lowerSpan.y,lowerSpan.width,lowerSpan.height);
     }
     
+    /**
+     * 
+     * @param cy how much the vehicle moves up based on original movement, 
+     * not to be confused with dY which is the displacement based on the player 
+     * speeding up/slowing down and is only a component of graphical 
+     * representation
+     * 
+     * @param dY displacement based on the player speeding up/slowing down and 
+     * is only a component of graphical representation
+     */
     public void calculate(int cy,int dY){
         screenLocation[1]+=cy;
         

@@ -19,7 +19,8 @@ public class Explosion {
     public int radius=13,angle=0;
     public BufferedImage image=GraphicsAssets.getImage(25);
     public boolean expired=false;
-    public Rectangle damageSpan=new Rectangle();
+    
+    public Rectangle damageSpan=new Rectangle();//used??
     
     public Explosion(int x,int y){
         center.x=x;

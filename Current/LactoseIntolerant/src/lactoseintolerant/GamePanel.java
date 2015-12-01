@@ -40,6 +40,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     //hold off till needed for heldKeys::
     //public ArrayList<Character> heldKeys=new ArrayList<Character>();
     
+    /**
+     *
+     */
     public Player player=new Player();
     
     public ArrayList<CivilianFlow> civilians=new ArrayList<CivilianFlow>();
@@ -66,7 +69,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         map=new MapManager(0,1);
         //calcTimer.start();
         (new Thread(this)).start();
-        civPopCheck.start();
+//        civPopCheck.start();
         FRAME_SIZE=size;
     }
     

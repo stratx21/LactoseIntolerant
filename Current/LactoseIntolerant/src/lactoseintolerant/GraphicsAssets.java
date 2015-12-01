@@ -62,6 +62,8 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             //explosion::
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Effects/RadialExplosion1.png"))));//25
             
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Enemy/IceCreamTruck.png"))));//26
+            
             
             
             
