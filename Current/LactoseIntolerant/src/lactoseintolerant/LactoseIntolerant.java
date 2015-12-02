@@ -16,7 +16,7 @@ public class LactoseIntolerant {
      */
     public static void main(String[] args) {
         GraphicsAssets.importImages();
-        StartGameFlow g=new StartGameFlow();
+        new StartGameFlow();
     }
     
     //to go to menu and everything, toggle commented parts in StartGameFlow.

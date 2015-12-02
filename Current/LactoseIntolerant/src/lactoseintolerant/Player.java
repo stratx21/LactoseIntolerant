@@ -174,7 +174,7 @@ public class Player{
         
         
         
-        if(canTurnLeft&&
+        if(//canTurnLeft&&
                 turningLeft&&speed!=0){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
             if(angle>ANGLE_MIN) // over min (do a regular turn)
                 angle-=angleIncrement;
@@ -182,7 +182,7 @@ public class Player{
                 angle=ANGLE_MIN;
             currentTurnRate=(int)speed/12;//update turn rate
             screenLocation[0]-=currentTurnRate*(Math.abs(angle)/5);
-        }else if(canTurnRight&&
+        }else if(//canTurnRight&&
                 turningRight&&speed!=0){
             if(angle<ANGLE_MAX)
                 angle+=angleIncrement;
