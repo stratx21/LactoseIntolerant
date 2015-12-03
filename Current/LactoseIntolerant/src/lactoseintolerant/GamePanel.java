@@ -89,6 +89,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         for(int i=0;i<enemies.size();i++){
             EnemyFlow e=enemies.get(i);
             if(e.health>0){
+                e.toPlayerDifference[0]=player.screenLocation[0]-e.screenLocation[0];
+                e.toPlayerDifference[1]=player.screenLocation[1]-e.screenLocation[1];
+                
+                System.out.println(e.toPlayerDifference[0]+", "+e.toPlayerDifference[1]+" - "+e.speed);
+                
                 e.calculate(-1*(getHowFarGoesUpForAIs((int)e.speed)-playerScreenChange),screenDistortY);
                 checkEnemyCollisions(e,i);
             } else{
@@ -482,6 +487,79 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     private void checkEnemyCollisions(EnemyFlow enemy,int index){
         checkPlayerEnemyCollisions(enemy);
         checkMapEnemyCollisions(enemy);
+        checkEnemyCivCollisions(enemy);
+    }
+    
+    private void checkEnemyCivCollisions(EnemyFlow enemy){
+        for(int i=0;i<civilians.size();i++){
+            CivilianFlow civ=civilians.get(i);
+            
+            if(enemy.upperSpan.intersects(civ.lowerSpan)
+                ||enemy.upperSpan.intersects(civ.upperSpan)
+                ||enemy.lowerSpan.intersects(civ.upperSpan)
+                ||enemy.lowerSpan.intersects(civ.lowerSpan)){//civilian is hit
+            civ.health-=3;
+            enemy.health-=0.07;
+            
+            if(!civ.collidingWithPlayer){
+                
+                civ.collidingWithPlayer=true;
+                
+                if(enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+civ.CAR_PIXELS_VERTICAL*(verticalDetectRatio)){
+                    //enemy top is below 3/4 down of the civilian, and therefore the civilian should be pushed up and the angle changed
+                    civ.hitPlayerFromSide=false;
+                    if(!civ.collidingWithMap)
+                        civ.angle=enemy.angle/2
+                                -3*((enemy.screenLocation[0]+enemy.imageSize[0]/2)-(civ.screenLocation[0]+civ.imageSize[0]/2));
+                    else
+                        civ.angle=0;
+                    
+                    civ.speed+=2.5*(enemy.speed-civ.speed)+3;
+                    enemy.speed*=3/5;
+                    
+                } else if(enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]+(verticalDetectRatio)*enemy.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){
+                    civ.hitPlayerFromSide=false;
+                    swapVA(enemy,civ);
+                }else{             //is from the side
+                    civ.hitPlayerFromSide=true; 
+                //was not hit from the bottom or the top; was the side::    VVVVVVVV
+                    
+                    if(!civ.collidingWithMap&&!civ.rightNextToSide){
+                        civ.angle=enemy.angle*2;
+                        enemy.angle/=-2;
+                                
+                        if(enemyIsToRightOfCiv(enemy,civ)){ //enemy is to the right of the hit civ
+                            if(enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]<civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+civ.CAR_PIXELS_HORIZONTAL)
+                                civ.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]-civ.imageSize[0]-extraSpaceBetweenCarsOnHitRight; 
+                        } else{  //enemy is to the left of the hit civ
+                            if(enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+enemy.CAR_PIXELS_HORIZONTAL>civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0])
+                                civ.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+enemy.CAR_PIXELS_HORIZONTAL+extraSpaceBetweenCarsOnHitLeft;
+                        }
+                    
+                    } else{ //the civ is hitting the side of the map
+                        enemy.angle*=-2;
+                    }
+            }                                                       // ^^^^^^^^
+                
+            
+            } else{ //was previously colliding::
+                if((enemyIsToRightOfCiv(enemy,civ)||(civ.rightNextToSide&&!civ.fromLeftMap))&&!civ.hittingRightSideOfMap){
+                    enemy.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0];
+                    if(civ.rightNextToSide)
+                        enemy.screenLocation[0]+=15;
+                } else{
+                    enemy.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]-leftExtraSpace;
+                    if(civ.rightNextToSide)
+                        enemy.screenLocation[0]-=5;
+                }
+            }
+            
+        } else {
+            civ.collidingWithPlayer=false;
+        }
+        
+            
+        }
     }
     
     private void checkPlayerEnemyCollisions(EnemyFlow enemy){
@@ -535,11 +613,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             
             } else{ //was previously colliding::
                 if((playerIsToRightOfEnemy(enemy)||(enemy.rightNextToSide&&!enemy.fromLeftMap))&&!enemy.hittingRightSideOfMap){
-                    player.screenLocation[0]=enemy.screenLocation[0]+enemy.imageSize[0]-enemy.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0];
+                    player.screenLocation[0]=enemy.screenLocation[0]+enemy.imageSize[0]-enemy.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0]-enemy.hitPlayerRightAndMapAdd;
                     if(enemy.rightNextToSide)
                         player.screenLocation[0]+=15;
                 } else{
-                    player.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace;
+                    player.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace+enemy.hitPlayerLeftAndMapAdd;
                     if(enemy.rightNextToSide)
                         player.screenLocation[0]-=5;
                 }
@@ -558,14 +636,14 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         //side collisions::
         if(enemy.lowerSpan.intersects(map.leftSide)||enemy.upperSpan.intersects(map.leftSide)){//left side/enemy collision::
             enemy.angle*=-1/2;
-            enemy.screenLocation[0]=map.leftSide.x+map.leftSide.width-enemy.IMG_BLANK_SPACE[0]+enemy.ADD_FOR_HTNG_L_SIDE;//132-10;
+            enemy.screenLocation[0]=map.leftSide.x+map.leftSide.width-enemy.IMG_BLANK_SPACE[0];
             enemy.fromLeftMap=false;
             enemy.rightNextToSide=true;
             b=true;
         } else if(enemy.lowerSpan.intersects(map.rightSide)||enemy.upperSpan.intersects(map.rightSide)){//right side/enemy collsion::
             enemy.fromLeftMap=true;
             enemy.angle*=-1/2;
-            enemy.screenLocation[0]=map.rightSide.x-enemy.IMG_BLANK_SPACE[0]-enemy.CAR_PIXELS_HORIZONTAL+enemy.ADD_FOR_HTNG_R_SIDE;
+            enemy.screenLocation[0]=map.rightSide.x-enemy.IMG_BLANK_SPACE[0]-enemy.CAR_PIXELS_HORIZONTAL/*+enemy.ADD_FOR_HTNG_R_SIDE*/;
             enemy.rightNextToSide=true;
             enemy.hittingRightSideOfMap=true;
             b=true;
@@ -596,7 +674,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     ||(map.rLeft2!=null&&(enemy.lowerSpan.intersects(r=map.rLeft2)||enemy.upperSpan.intersects(r)))){ 
                     //car hit left side of median
                     enemy.angle=-1*MEDIAN_ANGLE;
-                    enemy.screenLocation[0]=420-enemy.IMG_BLANK_SPACE[0]-enemy.CAR_PIXELS_HORIZONTAL+enemy.ADD_FOR_LEFT_MEDIAN;
+                    enemy.screenLocation[0]=420-enemy.IMG_BLANK_SPACE[0]-enemy.CAR_PIXELS_HORIZONTAL/*+enemy.ADD_FOR_LEFT_MEDIAN*/;
                     b=true;
                     enemy.fromLeftMap=false;
                     
@@ -604,7 +682,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                         ||(map.rLeft2!=null&&(enemy.lowerSpan.intersects(r=map.rRight2)||enemy.upperSpan.intersects(r)))){
                     //car hit right side of median
                     enemy.angle=MEDIAN_ANGLE;
-                    enemy.screenLocation[0]=590-enemy.IMG_BLANK_SPACE[0]+enemy.ADD_FOR_RIGHT_MEDIAN;
+                    enemy.screenLocation[0]=590-enemy.IMG_BLANK_SPACE[0]/*+enemy.ADD_FOR_RIGHT_MEDIAN*/;
                     b=true;
                     enemy.fromLeftMap=true;
                     
@@ -634,6 +712,15 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             player.speed=t2;
     }
     
+    private void swapVA(EnemyFlow a,CivilianFlow c){
+        double t1=a.angle,t2=a.speed;
+            a.angle=c.angle;
+            a.speed=c.speed;
+            
+            c.angle=t1;
+            c.speed=t2;
+    }
+    
     
     
     /**
@@ -648,6 +735,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     private boolean playerIsToRightOfEnemy(EnemyFlow e){
         return player.screenLocation[0]+player.imageSize[0]/2>=e.screenLocation[0]+e.imageSize[0]/2;
+    }
+    
+    private boolean enemyIsToRightOfCiv(EnemyFlow enemy,CivilianFlow civ){
+        return enemy.screenLocation[0]+enemy.imageSize[0]/2>=civ.screenLocation[0]+civ.imageSize[0]/2;
     }
     
     
@@ -739,14 +830,14 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      */
     public Timer AIPopCheck=new Timer(450, (ActionEvent e) -> {
         if(shouldExpireCheckPing==3){
-//            civExpireCheck();
+            civExpireCheck();
             enemyExpireCheck();
-//            shouldExpireCheckPing=0;
+            shouldExpireCheckPing=0;
         }
-//        
-//        if(civilians.size()<MAX_CIVILIANS){
-//            spawnCivilian();
-//        }
+        
+        if(civilians.size()<MAX_CIVILIANS){
+            spawnCivilian();
+        }
         
         
         if(enemies.size()<MAX_ENEMIES){
@@ -758,7 +849,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     });
     
     private void enemyExpireCheck(){
-        
+        int a;
+        for(int i=0;i<enemies.size();i++)
+            if((a=(enemies.get(i).screenLocation[1]))>1200||a<-650){//it should expire
+                enemies.remove(i);
+                i--;
+            }    
     }
     
     private void civExpireCheck(){
@@ -788,9 +884,15 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         EnemyFlow toAdd=new EnemyFlow(0);
         toAdd.screenLocation[0]=laneStarts[(int)(Math.random()*8)]-toAdd.IMG_BLANK_SPACE[0]+28;
         
+        if((int)(Math.random()*2)==0)
+            toAdd.screenLocation[1]=-200;
+        else
+            toAdd.screenLocation[1]=850;
+        
         enemies.add(toAdd);
         
         System.out.println("enemy spawned");
+        
     }
 
     public int calcDelay=40;

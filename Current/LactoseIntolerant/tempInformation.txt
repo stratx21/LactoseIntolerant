@@ -1,0 +1,6 @@
+for the glitch where it gets stuck in the other car or glitches to the other side or whatever, try using
+player.turningRight or player.turningLeft or whatever it's called to tell since the player turns in too 
+far to one side then the collisions thinks it's coming from the other side...
+
+
+for harder AIs, increase noEffectDecrease and ACCELERATION   !! :)
