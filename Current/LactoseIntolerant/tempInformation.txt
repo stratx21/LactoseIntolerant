@@ -4,3 +4,6 @@ far to one side then the collisions thinks it's coming from the other side...
 
 
 for harder AIs, increase noEffectDecrease and ACCELERATION   !! :)
+
+
+sometimes the civ will be deleted right before it's calculated or whatever - fix error - will have java.util.ConcurrentModificationException

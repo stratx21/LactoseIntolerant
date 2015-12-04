@@ -20,7 +20,7 @@ public class GameFlow { //main game flow
     
     private int level=1;
     
-    private int frameRateMilliseconds=16;
+    private int frameRateMilliseconds=20;
     
     public GameFlow(JFrame f){ //initialize frame/panel/KeyListener relation aspects
         frame=f;
@@ -33,6 +33,7 @@ public class GameFlow { //main game flow
             @Override
             public void paintComponent(Graphics p){
                 gamePanel.paintC(p);
+                gamePanel.calcFlow();
                 
                 try{Thread.sleep(frameRateMilliseconds);}
                 catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}

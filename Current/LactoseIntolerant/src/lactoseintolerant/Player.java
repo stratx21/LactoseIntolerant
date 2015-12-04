@@ -92,7 +92,7 @@ public class Player{
                 health=100;//cars.getTopSpeed();
                 ACCELERATION=7;//cars.getAcceleration();
                 ORIGINAL_TOP_SPEED=TOP_SPEED=55;//cars.getTopSpeed();
-                speed=40;
+                speed=55;
                 imageSize=new int[]{76,93};
                 IMG_BLANK_SPACE=new int[]{22,11};
                 originalPoints=new int[][]{{22,10},{53,10},{53,82},{22,82}};
@@ -177,33 +177,33 @@ public class Player{
         if(//canTurnLeft&&
                 turningLeft&&speed!=0){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).
             if(angle>ANGLE_MIN) // over min (do a regular turn)
-                angle-=angleIncrement;
+                angle-=angleIncrement/2;
             else if(angle<ANGLE_MIN) //under min
                 angle=ANGLE_MIN;
             currentTurnRate=(int)speed/12;//update turn rate
-            screenLocation[0]-=currentTurnRate*(Math.abs(angle)/5);
+            screenLocation[0]-=currentTurnRate*(Math.abs(angle)/5)/2;
         }else if(//canTurnRight&&
                 turningRight&&speed!=0){
             if(angle<ANGLE_MAX)
-                angle+=angleIncrement;
+                angle+=angleIncrement/2;
             currentTurnRate=(int)speed/12;//update turn rate
-            screenLocation[0]+=currentTurnRate*(Math.abs(angle)/5);
+            screenLocation[0]+=currentTurnRate*(Math.abs(angle)/5)/2;
         }else if(shouldCheckStoppedTurning&&!colliding){ //and is not turning anyways
             currentTurnRate=(int)speed/12;
             if(angle<0){
-                if(angle<-1*angleIncrement)
-                    angle+=angleIncrement;
+                if(angle<-1*angleIncrement/2)
+                    angle+=angleIncrement/2;
                 else
                     angle=0;
                 
-                screenLocation[0]+=stoppedTurningTurnRate*(angle/5);
+                screenLocation[0]+=stoppedTurningTurnRate*(angle/5)/2;
             }else if(angle>0){
-                if(angle>angleIncrement)
-                    angle-=angleIncrement;
+                if(angle>angleIncrement/2)
+                    angle-=angleIncrement/2;
                 else
                     angle=0;
                 
-                screenLocation[0]+=stoppedTurningTurnRate*(angle/5);
+                screenLocation[0]+=stoppedTurningTurnRate*(angle/5)/2;
             }else shouldCheckStoppedTurning=false;
         }
         

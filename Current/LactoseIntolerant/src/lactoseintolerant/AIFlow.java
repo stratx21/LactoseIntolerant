@@ -55,7 +55,7 @@ public class AIFlow {
     public Rectangle fullImageSpan;  //UPDATE!!! VV
     public double a;
     public int CAR_PIXELS_HORIZONTAL,CAR_PIXELS_VERTICAL; 
-    public int ADD_FOR_HTNG_R_SIDE=45,ADD_FOR_HTNG_L_SIDE=23;
+    public int ADD_FOR_HTNG_R_SIDE=45,ADD_FOR_HTNG_L_SIDE=25;
     public int ADD_FOR_LEFT_MEDIAN=45,ADD_FOR_RIGHT_MEDIAN=25;
     public int[] imageSize;
     public int[][] originalPoints;//for polygon

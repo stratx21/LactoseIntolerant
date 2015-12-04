@@ -28,6 +28,10 @@ public class CivilianFlow extends AIFlow{
     
     public boolean shouldHeadLeft=false,shouldHeadRight=false;
     
+    public int[] IMG_BLANK_SPACE_ACTUAL=new int[2],imageSizeActual=new int[2];
+    
+    public int CAR_PIXELS_HORIZONTAL_ACTUAL,CAR_PIXELS_VERTICAL_ACTUAL;
+    
     /**
      *
      * @param t the type of Civilian car
@@ -36,29 +40,37 @@ public class CivilianFlow extends AIFlow{
         switch(TYPE=t){
             case 0: //race car! :)
                 IMG_BLANK_SPACE=new int[]{50,30};
+                IMG_BLANK_SPACE_ACTUAL=new int[]{30,18};
                 CAR_PIXELS_HORIZONTAL=57;
+                CAR_PIXELS_HORIZONTAL_ACTUAL=35;
                 CAR_PIXELS_VERTICAL=74;
+                CAR_PIXELS_VERTICAL_ACTUAL=74;
                 imageSize=new int[]{90,99};
+                imageSizeActual=new int[]{99,110};
                 rectSize=new int[]{32,33};
                 fullImageSpan=new Rectangle(30,60);
                 currentImage=GraphicsAssets.getImage(22);
                 originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
                 addForOriginRect=new int[]{10,1};
-                speed=TOP_SPEED=35;
+                speed=TOP_SPEED=30;
                 SLOWING_DOWN_SPEED=4;
                 
                 break;
             case 1:
                 IMG_BLANK_SPACE=new int[]{50,30};
+                IMG_BLANK_SPACE_ACTUAL=new int[]{30,18};
                 CAR_PIXELS_HORIZONTAL=57;
+                CAR_PIXELS_HORIZONTAL_ACTUAL=35;
                 CAR_PIXELS_VERTICAL=74;
+                CAR_PIXELS_VERTICAL_ACTUAL=74;
                 imageSize=new int[]{90,99};
+                imageSizeActual=new int[]{99,110};
                 rectSize=new int[]{32,33};
                 fullImageSpan=new Rectangle(30,60);
                 currentImage=GraphicsAssets.getImage(23);
                 originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
                 addForOriginRect=new int[]{10,1};
-                speed=TOP_SPEED=27.5;
+                speed=TOP_SPEED=30;
                 SLOWING_DOWN_SPEED=2;
                 break;
         }

@@ -25,6 +25,7 @@ import javax.swing.Timer;
  */
 public class GamePanel extends CPanel implements KeyListener,Runnable{
     public int screenDistortY=0; //for if the player stops, then the screen goes up to follow then bounces back, etc.
+    //^only used for drawing!!!!!!!!!!!!!!!!!!!!!!!
     
     public final int[] laneStarts=new int[]{201,248,294,340,628,674,720,766};
     
@@ -36,7 +37,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     private int remainder=0,playerScreenChange=0;
     
-    public int MAX_ENEMIES=1;
+    public int MAX_ENEMIES=0;
     
     public int[] FRAME_SIZE; //not used yet, may want to remove later!                                           <-----
     //hold off till needed for heldKeys::
@@ -58,7 +59,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     public GamePanel(int[] size,int lv){
         map=new MapManager(0,1);
         //calcTimer.start();
-        (new Thread(this)).start();
+//        (new Thread(this)).start();
         AIPopCheck.start();
         FRAME_SIZE=size;
     }
@@ -76,10 +77,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         drawHealthBar(p);
     }
     
-    private void calcFlow(){
+    public void calcFlow(){
         playerCalc();
         
-        map.moveAllDown(playerScreenChange=player.getMapDown());
+        map.moveAllDown(playerScreenChange=player.getMapDown()/2);
         map.calculate();
         CivilianCalc();
         enemyCalc();
@@ -94,10 +95,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 
                 System.out.println(e.toPlayerDifference[0]+", "+e.toPlayerDifference[1]+" - "+e.speed);
                 
-                e.calculate(-1*(getHowFarGoesUpForAIs((int)e.speed)-playerScreenChange),screenDistortY);
+                e.calculate(-1*(getHowFarGoesUpForAIs((int)e.speed)/2-playerScreenChange),screenDistortY);
                 checkEnemyCollisions(e,i);
             } else{
-                explosions.add(new Explosion(e.screenLocation[0]+e.imageSize[0]/2,e.screenLocation[1]+e.imageSize[1]/2));
+                explosions.add(new Explosion(e.screenLocation[0]+e.imageSize[0],e.screenLocation[1]+e.imageSize[1]/2));
                 enemies.remove(i);
                 i--;
             }
@@ -108,7 +109,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         for(int i=0;i<civilians.size();i++){
             CivilianFlow c=civilians.get(i);
             if(c.health>0){
-                c.calculate(-1*(getHowFarGoesUpForAIs((int)c.speed)-playerScreenChange),screenDistortY);
+                c.calculate(-1*(getHowFarGoesUpForAIs((int)c.speed)/2-playerScreenChange),screenDistortY);
                 checkCivilianCollisions(c,i);
             }else{
                 explosions.add(new Explosion(c.screenLocation[0]+c.imageSize[0]/2,c.screenLocation[1]+c.imageSize[1]/2));
@@ -242,7 +243,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         return player.screenLocation[0]+player.imageSize[0]/2>=civ.screenLocation[0]+civ.imageSize[0]/2;
     }
     
-    private void checkPlayerCivilianCollisions(CivilianFlow civ){
+    private void aOLDcheckPlayerCivilianCollisions(CivilianFlow civ){
         if(player.upperSpan.intersects(civ.lowerSpan)
                 ||player.upperSpan.intersects(civ.upperSpan)
                 ||player.lowerSpan.intersects(civ.upperSpan)
@@ -307,6 +308,72 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             civ.collidingWithPlayer=false;
         }
         
+    }
+    
+    private void checkPlayerCivilianCollisions(CivilianFlow civ){
+        if(player.upperSpan.intersects(civ.upperSpan)
+            ||player.upperSpan.intersects(civ.lowerSpan)
+            ||player.lowerSpan.intersects(civ.upperSpan)
+            ||player.lowerSpan.intersects(civ.lowerSpan)){
+            
+            if(!civ.collidingWithPlayer){//just started colliding
+//                civ.collidingWithPlayer=true;
+                civ.health-=3;
+                player.health-=0.07;
+                if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+civ.CAR_PIXELS_VERTICAL*(verticalDetectRatio)){
+                    //player top is below 3/4 down of the civilian, and therefore the civilian should be pushed up and the angle changed
+                    civ.hitPlayerFromSide=false;
+                    if(!civ.collidingWithMap)
+                        civ.angle=player.angle/2
+                                -3*((player.screenLocation[0]+player.imageSize[0]/2)-(civ.screenLocation[0]+civ.imageSize[0]/2));
+                    else
+                        civ.angle=0;
+                    
+                    civ.speed+=2.5*(player.speed-civ.speed)+3;
+                    player.speed*=3/5;
+                    
+                } else if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]+(verticalDetectRatio)*player.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){
+                    civ.hitPlayerFromSide=false;
+                    swapVA(civ);
+                }else{
+                if(playerIsToRightOfCiv(civ)){
+                    if(player.turningRight){//shouldnt be turning right, therefore the collision must be a glitch or was caused by a civilian
+                        civ.angle=player.angle*1.5;
+                        civ.speed=player.speed;
+                        player.angle=5;
+//                        player.angle*=-0.5;
+                        civ.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-civ.imageSizeActual[0]+(int)(player.angle/3);
+                    } else{  //normal
+                        civ.angle=player.angle*1.5;
+                        civ.speed=player.speed;
+                        player.angle=-5;
+//                        player.angle*=-0.5;
+                        civ.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-civ.imageSizeActual[0]+(int)(player.angle/3);
+                    }
+                } else{ //player is to the left of the civilian
+                    if(player.turningLeft){//shouldnt be turning left
+                        civ.angle=player.angle*1.5;
+                        civ.speed=player.speed;
+                        player.angle=-5;
+//                        player.angle*=-0.5;
+                        civ.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]+5+(int)(player.angle/3);
+                    } else{  //normal
+                        civ.angle=player.angle*1.5;
+                        civ.speed=player.speed;
+                        player.angle=5;
+//                        player.angle*=-0.5;
+                        civ.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]+5+(int)(player.angle/3);
+                    }
+                }
+                }
+                
+                
+            } else{ //was already colliding
+                
+            }
+            
+            
+        } else civ.collidingWithPlayer=false;
     }
     
     private void civiliansDraw(Graphics p){
@@ -895,7 +962,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         
     }
 
-    public int calcDelay=40;
+    public final int calcDelay=20;
     @Override
     public void run() {
         calcFlow();
