@@ -988,7 +988,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
     }
     
-    public int MAX_CIVILIANS=1;
+    public int MAX_CIVILIANS=15;
     private int shouldExpireCheckPing=0;
 
     /**

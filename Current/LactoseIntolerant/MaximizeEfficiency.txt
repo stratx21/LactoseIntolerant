@@ -1,0 +1,6 @@
+make more efficient::
+  - MapManager.draw(Graphics) - 
+		"if(currentLevel.levelInfo[curIndex]==1)"
+		and
+		"if(currentLevel.levelInfo[curIndex+1]==1)"
+		****** maybe use a boolean if the current index was the same on the last run thru??
