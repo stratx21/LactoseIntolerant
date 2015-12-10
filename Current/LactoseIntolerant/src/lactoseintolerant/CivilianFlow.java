@@ -32,6 +32,8 @@ public class CivilianFlow extends AIFlow{
     
     public int CAR_PIXELS_HORIZONTAL_ACTUAL,CAR_PIXELS_VERTICAL_ACTUAL;
     
+    public boolean hitAnotherCivilian=false,hitCivOnRight=false;
+    
     /**
      *
      * @param t the type of Civilian car
@@ -52,7 +54,7 @@ public class CivilianFlow extends AIFlow{
                 currentImage=GraphicsAssets.getImage(22);
                 originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
                 addForOriginRect=new int[]{10,1};
-                speed=TOP_SPEED=30;
+                speed=TOP_SPEED=40;
                 SLOWING_DOWN_SPEED=4;
                 
                 break;
@@ -70,7 +72,7 @@ public class CivilianFlow extends AIFlow{
                 currentImage=GraphicsAssets.getImage(23);
                 originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
                 addForOriginRect=new int[]{10,1};
-                speed=TOP_SPEED=30;
+                speed=TOP_SPEED=40;
                 SLOWING_DOWN_SPEED=2;
                 break;
         }

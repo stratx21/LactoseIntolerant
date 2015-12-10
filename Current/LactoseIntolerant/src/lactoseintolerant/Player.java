@@ -91,8 +91,7 @@ public class Player{
                 currentImage=GraphicsAssets.getImage(2);
                 health=100;//cars.getTopSpeed();
                 ACCELERATION=7;//cars.getAcceleration();
-                ORIGINAL_TOP_SPEED=TOP_SPEED=55;//cars.getTopSpeed();
-                speed=55;
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=75;//cars.getTopSpeed();
                 imageSize=new int[]{76,93};
                 IMG_BLANK_SPACE=new int[]{22,11};
                 originalPoints=new int[][]{{22,10},{53,10},{53,82},{22,82}};

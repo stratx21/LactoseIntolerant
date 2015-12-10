@@ -64,7 +64,7 @@ public class AIFlow {
     public BufferedImage currentImage=null;
     
     public boolean collidingWithPlayer=false,hitPlayerFromSide=false,
-                    collidingWithMap=false,fromLeftMap=false;
+                    collidingWithMap=false,hitMapOnRightSideOfCar=false;
     
     public int xInc=0;
     public int[] addForOriginRect=new int[]{7,-7};
