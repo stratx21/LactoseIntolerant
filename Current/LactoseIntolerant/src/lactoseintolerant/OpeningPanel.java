@@ -31,9 +31,9 @@ public class OpeningPanel extends CPanel{
     @Override
     public void paintComponent(Graphics g){
         g.setColor(Color.black);
-        g.fillRect(0,0,X_SIZE,Y_SIZE);
+        g.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
         if(currentState<totalStates){
-            g.drawImage(images.get(currentState),0,100,X_SIZE,Y_SIZE-200,null);
+            g.drawImage(images.get(currentState),0,100,FRAME_SIZE[0],FRAME_SIZE[1]-200,null);
             currentState++;
         }else if(currentState==totalStates)
             currentState++;

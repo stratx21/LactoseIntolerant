@@ -39,12 +39,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public int MAX_ENEMIES=0;
     
-    public int[] FRAME_SIZE; //not used yet, may want to remove later!                                           <-----
     //hold off till needed for heldKeys::
     //public ArrayList<Character> heldKeys=new ArrayList<Character>();
     
     /**
-     *
+     *main Player object used throughout the code as the user
      */
     public Player player=new Player();
     
@@ -56,6 +55,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public int mapMoveDown=0;
     
+    /**
+     *
+     * @param size size of JPanel, index 0 as the x size and 
+     *      index 1 as the y size
+     * @param lv difficulty of this round instantiated
+     */
     public GamePanel(int[] size,int lv){
         map=new MapManager(0,1);
         //calcTimer.start();

@@ -19,7 +19,7 @@ public class ShapeUtils {
     
     /** **function is, thus far, obsolete since the Player collision span will 
      * now be represented by two Rectangle objects 
-     * (from a recent update in 11.2015)
+     * (from an update in 11.2015)
      * 
      *  Can be used for the Player/AI/Civilian vehicles to test if they 
      *  hit the median; there are two Polygons used there; will put here 
@@ -50,7 +50,8 @@ public class ShapeUtils {
      * @param py middle of Rectangle y point
      * @param xSize x length of Rectangle
      * @param ySize y length of Rectangle
-     * @return a Rectangle with the length of xSize and height of ySize that starts at point (px,py)
+     * @return a Rectangle with the length of xSize and height of ySize that 
+     *      has a centerpoint at point (px,py)
      */
     public static Rectangle getRectByPoint(int px,int py,int xSize,int ySize){
         return new Rectangle(px+xSize/2,py+ySize/2,xSize,ySize);

@@ -44,14 +44,12 @@ public class MapManager {
     
     public int currentPixelLengthTwo=0,currentPixelLengthOne=0;
     
-    
     public Polygon[] medianSpan=new Polygon[2];
     public ArrayList<BufferedImage> images=new ArrayList<BufferedImage>();
     public ArrayList<Integer> yLoc=new ArrayList<Integer>();
     
     public Rectangle rLeft1,rLeft2,rRight1,rRight2;
     public Polygon upTri1,upTri2,downTri1,downTri2;
-    
     
     
     public Rectangle leftSide=new Rectangle(132,0,8,2005);
@@ -63,26 +61,26 @@ public class MapManager {
     
     
     
-    private int tempPixels;
+    private int tempPixels,tD=0;
     
+    /**
+     *  Initialize the map
+     * 
+     * @param type type of terrain to put on the map
+     * @param lv level (difficulty)
+     */
     public MapManager(int type,int lv){//starts on 0
         currentLevel=new LevelManager(lv);
         
         imageStraight=GraphicsAssets.getImage(10+(TYPE=type));//    V   x3
-        imageMedian=GraphicsAssets.getImage(11+(TYPE));
-        imageIntersection=GraphicsAssets.getImage(12+(TYPE)); //constant images^
+        imageMedian=GraphicsAssets.getImage(11+(type));
+        imageIntersection=GraphicsAssets.getImage(12+(type)); //constant images^
         
         resetTypeOne();
         resetTypeTwo();
         
-//        startLocationTwo[1]=startLocationOne[1]-currentPixelLengthTwo;
+        //initialize:: 
         
-        initialize();
-    }
-    
-    
-    private int tD=0;
-    private void initialize(){
         images.add(GraphicsAssets.getImage(10));
         yLoc.add(0);
         
@@ -105,6 +103,13 @@ public class MapManager {
         }
     }
     
+    /**
+     * Used for calculations that are located in GamePanel, which includes 
+     * the main gameplay flow for relationships between the player, civilian, enemy, map, etc.
+     *
+     * @param d integer returned from the Player class that helps indicate how 
+     * much the player speed is, influencing how much everything will move.
+     */
     public void moveAllDown(int d){
         int a;
         for(int i=0;i<yLoc.size();i++){
@@ -114,6 +119,11 @@ public class MapManager {
     }
     
     public int curIndex=0;
+
+    /**
+     * Process the local class-ranked calculations that occur regularly for the map::
+     *
+     */
     public void calculate(){
         //System.out.println("1: "+startLocationOne[1]+"  2: "+startLocationTwo[1]);
 //        if(startLocationOne[1]>700){ //one expires
@@ -225,12 +235,22 @@ public class MapManager {
         
     }
     
+    /**
+     * Draw the map image(s)
+     *
+     * @param p the Graphics class used to draw on the GamePanel.
+     * @param dY the displacement that is added to the y direction for the 
+     *  whole image based on the player speed. 
+     */
     public void draw(Graphics p,int dY){
         p.drawImage(images.get(curIndex),0,yLoc.get(curIndex)+(yDistort=dY),null);
         if(drawSecond)
             p.drawImage(images.get(curIndex+1),0,yLoc.get(curIndex+1)+dY,null);
     }
-        
+    
+    /**
+     * reset the queue spot 1 so it can be used for the next type
+     */
     private void resetTypeOne(){
         switch(typeOne=currentLevel.getNextType()){
             case 0: currentPixelLengthOne=STRAIGHT_LENGTH_PIXELS;
@@ -248,6 +268,9 @@ public class MapManager {
         }
     }
     
+    /**
+     * reset the queue spot 2 so it can be used for the next type
+     */
     private void resetTypeTwo(){
         switch(typeTwo=currentLevel.getNextType()){
             case 0: currentPixelLengthTwo=STRAIGHT_LENGTH_PIXELS;
@@ -264,54 +287,4 @@ public class MapManager {
                 break;
         }
     }
-    
-    public void updateMedianPolygons(Graphics p){
-//        if(firstMedianExists){
-//            int x=startLocationOne[0],y=startLocationOne[1];
-//            firstMedianLeft=new Polygon(new int[]{x+506, x+420, x+420,x+506},
-//                                        new int[]{y+4000,y+3948,y+85, y+34},
-//                                    4);
-//            firstMedianRight=new Polygon(new int[]{x+506,x+592,x+592, x+506},
-//                                         new int[]{y+34, y+85, y+3948,y+4000},
-//                                        4);
-//            p.setColor(Color.blue);
-//            p.drawPolygon(firstMedianLeft);
-//            p.drawPolygon(firstMedianRight);
-//        } else if(firstMedianLeft!=null){
-//            firstMedianLeft=null;
-//            firstMedianRight=null;
-//        }
-//        
-//        if(secondMedianExists){
-//            int x=startLocationTwo[0],y=startLocationTwo[1];
-//            secondMedianLeft=new Polygon(new int[]{x+506,x+592,x+592, x+506, x+420, x+420},
-//                                    new int[]{y+34, y+85, y+3948,y+4000,y+3948,y+85},
-//                                    4);
-//            secondMedianRight=new Polygon(new int[]{x+506,x+592,x+592, x+506, x+420, x+420},
-//                                    new int[]{y+34, y+85, y+3948,y+4000,y+3948,y+85},
-//                                    4);
-//            p.setColor(Color.blue);
-//            p.drawPolygon(secondMedianLeft);
-//            p.drawPolygon(secondMedianRight);
-//        } else if(secondMedianLeft!=null){
-//            secondMedianLeft=null;
-//            secondMedianRight=null;
-//        }
-//        
-//        
-    }
-    
-//    public boolean medianContainsPolygon(Polygon one){ //based on Point objects contained in the Polygon objects supplied in the arguments::
-//        if(firstMedianLeft!=null&&ShapeUtils.polygonContainsPolygon(firstMedianLeft,one)
-//                ||secondMedianLeft!=null&&ShapeUtils.polygonContainsPolygon(secondMedianLeft,one)){
-//            hitFromLeft=true;
-//            return true;
-//        } else if(firstMedianRight!=null&&ShapeUtils.polygonContainsPolygon(firstMedianRight,one)
-//                ||secondMedianRight!=null&&ShapeUtils.polygonContainsPolygon(secondMedianRight,one)){
-//            hitFromLeft=false;
-//            return true;
-//        }
-//        
-//        return false;
-//    }
 }
