@@ -14,51 +14,49 @@ import javax.swing.JPanel;
  * @author 0001058857
  */
 public class GameFlow { //main game flow
-    private GamePanel gamePanel;
-    private GaragePanel garagePanel=new GaragePanel();
+    private GamePanel gamePanel=null;
+    private GaragePanel garagePanel=null;
     private JFrame frame;
     
     private int level=1;
     
-    private int frameRateMilliseconds=20;
+    private final int frameRateMillisecondsInGame=20;
     
-    public GameFlow(JFrame f){ //initialize frame/panel/KeyListener relation aspects
+    public GameFlow(JFrame f,int level){ //initialize frame/panel/KeyListener relation aspects
+        this.level=level;
         frame=f;
         
         frame.getContentPane().removeAll();
         frame.getContentPane().repaint();
         
-        frame.setVisible(false);
+        frame.setVisible(true);
+        
+        
+        
+        frame.requestFocus();
+    }
+    
+    private void setUpGamePanel(){
+        frame.getContentPane().removeAll();
+        frame.getContentPane().repaint();
         frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},level){
             @Override
             public void paintComponent(Graphics p){
                 gamePanel.paintC(p);
                 gamePanel.calcFlow();
                 
-                try{Thread.sleep(frameRateMilliseconds);}
+                try{Thread.sleep(frameRateMillisecondsInGame);}
                 catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
                 repaint();
             }
         });
-        frame.setVisible(true);
-        
         frame.addKeyListener(gamePanel);
-        
-        frame.requestFocus();
     }
     
-    private void switchToGamePanel(){
-        frame.setVisible(false);
-        frame.remove(garagePanel);
-        frame.add(gamePanel);
-        frame.setVisible(true);
-    }
-    
-    private void switchtoGaragePanel(){
-        frame.setVisible(false);
-        frame.remove(gamePanel);
-        frame.add(garagePanel);
-        frame.setVisible(true);
+    private void setUpGaragePanel(){
+        frame.getContentPane().removeAll();
+        frame.getContentPane().repaint();
+        frame.add(garagePanel=new GaragePanel(frame,level));
     }
     
     

@@ -29,21 +29,17 @@ public class CButton extends JButton implements MouseListener{
     
     public CButton(int x,int y,int xs,int ys){
         super.setBounds(x,y,xs,ys);
+        this.addMouseListener(this);
     }
     
     public CButton(int x,int y,int xs,int ys,ImageIcon[] ic){
         icons=ic;
         
         this.setIcon(ic[0]);
-        this.setSelectedIcon(ic[1]);
         super.setBounds(x,y,xs,ys);
+        this.addMouseListener(this);
         
         setContentAreaFilled(true);
-    }
-    
-    
-    public void setIc(ImageIcon i){
-        this.setIcon(i);
     }
 
     @Override
