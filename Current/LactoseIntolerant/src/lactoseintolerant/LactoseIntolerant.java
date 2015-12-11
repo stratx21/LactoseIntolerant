@@ -15,7 +15,6 @@ public class LactoseIntolerant {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GraphicsAssets.importImages();
         new StartGameFlow();
     }
     

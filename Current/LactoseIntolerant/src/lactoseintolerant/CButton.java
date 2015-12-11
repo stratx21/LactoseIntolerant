@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 /**
@@ -17,7 +18,7 @@ import javax.swing.JButton;
  */
 public class CButton extends JButton implements MouseListener{
     
-    public ArrayList<BufferedImage> icons=new ArrayList<BufferedImage>();
+    ImageIcon[] icons=null;
     
     public CButton(int x,int y,int xs,int ys,String a){
         super.setBounds(x,y,xs,ys);
@@ -28,6 +29,21 @@ public class CButton extends JButton implements MouseListener{
     
     public CButton(int x,int y,int xs,int ys){
         super.setBounds(x,y,xs,ys);
+    }
+    
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic){
+        icons=ic;
+        
+        this.setIcon(ic[0]);
+        this.setSelectedIcon(ic[1]);
+        super.setBounds(x,y,xs,ys);
+        
+        setContentAreaFilled(true);
+    }
+    
+    
+    public void setIc(ImageIcon i){
+        this.setIcon(i);
     }
 
     @Override

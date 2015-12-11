@@ -19,6 +19,18 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
     
     public static ArrayList<BufferedImage> images=new ArrayList<BufferedImage>();
     
+    
+    /**
+     * improvement to import images idea::
+     * 
+     * private BufferedImage import(String index){
+     *      return (BufferedImage)(ImageIO.read(new File(index)));
+     * }
+     */
+    
+    /**
+     * 
+     */
     public static void importImages(){
         try{
             System.out.println("importing images...");
@@ -63,6 +75,18 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Effects/RadialExplosion1.png"))));//25
             
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Enemy/IceCreamTruck.png"))));//26
+            
+            //main menu::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/MainMenu-01.png"))));//27
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/exit0.png"))));//28
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/exit1.png"))));//29
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/new0.png"))));//30
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/new1.png"))));//31
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/options0.png"))));//32
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/options1.png"))));//33
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/start0.png"))));//34
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/start1.png"))));//35
             
             
             

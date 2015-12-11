@@ -41,7 +41,10 @@ public class OpeningPanel extends CPanel{
             GraphicsAssets.importImages();
             done=true;
         }
-            
+           
+        if(currentState==0)
+            GraphicsAssets.importImages();
+        
         if(!done&&currentState!=0)
         try{Thread.sleep(4000);
         }catch(Exception e){

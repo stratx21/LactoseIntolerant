@@ -22,10 +22,10 @@ public class StartGameFlow extends GameFrame{
         this.add(currentPanel);
         super.setVisible(true);//keep this statement always!!
         
-//        while(!currentPanel.done){
-//            try{Thread.sleep(100);}
-//            catch(Exception e){ErrorLogger.logError(e,"GameFlow");}
-//        }
+        while(!currentPanel.done){
+            try{Thread.sleep(200);}
+            catch(Exception e){ErrorLogger.logError(e,"StartGameFlow");}
+        }
         
         setNewPanelType(new MainMenu(this));
     }
