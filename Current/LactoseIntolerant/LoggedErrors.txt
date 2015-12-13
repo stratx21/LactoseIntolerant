@@ -1,0 +1,10 @@
+
+--------------------------------------------------------------------------------------------------
+Error Occured at [YYYY/MM/DD HH:MM:SS]:: Sat Dec 12 22:10:30 CST 2015
+Error:: java.util.regex.PatternSyntaxException: Unclosed character class near index 1
+[]
+ ^
+**Developer Comments:: "attempting to go to next line for mission strings,
+      tried "[]""
+--------------------------------------------------------------------------------------------------
+

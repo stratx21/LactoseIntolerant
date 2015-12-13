@@ -59,15 +59,7 @@ public class MainMenu extends Menu{
                     new ImageIcon(GraphicsAssets.getImage(31)) }             ){
         @Override
         public void released(){
-            new GameFlow(f,1);
-        }
-        @Override
-        public void entered(){
-            super.setIcon(icons[1]);
-        }
-        @Override
-        public void exited(){
-            super.setIcon(icons[0]);
+            GaragePanel g = new GaragePanel(f,1);
         }
         });
         
@@ -78,14 +70,6 @@ public class MainMenu extends Menu{
         @Override
         public void released(){
             
-        }
-        @Override
-        public void entered(){
-            super.setIcon(icons[1]);
-        }
-        @Override
-        public void exited(){
-            super.setIcon(icons[0]);
         }
         });
         

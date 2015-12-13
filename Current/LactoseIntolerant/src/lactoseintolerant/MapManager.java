@@ -59,7 +59,7 @@ public class MapManager {
     
 //    public boolean hitFromLeft=true;
     
-    
+    public CListener done=null;
     
     private int tempPixels,tD=0;
     
@@ -69,8 +69,10 @@ public class MapManager {
      * @param type type of terrain to put on the map
      * @param lv level (difficulty)
      */
-    public MapManager(int type,int lv){//starts on 0
-        currentLevel=new LevelManager(lv);
+    public MapManager(int type,int lv,CListener c){//starts on 0
+        done=c;
+        
+        currentLevel=new LevelManager(lv,c);
         
         imageStraight=GraphicsAssets.getImage(10+(TYPE=type));//    V   x3
         imageMedian=GraphicsAssets.getImage(11+(type));
@@ -140,6 +142,11 @@ public class MapManager {
 //        p.drawImage(imageTwo,startLocationTwo[0],startLocationTwo[1],null);
 //        
 //        updateMedianPolygons(p);
+        if(curIndex==yLoc.size()-2){
+            System.out.println("!!!!!!!!!!@@@@@@@@@@@@@@@@@@");
+            done.actionPerformed();
+        }
+        
         
         boolean go=true;
         int temDis,//temporary distance (y)
@@ -154,7 +161,7 @@ public class MapManager {
                 curIndex--;
                 go=false;
                 drawSecond=true;
-            } else go=false;  
+            } else go=false;
         }
         
         if(curIndex>0&&currentLevel.levelInfo[curIndex-1]==1){
@@ -185,7 +192,7 @@ public class MapManager {
         }
         
         if(drawSecond){
-            if(currentLevel.levelInfo[curIndex]==1){
+            if(currentLevel.levelInfo.length>curIndex&&currentLevel.levelInfo[curIndex]==1){
 //                medianSpan[1]=new Polygon(new int[]{505,      420,      420,    506,    592,    592      },
 //                                          new int[]{temp+4000,temp+3948,temp+85,temp+34,temp+85,temp+3948},
 //                                          6);
@@ -244,7 +251,7 @@ public class MapManager {
      */
     public void draw(Graphics p,int dY){
         p.drawImage(images.get(curIndex),0,yLoc.get(curIndex)+(yDistort=dY),null);
-        if(drawSecond)
+        if(drawSecond&&curIndex+1<images.size())
             p.drawImage(images.get(curIndex+1),0,yLoc.get(curIndex+1)+dY,null);
     }
     

@@ -29,6 +29,8 @@ public class GameFlow { //main game flow
         frame.getContentPane().removeAll();
         frame.getContentPane().repaint();
         
+        setUpGaragePanel();
+        
         frame.setVisible(true);
         
         
@@ -37,26 +39,29 @@ public class GameFlow { //main game flow
     }
     
     private void setUpGamePanel(){
-        frame.getContentPane().removeAll();
-        frame.getContentPane().repaint();
-        frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},level){
-            @Override
-            public void paintComponent(Graphics p){
-                gamePanel.paintC(p);
-                gamePanel.calcFlow();
-                
-                try{Thread.sleep(frameRateMillisecondsInGame);}
-                catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
-                repaint();
-            }
-        });
-        frame.addKeyListener(gamePanel);
+//        frame.getContentPane().removeAll();
+//        frame.getContentPane().repaint();
+//        frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},level){
+//            @Override
+//            public void paintComponent(Graphics p){
+//                gamePanel.paintC(p);
+//                gamePanel.calcFlow();
+//                
+//                System.out.println("painting..");
+//                
+//                try{Thread.sleep(frameRateMillisecondsInGame);}
+//                catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
+//                repaint();
+//            }
+//        });
+//        frame.addKeyListener(gamePanel);
     }
     
     private void setUpGaragePanel(){
         frame.getContentPane().removeAll();
         frame.getContentPane().repaint();
         frame.add(garagePanel=new GaragePanel(frame,level));
+        frame.repaint();
     }
     
     

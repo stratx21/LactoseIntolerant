@@ -88,6 +88,35 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/start0.png"))));//34
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/buttons/start1.png"))));//35
             
+            //garage menu::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/MissionBoard.png"))));//36
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/prev1.png"))));//37
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/prevSelected1.png"))));//38
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/prevDisabled1.png"))));//39
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/next1.png"))));//40
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/nextSelected1.png"))));//41
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/nextDisabled1.png"))));//42
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/missions0.png"))));//43
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/missions1.png"))));//44
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/upgrades0.png"))));//45
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/upgrades1.png"))));//46
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/team0.png"))));//47
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/team1.png"))));//48
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/menu0.png"))));//49
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/menu1.png"))));//50
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/background.png"))));//51
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/play1.png"))));//52
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/playSelected1.png"))));//53
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/playDisabled1.png"))));//54
+            
+            
             
             
             

@@ -19,6 +19,8 @@ public class OpeningPanel extends CPanel{
     private int currentState=0;//index #
     private int totalStates=2;//normal #s
     
+    private boolean imported=false;
+    
     private ArrayList<BufferedImage> images=new ArrayList<BufferedImage>();
     
     public OpeningPanel(){
@@ -38,12 +40,15 @@ public class OpeningPanel extends CPanel{
         }else if(currentState==totalStates)
             currentState++;
         else{
-            GraphicsAssets.importImages();
             done=true;
         }
            
-        if(currentState==0)
+        
+        if(currentState==2&&!imported){
             GraphicsAssets.importImages();
+            System.out.println("aaaaaaaaaaa");
+            imported=true;
+        }
         
         if(!done&&currentState!=0)
         try{Thread.sleep(4000);

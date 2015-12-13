@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -19,6 +20,12 @@ import javax.swing.JButton;
 public class CButton extends JButton implements MouseListener{
     
     ImageIcon[] icons=null;
+    
+    private boolean pernamantSelect=false;
+    
+    ImageIcon disabledIcon=null;
+    
+    public boolean disabled=false,selected=false;
     
     public CButton(int x,int y,int xs,int ys,String a){
         super.setBounds(x,y,xs,ys);
@@ -41,6 +48,52 @@ public class CButton extends JButton implements MouseListener{
         
         setContentAreaFilled(true);
     }
+    
+    public void disable(boolean dis){
+        if(disabled=dis){
+            this.setIcon(disabledIcon);
+        } else{
+            this.setIcon(icons[0]);
+        }
+    }
+    
+    public void setPernamantSelect(boolean c){
+        if(pernamantSelect=c)
+            this.setIcon(icons[1]);
+        else if(!selected)
+            this.setIcon(icons[0]);
+    }
+    
+//    public boolean getPernamantSelect(){
+//        return pernamantSelect;
+//    }
+    
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,ImageIcon dis,boolean border){
+        icons=ic;
+        disabledIcon=dis;
+        
+        this.setIcon(ic[0]);
+        super.setBounds(x,y,xs,ys);
+        this.addMouseListener(this);
+        
+        setContentAreaFilled(true);
+        
+        if(!border)
+            setBorder(BorderFactory.createEmptyBorder());
+    }
+    
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,boolean border){
+        icons=ic;
+        
+        this.setIcon(ic[0]);
+        super.setBounds(x,y,xs,ys);
+        this.addMouseListener(this);
+        
+        setContentAreaFilled(true);
+        
+        if(!border)
+            setBorder(BorderFactory.createEmptyBorder());
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {clicked();}
@@ -52,10 +105,20 @@ public class CButton extends JButton implements MouseListener{
     public void mouseReleased(MouseEvent e) {released();}
 
     @Override
-    public void mouseEntered(MouseEvent e) {entered();}
+    public void mouseEntered(MouseEvent e) {
+        if(!disabled&&!pernamantSelect)
+            super.setIcon(icons[1]);
+        selected=true;
+        entered();
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {exited();}
+    public void mouseExited(MouseEvent e) {
+        if(!disabled&&!pernamantSelect)
+            super.setIcon(icons[0]);
+        selected=false;
+        exited();
+    }
     
     public void clicked(){}
     public void pressed(){}

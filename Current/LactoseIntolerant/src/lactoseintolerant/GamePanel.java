@@ -26,6 +26,9 @@ import javax.swing.Timer;
 public class GamePanel extends CPanel implements KeyListener,Runnable{
     public int screenDistortY=0; //for if the player stops, then the screen goes up to follow then bounces back, etc.
     //^only used for drawing!!!!!!!!!!!!!!!!!!!!!!!
+    public long time=0;
+    
+    public boolean done=false;
     
     public final int[] laneStarts=new int[]{201,248,294,340,628,674,720,766};
     
@@ -34,6 +37,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
 //    public Timer calcTimer=new Timer(40, (ActionEvent e) -> {
 //        calcFlow();
 //    });
+    
+    public void rpnt(){
+        repaint();
+    }
     
     private int remainder=0,playerScreenChange=0;
     
@@ -61,12 +68,26 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      *      index 1 as the y size
      * @param lv difficulty of this round instantiated
      */
-    public GamePanel(int[] size,int lv){
-        map=new MapManager(0,1);
+    public GamePanel(int[] size,int lv,CListener done){
+        map=new MapManager(0,1,done);
         //calcTimer.start();
 //        (new Thread(this)).start();
         AIPopCheck.start();
         FRAME_SIZE=size;
+        
+        System.out.println("thru the GamePanel constructor");
+    }
+    
+    @Override
+    public void paintComponent(Graphics p){
+                paintC(p);
+                calcFlow();
+                
+                System.out.println("painting!!!!!!!!(from GamePanel)");
+                
+                try{Thread.sleep(20);}
+                catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
+                repaint();
     }
     
     public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument
@@ -80,6 +101,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         //unaffected:: 
         drawSpeedBar(p);
         drawHealthBar(p);
+        
+        System.out.println(System.currentTimeMillis());
     }
     
     public void calcFlow(){
