@@ -21,9 +21,6 @@ import java.util.ArrayList;
  * @author 0001058857
  */
 public class Player{
-    
-    private PlayerCars cars=new PlayerCars();
-    
     public int CAR_TYPE;
     public double ACCELERATION,TOP_SPEED,BRAKE_SPEED,ORIGINAL_TOP_SPEED,ORIGINAL_HEALTH;
     public boolean turningLeft=false,turningRight=false;
@@ -86,7 +83,7 @@ public class Player{
     }
     
     public Player(int t){
-        switch(cars.CURRENT_TYPE=CAR_TYPE=t){ //original sudan that Gabe made the graphics for
+        switch(CAR_TYPE=t){ //original sudan that Gabe made the graphics for
             case 0:
                 currentImage=GraphicsAssets.getImage(2);
                 health=100;//cars.getTopSpeed();

@@ -45,7 +45,7 @@ public class EnemyFlow extends AIFlow{
                 currentImage=GraphicsAssets.getImage(26);
                 originalPoints=new int[][]{{0,0},{30,0},{30,60},{0,60}};
                 addForOriginRect=new int[]{14,2};
-                speed=TOP_SPEED=75;
+                speed=TOP_SPEED=90;
                 SLOWING_DOWN_SPEED=4;
                 break;
                 
