@@ -248,8 +248,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
     }
     
-    private boolean roundDone=false;
+    public boolean missionSuccess=false;
+    
+    private boolean roundDone=false,justStarting=true;
     private int frameRateMillisecondsInGame=20;
+    public long time=0,lastTime=0,thisTime=0,
+            lastNeededTime=0,yourTime=0;
+    public int frameRate=0;
     private void setUpGamePanel(){
         frame.remove(this);
         
@@ -259,25 +264,109 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
          frame.getContentPane().repaint();
          
          frame.setVisible(false);
+         
+         justStarting=true;
+         
+         lastTime=System.currentTimeMillis();
+         
          frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},missionIndex,new CListener(){
                 @Override
                 public void actionPerformed(){
+                    if((yourTime=gamePanel.time-3000)<(lastNeededTime=gamePanel.objectiveTime))
+                        missionSuccess=true;
+                    else
+                        missionSuccess=false;
+                    
+                    if(missionSuccess&&(allowedLevels<gamePanel.level+1))
+                        allowedLevels=gamePanel.level;
                     
                     
-                    changeBackToGarage();
                     roundDone=true;
                 }
                 }){
              @Override
              public void paintComponent(Graphics p){
+                time+=System.currentTimeMillis()-lastTime;
+                
+                lastTime=System.currentTimeMillis();
+                
                 gamePanel.paintC(p);
-                gamePanel.calcFlow();
-                 
-                 try{Thread.sleep(frameRateMillisecondsInGame);}
+                
+                int t=0;
+                
+                if(!gamePanel.paused)
+                    gamePanel.calcFlow();
+                else{
+                    if(justStarting){
+                    p.setColor(new Color(0,0,0,(t=(int)(175-(time)/20))));
+                    p.fillRect(0,0,1100,800);
+                    
+                    try{
+                        p.setColor(Color.black);
+                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(48f));
+                        p.drawString((3-(int)(time/1000))+"",450,300);
+                    } catch(Exception e){
+                        ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
+                    }
+                    
+                    if(time>3000)
+                        gamePanel.paused=false;
+                    } else{ //pause menu
+                        drawPauseMenu(p);
+                    }
+                }
+                
+                thisTime=System.currentTimeMillis()-lastTime;
+                
+//                System.out.println(t+", "+time);
+                
+                int delay=0;
+                if(thisTime<frameRateMillisecondsInGame)
+                    delay=frameRateMillisecondsInGame-(int)thisTime;
+                
+                if(delay<frameRateMillisecondsInGame)
+                    delay=20;
+                
+                
+                frameRate=1000/delay;
+                    
+//                System.out.println(frameRate+", "+gamePanel.player.speed);
+                
+                 try{Thread.sleep(delay);}
                  catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
                  
                  if(!roundDone)
                     repaint();
+                 else{
+                    p.setColor(new Color(0,0,0,215));
+                    p.fillRect(0,0,1100,800);
+                    
+                    try{
+                        String a;
+                        if(missionSuccess)
+                            a="You won!";
+                        else 
+                            a="You lost";
+                        
+                        p.setColor(Color.white);
+                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(24f));
+                        p.drawString(a,400,300);
+                        p.drawString("Needed time:: "+lastNeededTime/1000+" s",400,350);
+                        p.drawString("Your time::   "+yourTime/1000+" s",400,400);
+                        
+                        add(new CButton(400,500,150,50,new ImageIcon[]{
+                                                    new ImageIcon(GraphicsAssets.getImage(55)),
+                                                    new ImageIcon(GraphicsAssets.getImage(56))}){
+                            @Override
+                            public void released(){
+                                changeBackToGarage();
+                            }
+                        });
+                        
+                    } catch(Exception e){
+                        ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
+                    }
+                 }
              }
          });
          frame.setVisible(true);
@@ -292,6 +381,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 //        for(int i=0;i<c.length;i++)
 //            
 //    }
+    
+    public void drawPauseMenu(Graphics p){
+        
+    }
     
     public void changeBackToGarage(){
         frame.getContentPane().removeAll();

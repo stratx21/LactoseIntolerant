@@ -66,8 +66,6 @@ public class Player{
     
     public boolean collidedMap=false;
     
-    public int downRemainder=0;
-    
     public Rectangle upperSpan=new Rectangle(),lowerSpan=new Rectangle();
     public int[] rectSize=new int[]{31,36},
             addForOriginRect=new int[]{7,-7};//what is this variable? is it just something i used to figure it out once i looked
@@ -230,14 +228,7 @@ public class Player{
     
     int divideBy=3,t;
     public int getMapDown(){
-        downRemainder+=speed%7;
-        if((t=downRemainder/divideBy)>0){
-            downRemainder=downRemainder%divideBy;
-            return (int)(speed/divideBy)+t;
-        }
-        
-        return (int)(speed/divideBy);
-            
+        return (int)(speed/divideBy); 
     }
     
 //    private void updateCollisionPolygon(Graphics p){

@@ -116,6 +116,9 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/playSelected1.png"))));//53
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/playDisabled1.png"))));//54
             
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/EndGame/continue.png"))));//55
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/EndGame/continueSelected.png"))));//56
+            
             
             
             

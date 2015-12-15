@@ -8,3 +8,10 @@ Error:: java.util.regex.PatternSyntaxException: Unclosed character class near in
       tried "[]""
 --------------------------------------------------------------------------------------------------
 
+
+--------------------------------------------------------------------------------------------------
+Error Occured at [YYYY/MM/DD HH:MM:SS]:: Mon Dec 14 20:20:51 CST 2015
+Error:: java.lang.IndexOutOfBoundsException: Index: 55, Size: 55
+**Developer Comments:: "image not imported"
+--------------------------------------------------------------------------------------------------
+

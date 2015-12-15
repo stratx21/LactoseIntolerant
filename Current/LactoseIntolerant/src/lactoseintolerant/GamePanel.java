@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.Timer;
@@ -28,7 +29,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     //^only used for drawing!!!!!!!!!!!!!!!!!!!!!!!
     public long time=0;
     
+    public boolean paused=true, canUnpause=false;
+    
     public boolean done=false;
+    
+    public long objectiveTime=10000;
     
     public final int[] laneStarts=new int[]{201,248,294,340,628,674,720,766};
     
@@ -42,7 +47,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         repaint();
     }
     
-    private int remainder=0,playerScreenChange=0;
+    private int playerScreenChange=0;
     
     public int MAX_ENEMIES=0;
     
@@ -62,6 +67,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public int mapMoveDown=0;
     
+    public int level=0;
+    
     /**
      *
      * @param size size of JPanel, index 0 as the x size and 
@@ -74,6 +81,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
 //        (new Thread(this)).start();
         AIPopCheck.start();
         FRAME_SIZE=size;
+        level=lv;
+        
+        objectiveTime=map.currentLevel.objectiveTime;
         
         System.out.println("thru the GamePanel constructor");
     }
@@ -101,9 +111,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         //unaffected:: 
         drawSpeedBar(p);
         drawHealthBar(p);
-        
-        System.out.println(System.currentTimeMillis());
+        drawTimer(p);
     }
+    
+    
     
     public void calcFlow(){
         playerCalc();
@@ -200,6 +211,16 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
 //        p.setColor(Color.gray);
 //        p.setFont(new Font(Font.SERIF,Font.BOLD,20));
 //        p.drawString(dec.format(player.health),60,10);
+    }
+    
+    private void drawTimer(Graphics p){
+        try{
+        p.setColor(Color.black);
+        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(18f));
+        p.drawString(""+new DecimalFormat("000.000").format((time-3000)/1000.0f),10,75);
+        } catch(Exception e){
+            ErrorLogger.logError(e,"GamePanel.drawTimer(Graphics)");
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -602,6 +623,109 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         return b;
     }
     
+    private void OLDcheckCivCivCollisions(CivilianFlow civ,int ind){
+        for(int j=ind+1;j<civilians.size();j++){
+                CivilianFlow testing=civilians.get(j);
+                civ.health-=3;
+                testing.health-=0.07;
+                if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+civ.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnBottom)){//testing is below civ
+                    //testing top is below 3/4 down of the civilian, and therefore the civilian should be pushed up and the angle changed
+                    if(!civ.collidingWithMap)
+                        civ.angle=testing.angle/2
+                                -3*((testing.screenLocation[0]+testing.imageSize[0]/2)-(civ.screenLocation[0]+civ.imageSize[0]/2));
+                    else
+                        civ.angle=0;
+                    
+                    civ.speed+=2.5*(testing.speed-civ.speed)+3;
+                    testing.speed*=3/5;
+                    
+                } else if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*testing.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){//testing is above civ
+                    swapVA(civ);
+                }else{
+                if(civIsToRightOfCiv(testing,civ)){
+                    if((civ.rightNextToSide)){
+                        testing.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-testing.IMG_BLANK_SPACE[0];
+                        testing.screenLocation[0]+=15;
+                        testing.angle=15;
+                    } else{
+                    civ.screenLocation[0]=testing.screenLocation[0]+testing.IMG_BLANK_SPACE[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-civ.imageSizeActual[0]+(int)(testing.angle/3)
+                            //-(int)(testing.speed/3)
+                            ;
+                    if(testing.turningRight){//shouldnt be turning right, therefore the collision must be a glitch or was caused by a civilian
+                        civ.speed=testing.speed;
+                        if(civ.angle>testing.angle-3&&civ.angle<testing.angle+3){
+                            civ.angle=-25;
+                            testing.angle=25;
+                        } else{
+                        civ.angle=testing.angle*1.5;
+                        
+                        
+                        if(civ.angle<-25)
+                            testing.angle=-10;
+                        else
+                            testing.angle=5;
+//                        testing.angle*=-0.5;
+                        }
+                    } else{  //normal
+                        civ.speed=testing.speed;
+                        if(civ.angle>testing.angle-3&&civ.angle<testing.angle+3){
+                            civ.angle=-25;
+                            testing.angle=25;
+                        } else{
+                        civ.angle=testing.angle*1.5;
+                        if(civ.angle<-25)
+                            testing.angle=10;
+                        else
+                            testing.angle=-5;
+//                        testing.angle*=-0.5;
+                        }
+                    }
+                    }
+                } else{ //testing is to the left of the civilian
+                    if((civ.rightNextToSide)){
+                    testing.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+testing.IMG_BLANK_SPACE[0]-testing.imageSize[0]-leftExtraSpace;
+                    testing.screenLocation[0]-=5;
+                    testing.angle=-15;
+                    } else{
+                    civ.screenLocation[0]=testing.screenLocation[0]+testing.imageSize[0]-testing.IMG_BLANK_SPACE[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]+5+(int)(testing.angle/3)
+                            //+(int)(testing.speed/3)
+                            ;
+                    if(testing.turningLeft){//shouldnt be turning left
+                        civ.speed=testing.speed;
+                        if(civ.angle>testing.angle-3&&civ.angle<testing.angle+3){
+                            civ.angle=25;
+                            testing.angle=-25;
+                        } else{
+                        civ.angle=testing.angle*1.5;
+                        
+                        if(civ.angle<-25)
+                            testing.angle=10;
+                        else
+                            testing.angle=-5;
+//                        testing.angle*=-0.5;
+                        }
+                        
+                    } else{  //normal
+                        civ.speed=testing.speed;
+                        if(civ.angle>testing.angle-3&&civ.angle<testing.angle+3){
+                            civ.angle=25;
+                            testing.angle=-25;
+                        } else{
+                        civ.angle=testing.angle*1.5;
+                        if(civ.angle<-25)
+                            testing.angle=-10;
+                        else
+                            testing.angle=5;
+//                        testing.angle*=-0.5;
+                        }
+                    }
+                    }
+                }
+                }
+        }
+    }
+    
+    private final double topCivCivRatio=0.5,bottomCivCivRatio=0.7;
     private void checkCivCivCollisions(CivilianFlow civ,int ind){
         for(int j=ind+1;j<civilians.size();j++){
                 CivilianFlow testing=civilians.get(j);
@@ -614,11 +738,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             testing.health-=3.5;
                 if(!civ.collidingWithPlayer){
                 
-                civ.collidingWithPlayer=true;
+//                civ.collidingWithPlayer=true;
                 
-                if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+civ.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnTop)){
+                if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE_ACTUAL[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE_ACTUAL[1]+civ.CAR_PIXELS_VERTICAL_ACTUAL*(bottomCivCivRatio)){
                     //testing top is below 3/4 down of the civilian, and therefore the civilian should be pushed up and the angle changed
-                    civ.hitPlayerFromSide=false;
+//                    civ.hitPlayerFromSide=false;
+                    System.out.println("car hit vertical 1");
                     if(!civ.collidingWithMap)
                         civ.angle=testing.angle/2
                                 -3*((testing.screenLocation[0]+testing.imageSize[0]/2)-(civ.screenLocation[0]+civ.imageSize[0]/2));
@@ -628,12 +753,15 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     civ.speed+=(testing.speed-civ.speed)+3;
                     testing.speed*=3/5;
                     
-                } else if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*testing.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){
-                    civ.hitPlayerFromSide=false;
-                    swapVA(civ);
+                } else if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*testing.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+10){
+//                    civ.hitPlayerFromSide=false;
+                    System.out.println("car hit vertical 2");
+                    swapVA(civ,testing);
                 }else{             //is from the side
-                    civ.hitPlayerFromSide=true; 
+//                    civ.hitPlayerFromSide=true; 
                 //was not hit from the bottom or the top; was the side::    VVVVVVVV
+                    
+                    System.out.println("from side");
                     
                     if(!civ.collidingWithMap&&!civ.rightNextToSide){
                         civ.angle=testing.angle*2;
@@ -644,7 +772,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                                 civ.screenLocation[0]=testing.screenLocation[0]+testing.IMG_BLANK_SPACE[0]-civ.imageSize[0]-extraSpaceBetweenCarsOnHitRight; 
                         } else{  //testing is to the left of the hit civ
                             if(testing.screenLocation[0]+testing.IMG_BLANK_SPACE[0]+testing.CAR_PIXELS_HORIZONTAL>civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0])
-                                civ.screenLocation[0]=testing.screenLocation[0]+testing.IMG_BLANK_SPACE[0]+testing.CAR_PIXELS_HORIZONTAL+extraSpaceBetweenCarsOnHitLeft;
+                                civ.screenLocation[0]=testing.screenLocation[0]+testing.IMG_BLANK_SPACE_ACTUAL[0]+testing.CAR_PIXELS_HORIZONTAL_ACTUAL-civ.IMG_BLANK_SPACE_ACTUAL[0]+5;
                         }
                     
                     } else{ //the civ is hitting the side of the map
@@ -654,7 +782,16 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 
             
             } else{ //was previously colliding::
-                if((civIsToRightOfCiv(testing,civ)||(civ.rightNextToSide&&!civ.hitMapOnRightSideOfCar))&&!civ.hittingRightSideOfMap){
+                    
+                if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+civ.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnTop)){
+                     //testing below civ
+                    civ.speed+=5;
+                    testing.speed-=5;
+                }else if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*testing.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){
+                    //testing above civ
+                    civ.speed-=5;
+                    testing.speed+=5;
+                }else if((civIsToRightOfCiv(testing,civ)||(civ.rightNextToSide&&!civ.hitMapOnRightSideOfCar))&&!civ.hittingRightSideOfMap){
                     testing.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-testing.IMG_BLANK_SPACE[0];
                     if(civ.rightNextToSide)
                         testing.screenLocation[0]+=15;
@@ -897,6 +1034,15 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             player.speed=t2;
     }
     
+    private void swapVA(CivilianFlow civ1,CivilianFlow civ2){
+        double t1=civ1.angle,t2=civ1.speed;
+            civ1.angle=civ2.angle;
+            civ1.speed=civ2.speed;
+            
+            civ2.angle=t1;
+            civ2.speed=t2;
+    }
+    
     private void swapVA(EnemyFlow a){
         double t1=a.angle,t2=a.speed;
             a.angle=player.angle;
@@ -948,13 +1094,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     }
     
     int divideBy=3,te;
-    private int getHowFarGoesUpForAIs(int sp){ //maybe take out remainder stuff since the function is being shared between multiple civilians,  enemies etc.?
-        remainder+=sp%7;
-        if((te=remainder/divideBy)>0){
-            remainder=remainder%divideBy;
-            return (int)(sp/divideBy)+te;
-        }
-        
+    private int getHowFarGoesUpForAIs(int sp){
         return (int)(sp/divideBy);
     }
     
@@ -1023,6 +1163,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      *
      */
     public Timer AIPopCheck=new Timer(450, (ActionEvent e) -> {
+        if(!paused){
         if(shouldExpireCheckPing==3){
             civExpireCheck();
             enemyExpireCheck();
@@ -1039,7 +1180,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
         
         shouldExpireCheckPing++;
-        
+        }
     });
     
     private void enemyExpireCheck(){

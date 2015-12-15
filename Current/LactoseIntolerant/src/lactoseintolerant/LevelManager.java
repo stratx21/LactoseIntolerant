@@ -16,12 +16,14 @@ public class LevelManager extends LevelInfo{
     public byte[] levelInfo={0,0,1,0,2,0,1,0,2,0,1,0}; //testing level
     public int MAX_DISTANCE;
     public int currentIndex=-1;
+    public long objectiveTime=0;
     public int level=1;
     public String missionInfo="";    
     public LevelManager(int t,CListener c){
         done=c;
         switch(level=t){
             case 1:
+                objectiveTime=115000;
                 levelInfo=new byte[]{0,0,1,0,2,0,1,0,2,0,1,0,0,1,0,0};
                 break;
             case 2:
