@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class OpeningPanel extends CPanel{
     private int currentState=0;//index #
-    private int totalStates=2;//normal #s
+    private int totalStates=3;//normal #s
     
     private boolean imported=false;
     
@@ -25,6 +25,7 @@ public class OpeningPanel extends CPanel{
     
     public OpeningPanel(){
         try{
+            images.add(GraphicsAssets.getLogo());
             images.add(GraphicsAssets.getFirstImage());
             images.add(GraphicsAssets.getSecondImage());
         }catch(IOException e){ErrorLogger.logIOError(e,"OpeningPanel()");}

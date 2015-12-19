@@ -142,4 +142,8 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
         return (BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/openingName-01.png")));//1 (not added)
     }
     
+    public static BufferedImage getLogo() throws IOException{
+        return (BufferedImage)(ImageIO.read(new File("src/Graphics/OpeningImages/Logo.png")));
+    }
+    
 }
