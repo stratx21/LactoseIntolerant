@@ -43,10 +43,6 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
 //        calcFlow();
 //    });
     
-    public void rpnt(){
-        repaint();
-    }
-    
     private int playerScreenChange=0;
     
     public int MAX_ENEMIES=0;
@@ -88,6 +84,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         System.out.println("thru the GamePanel constructor");
     }
     
+    /**
+     * the function for drawing parts for the GamePanel. Calls the functions to
+     * draw the panel
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     @Override
     public void paintComponent(Graphics p){
                 paintC(p);
@@ -100,6 +102,13 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 repaint();
     }
     
+    /**
+     * function called by the class that holds an instance of this class to 
+     * paint the panel; this is a function call relay rather than the overriden
+     * paintComponent(Graphics) function.
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument
         //affected by screenDistortY::
         mapDraw(p);
@@ -115,7 +124,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     }
     
     
-    
+    /**
+     * function that calls the other functions that calculate the different
+     * parts of the game
+     */
     public void calcFlow(){
         playerCalc();
         
@@ -125,6 +137,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         enemyCalc();
     }
     
+    /**
+     * function called to calculate the enemy statistics and what it affects
+     */
     private void enemyCalc(){
         for(int i=0;i<enemies.size();i++){
             EnemyFlow e=enemies.get(i);
@@ -144,6 +159,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
     }
     
+    /**
+     * function called to calculate the enemy statistics and whatever else the
+     * civilians may affect
+     */
     private void CivilianCalc(){
         for(int i=0;i<civilians.size();i++){
             CivilianFlow c=civilians.get(i);
@@ -164,6 +183,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     /////////////////////////////////////////////////////////////////////////
     //effects::::
     
+    /**
+     * draw/calculate the explosion
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     private void explosionsDraw(Graphics p){
         for(int i=0;i<explosions.size();i++){
             Explosion e;
@@ -180,11 +204,21 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     /////////////////////////////////////////////////////////////////////////
     //game components:::::
     
+    /**
+     * draw the speed bar to represent the player's speed
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     private void drawSpeedBar(Graphics p){
         // length of one color on top of the other  (green on gray) :: (player.speed/player.topSpeed[or whatever it was])*totalLength
         //make it pretty thin, and maybe top right or lower left bottom. Think of The Heist 2 style
     }
     
+    /**
+     * draw the health bar to represent the player's health
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     private void drawHealthBar(Graphics p){
 //        DecimalFormat dec = new DecimalFormat("0.00");
         int R=237-(int)(Math.abs(player.ORIGINAL_HEALTH-player.health)/4),
@@ -213,6 +247,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
 //        p.drawString(dec.format(player.health),60,10);
     }
     
+    /**
+     * draw the timer to show the player how much time they have been playing 
+     * for so they can beat the objective time
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     private void drawTimer(Graphics p){
         try{
         p.setColor(Color.black);
@@ -226,6 +266,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     ////////////////////////////////////////////////////////////////////////////
     //player functions:::::
     
+    /**
+     * calculate the player statistics. This is to be called after the delay so
+     * it is called every however many milliseconds the delay is
+     * 
+     */
     private void playerCalc(){
         player.hittingSideMap=checkPlayerMapCollisions();
         int t=player.calculate(screenDistortY);
@@ -238,6 +283,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
     }
     
+    /**
+     * calculate the collisions between the player and the map, including the
+     * flow and effects
+     */
     private final int HIT_MEDIAN_FRONT_ANGLE_CHANGE=20,HIT_MEDIAN_FROM_TOP_CHANGE=20,MEDIAN_ANGLE=0;
     private boolean checkPlayerMapCollisions(){
         boolean b=false;
@@ -306,10 +355,26 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         return b;
     }
     
+    /**
+     * returns true if the player is to the right of the CivilianFlow instance
+     * civ
+     * 
+     * @param civ the CivilianFlow instance to tell if the player is to the 
+     * right of this CivilianFlow
+     * 
+     * @return returns true if the player is to the right proportionally to the
+     * CivilianFlow instance civ
+     */
     private boolean playerIsToRightOfCiv(CivilianFlow civ){
         return player.screenLocation[0]+player.imageSize[0]/2>=civ.screenLocation[0]+civ.imageSize[0]/2;
     }
     
+    /**
+     * old version of the player-civilian collisions 
+     * 
+     * @param civ 
+     */
+    @Deprecated
     private void aOLDcheckPlayerCivilianCollisions(CivilianFlow civ){
         if(player.upperSpan.intersects(civ.lowerSpan)
                 ||player.upperSpan.intersects(civ.upperSpan)
@@ -376,6 +441,13 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
         
     }
+    
+    /**
+     * check the player-civilian collisions for each civilian
+     * 
+     * @return civ CivilianFlow instance used to tell if the civilian is in
+     * collision with the player, and includes the flow for the cases
+     */
     private double playerToCivAngleMultiple=3;
     private void checkPlayerCivilianCollisions(CivilianFlow civ){
         if(player.upperSpan.intersects(civ.upperSpan)
@@ -523,6 +595,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         } else civ.collidingWithPlayer=false;
     }
     
+    /**
+     * 
+     * draw each CivilianFlow object
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     private void civiliansDraw(Graphics p){
         for (CivilianFlow civilian : civilians) {
 //            CivilianFlow civ;
@@ -537,12 +615,23 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
     }
     
+    /**
+     * 
+     * draw each EnemyFlow object
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     private void enemiesDraw(Graphics p){
         for (EnemyFlow enemy : enemies) {
             enemy.draw(p, screenDistortY);
         }
     }
     
+    /**
+     * draw the map
+     * 
+     * @param p Graphics class instance that is being used to draw on the panel
+     */
     private void mapDraw(Graphics p){
         map.draw(p,screenDistortY);
     }
