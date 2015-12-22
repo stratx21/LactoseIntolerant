@@ -312,9 +312,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                                 new ImageIcon(GraphicsAssets.getImage(58))
                                                 };
                                             setIcon(icons[0]);
+                                            
+                                            if(yIndex>1)
+                                                equipped=new int[]{xIndex,yIndex};
                                         }
-                                    } else if(yIndex>1){//is a weapon type and is already owned, then it will be selected
-                                        equipped=new int[]{xIndex,yIndex};
+                                    } else if(yIndex>1){//is a weapon type and is already owned
+                                        equipped=equipped[0]!=xIndex&&equipped[1]!=yIndex ? new int[]{xIndex,yIndex} : new int[2];
+                                        
                                         repaint();
                                     }
                                     rpnt();

@@ -142,7 +142,10 @@ public class Player{
             if(speed<TOP_SPEED){
                 speed+=ACCELERATION;
             }else if(speed>TOP_SPEED){
-                speed=TOP_SPEED;
+                if(TOP_SPEED>speed+5)
+                    speed-=5;
+                else
+                    speed=TOP_SPEED;
             }
         } else if(!brakes){//not accelerating and is not applying brakes
             if(speed>0){

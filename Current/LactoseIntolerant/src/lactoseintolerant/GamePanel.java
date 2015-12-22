@@ -55,6 +55,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public Weapon playerWeapon=null;
     
+    public boolean weaponIsBoost=false;
+    
     public ArrayList<CivilianFlow> civilians=new ArrayList<CivilianFlow>();
     
     public ArrayList<EnemyFlow> enemies=new ArrayList<EnemyFlow>();
@@ -63,16 +65,23 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public int mapMoveDown=0;
     
+    public int canAttackPing=0;
+    
+    public byte tempPing=0;
+    
+    private Color delayGreen=new Color(28,142,62,200),
+            speedBlue=new Color(63,105,252,200);
+    
     public int level=0;
     
     /**
      *
      * @param size size of JPanel, index 0 as the x size and 
      *      index 1 as the y size
-     * @param lv difficulty of this round instantiated
      */
     public GamePanel(int[] size,int lv,CListener done,Weapon w){
-        playerWeapon=w;
+        if((playerWeapon=w).TYPE==0)
+            weaponIsBoost=true;
         
         map=new MapManager(0,1,done);
         //calcTimer.start();
@@ -123,6 +132,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         drawSpeedBar(p);
         drawHealthBar(p);
         drawTimer(p);
+        drawWeaponDelay(p);
     }
     
     
@@ -206,6 +216,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     /////////////////////////////////////////////////////////////////////////
     //game components:::::
     
+    private void drawWeaponDelay(Graphics p){
+        p.setColor(delayGreen);
+        p.fillRect(10,60,(int)((1-(((double)canAttackPing)/playerWeapon.pingWaitDelay))*100.0),15);
+    }
+    
     /**
      * draw the speed bar to represent the player's speed
      * 
@@ -214,6 +229,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     private void drawSpeedBar(Graphics p){
         // length of one color on top of the other  (green on gray) :: (player.speed/player.topSpeed[or whatever it was])*totalLength
         //make it pretty thin, and maybe top right or lower left bottom. Think of The Heist 2 style
+        p.setColor(speedBlue);
+        p.fillRect(10,35,(int)player.speed,15);
     }
     
     /**
@@ -243,7 +260,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         
         
         p.setColor(new Color(R,G,B));
-        p.fillRect(10,10,(int)(player.health),15);
+        p.fillRect(10,10,(int)player.health,15);
 //        p.setColor(Color.gray);
 //        p.setFont(new Font(Font.SERIF,Font.BOLD,20));
 //        p.drawString(dec.format(player.health),60,10);
@@ -259,7 +276,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         try{
         p.setColor(Color.black);
         p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(18f));
-        p.drawString(""+new DecimalFormat("000.000").format((time-3000)/1000.0f),10,75);
+        p.drawString(""+new DecimalFormat("000.000").format((time-3000)/1000.0f),10,95);
         } catch(Exception e){
             ErrorLogger.logError(e,"GamePanel.drawTimer(Graphics)");
         }
@@ -269,7 +286,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     //player functions:::::
     
     /**
-     * calculate the player statistics. This is to be called after the delay so
+     * calculate the player and player's Weapon statistics. This is to be called after the delay so
      * it is called every however many milliseconds the delay is
      * 
      */
@@ -283,6 +300,29 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             if((screenDistortY<player.speed&&t>0)||(t<0&&screenDistortY>player.speed))
                 screenDistortY+=t/3;
         }
+        
+        if(playerWeapon.isInAttack){
+            if(canAttackPing==0){
+                if(!weaponIsBoost)
+                    playerWeapon.projectiles.add(null);
+            }
+            canAttackPing++;
+            if(weaponIsBoost)
+                player.speed=player.TOP_SPEED+playerWeapon.boostSpeed;
+            
+            if(canAttackPing==playerWeapon.pingWaitDelay){
+                playerWeapon.isInAttack=false;
+                playerWeapon.canAttack=true;
+            }
+            
+        } else if(canAttackPing>0){
+            if(tempPing==5){
+                canAttackPing--;
+                tempPing=0;
+            }
+            tempPing++;
+        }
+        
     }
     
     /**
@@ -1518,8 +1558,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 player.turningLeft=false;//if was turning left, then starts to turn right instead.
                 break;
             case ' ':
-                if(player.canAttack){
-                    player.canAttack=false;
+                if(canAttackPing==0){
+                    playerWeapon.canAttack=false;
+                    playerWeapon.isInAttack=true;
                 }
                 break;
         }
@@ -1542,9 +1583,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 player.turningRight=false;
                 player.shouldCheckStoppedTurning=true;
                 break;
-//            case ' ':
-//                player.attacking=false;
-//                break;
+            case ' ':
+                
+                break;
         }
     }
     
