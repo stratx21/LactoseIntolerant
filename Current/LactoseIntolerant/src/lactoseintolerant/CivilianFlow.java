@@ -34,6 +34,8 @@ public class CivilianFlow extends AIFlow{
     
     public boolean hitAnotherCivilian=false,hitCivOnRight=false;
     
+    public boolean collidingWithEnemy=false;
+    
     /**
      *
      * @param t the type of Civilian car

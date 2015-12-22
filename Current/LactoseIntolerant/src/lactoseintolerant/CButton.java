@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -19,13 +20,21 @@ import javax.swing.JButton;
  */
 public class CButton extends JButton implements MouseListener{
     
+    public int xIndex,yIndex;//when applicable 
+    
     ImageIcon[] icons=null;
     
-    private boolean pernamantSelect=false;
+    public boolean pernamantSelect=false;
     
     ImageIcon disabledIcon=null;
     
     public boolean disabled=false,selected=false;
+    
+//    @Override
+//    public void setIcon(Icon i){
+//        System.out.println("changing icon");
+//        super.setIcon(i);
+//    }
     
     public CButton(int x,int y,int xs,int ys,String a){
         super.setBounds(x,y,xs,ys);
@@ -62,6 +71,8 @@ public class CButton extends JButton implements MouseListener{
             this.setIcon(icons[1]);
         else if(!selected)
             this.setIcon(icons[0]);
+        else 
+            this.setIcon(icons[1]);
     }
     
 //    public boolean getPernamantSelect(){
@@ -102,20 +113,25 @@ public class CButton extends JButton implements MouseListener{
     public void mousePressed(MouseEvent e) {pressed();}
 
     @Override
-    public void mouseReleased(MouseEvent e) {released();}
+    public void mouseReleased(MouseEvent e) {
+        super.setIcon(icons[0]);
+        released();
+    }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(!disabled&&!pernamantSelect)
+        if(!disabled&&!pernamantSelect){
             super.setIcon(icons[1]);
+        }
         selected=true;
         entered();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if(!disabled&&!pernamantSelect)
+        if(!disabled&&!pernamantSelect){
             super.setIcon(icons[0]);
+        }
         selected=false;
         exited();
     }

@@ -45,8 +45,6 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     private int playerScreenChange=0;
     
-    public int MAX_ENEMIES=0;
-    
     //hold off till needed for heldKeys::
     //public ArrayList<Character> heldKeys=new ArrayList<Character>();
     
@@ -54,6 +52,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      *main Player object used throughout the code as the user
      */
     public Player player=new Player();
+    
+    public Weapon playerWeapon=null;
     
     public ArrayList<CivilianFlow> civilians=new ArrayList<CivilianFlow>();
     
@@ -71,7 +71,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      *      index 1 as the y size
      * @param lv difficulty of this round instantiated
      */
-    public GamePanel(int[] size,int lv,CListener done){
+    public GamePanel(int[] size,int lv,CListener done,Weapon w){
+        playerWeapon=w;
+        
         map=new MapManager(0,1,done);
         //calcTimer.start();
 //        (new Thread(this)).start();
@@ -712,6 +714,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         return b;
     }
     
+    @Deprecated
     private void OLDcheckCivCivCollisions(CivilianFlow civ,int ind){
         for(int j=ind+1;j<civilians.size();j++){
                 CivilianFlow testing=civilians.get(j);
@@ -910,7 +913,157 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         checkEnemyCivCollisions(enemy);
     }
     
+    private double enemyToCivAngleMultiple=3;
     private void checkEnemyCivCollisions(EnemyFlow enemy){
+        for (CivilianFlow civ : civilians) {
+            if(player.upperSpan.intersects(civ.upperSpan)
+                    ||enemy.upperSpan.intersects(civ.lowerSpan)
+                    ||enemy.lowerSpan.intersects(civ.upperSpan)
+                    ||enemy.lowerSpan.intersects(civ.lowerSpan)){
+                
+                if(!civ.collidingWithPlayer){//just started colliding
+                    civ.collidingWithPlayer=true;
+                    civ.health-=3;
+                    enemy.health-=0.07;
+                    if(enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+civ.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnBottom)){//enemy is below civ
+                        //enemy top is below 3/4 down of the civilian, and therefore the civilian should be pushed up and the angle changed
+                        civ.hitPlayerFromSide=false;
+                        if(!civ.collidingWithMap)
+                            civ.angle=enemy.angle/2
+                                    -3*((enemy.screenLocation[0]+enemy.imageSize[0]/2)-(civ.screenLocation[0]+civ.imageSize[0]/2));
+                        else
+                            civ.angle=0;
+                        
+                        civ.speed+=2.5*(enemy.speed-civ.speed)+3;
+                        enemy.speed*=3/5;
+                        
+                    } else if(enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*enemy.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){//enemy is above civ
+                        civ.hitPlayerFromSide=false;
+                        swapVA(civ);
+                    }else{
+                        if(enemyIsToRightOfCiv(enemy,civ)){
+                            if((civ.rightNextToSide)){
+                                enemy.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0];
+                                enemy.screenLocation[0]+=15;
+                                enemy.angle=15;
+                            } else{
+                                civ.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-civ.imageSizeActual[0]+(int)(enemy.angle/3)
+                                        //-(int)(enemy.speed/3)
+                                        ;
+                                if(enemy.turningRight){//shouldnt be turning right, therefore the collision must be a glitch or was caused by a civilian
+                                    civ.speed=enemy.speed;
+                                    if(civ.angle>enemy.angle-3&&civ.angle<enemy.angle+3){
+                                        civ.angle=-25;
+                                        enemy.angle=25;
+                                    } else{
+                                        civ.angle=enemy.angle*enemyToCivAngleMultiple;
+                                        
+                                        
+                                        if(civ.angle<-25)
+                                            enemy.angle=-10;
+                                        else
+                                            enemy.angle=5;
+//                        enemy.angle*=-0.5;
+                                    }
+                                } else{  //normal
+                                    civ.speed=enemy.speed;
+                                    if(civ.angle>enemy.angle-3&&civ.angle<enemy.angle+3){
+                                        civ.angle=-25;
+                                        enemy.angle=25;
+                                    } else{
+                                        civ.angle=enemy.angle*enemyToCivAngleMultiple;
+                                        if(civ.angle<-25)
+                                            enemy.angle=10;
+                                        else
+                                            enemy.angle=-5;
+//                        enemy.angle*=-0.5;
+                                    }
+                                }
+                            }
+                        } else{ //enemy is to the left of the civilian
+                            if((civ.rightNextToSide)){
+                                enemy.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]-leftExtraSpace;
+                                enemy.screenLocation[0]-=5;
+                                enemy.angle=-15;
+                            } else{
+                                civ.screenLocation[0]=enemy.screenLocation[0]+enemy.imageSize[0]-enemy.IMG_BLANK_SPACE[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]+5+(int)(enemy.angle/3)
+                                        //+(int)(enemy.speed/3)
+                                        ;
+                                if(enemy.turningLeft){//shouldnt be turning left
+                                    civ.speed=enemy.speed;
+                                    if(civ.angle>enemy.angle-3&&civ.angle<enemy.angle+3){
+                                        civ.angle=25;
+                                        enemy.angle=-25;
+                                    } else{
+                                        civ.angle=enemy.angle*enemyToCivAngleMultiple;
+                                        
+                                        if(civ.angle<-25)
+                                            enemy.angle=10;
+                                        else
+                                            enemy.angle=-5;
+//                        enemy.angle*=-0.5;
+                                    }
+                                    
+                                } else{  //normal
+                                    civ.speed=enemy.speed;
+                                    if(civ.angle>enemy.angle-3&&civ.angle<enemy.angle+3){
+                                        civ.angle=25;
+                                        enemy.angle=-25;
+                                    } else{
+                                        civ.angle=enemy.angle*enemyToCivAngleMultiple;
+                                        if(civ.angle<-25)
+                                            enemy.angle=-10;
+                                        else
+                                            enemy.angle=5;
+//                        enemy.angle*=-0.5;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                } else{ //was already colliding
+                    if(enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+civ.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnBottom)){ //enemy below civ
+                        civ.speed+=5;
+                        enemy.speed-=10;
+                    } else if(enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*enemy.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]){ //enemy above civ
+                        civ.hitPlayerFromSide=false;
+                        enemy.speed+=5;
+                        civ.speed-=5;
+                    }else{ //was from the side::
+                        if((enemyIsToRightOfCiv(enemy,civ)||(civ.rightNextToSide&&!civ.hitMapOnRightSideOfCar))&&!civ.hittingRightSideOfMap){
+                            if((civ.rightNextToSide&&!civ.hitMapOnRightSideOfCar)){
+                                enemy.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0]+15;
+//                        enemy.angle=15;
+                                civ.angle=0;
+                            } else{
+                                civ.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-civ.imageSizeActual[0]+(int)(enemy.angle/3)
+//                            //-(int)(enemy.speed/3)
+                                        ;
+                            }
+                            
+                        } else{
+                            if((civ.rightNextToSide&&civ.hitMapOnRightSideOfCar)){
+                                enemy.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]-leftExtraSpace;
+//                    enemy.angle=-15;
+                                civ.angle=0;
+                            } else{
+                                civ.screenLocation[0]=enemy.screenLocation[0]+enemy.imageSize[0]-enemy.IMG_BLANK_SPACE[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]+(int)(enemy.angle/3)
+//                      //+(int)(enemy.speed/3)
+                                        ;
+                            }
+                        }
+                    }
+                }
+                
+                
+            } else civ.collidingWithPlayer=false;
+        }
+    }
+    
+    @Deprecated
+    private void OLDcheckEnemyCivCollisions(EnemyFlow enemy){
         for(int i=0;i<civilians.size();i++){
             CivilianFlow civ=civilians.get(i);
             
@@ -982,7 +1135,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
     }
     
-    private void checkPlayerEnemyCollisions(EnemyFlow enemy){
+    @Deprecated
+    private void OLDcheckPlayerEnemyCollisions(EnemyFlow enemy){
         if(player.upperSpan.intersects(enemy.lowerSpan)
                 ||player.upperSpan.intersects(enemy.upperSpan)
                 ||player.lowerSpan.intersects(enemy.upperSpan)
@@ -1047,6 +1201,155 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             enemy.collidingWithPlayer=false;
         }
         
+    }
+    
+    private double playerToEnemyAngleMultiple=1.5;
+    private void checkPlayerEnemyCollisions(EnemyFlow enemy){
+        if(player.upperSpan.intersects(enemy.upperSpan)
+            ||player.upperSpan.intersects(enemy.lowerSpan)
+            ||player.lowerSpan.intersects(enemy.upperSpan)
+            ||player.lowerSpan.intersects(enemy.lowerSpan)){
+            
+            if(!enemy.collidingWithPlayer){//just started colliding
+                enemy.collidingWithPlayer=true;
+                enemy.health-=3;
+                player.health-=0.07;
+                if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]>enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]+enemy.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnBottom)){//player is below enemy
+                    //player top is below 3/4 down of the enemyilian, and therefore the enemyilian should be pushed up and the angle changed
+                    enemy.hitPlayerFromSide=false;
+                    if(!enemy.collidingWithMap)
+                        enemy.angle=player.angle/2
+                                -3*((player.screenLocation[0]+player.imageSize[0]/2)-(enemy.screenLocation[0]+enemy.imageSize[0]/2));
+                    else
+                        enemy.angle=0;
+                    
+                    enemy.speed+=2.5*(player.speed-enemy.speed)+3;
+                    player.speed*=3/5;
+                    
+                } else if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*player.CAR_PIXELS_VERTICAL<enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]){//player is above enemy
+                    enemy.hitPlayerFromSide=false;
+                    swapVA(enemy);
+                    enemy.angle+=5;
+                    enemy.screenLocation[1]-=2;
+                }else{
+                if(playerIsToRightOfEnemy(enemy)){
+                    if((enemy.rightNextToSide)){
+                        player.screenLocation[0]=enemy.screenLocation[0]+enemy.imageSize[0]-enemy.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0];
+                        player.screenLocation[0]+=15;
+                        player.angle=15;
+                    } else{
+                    enemy.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]+(int)(player.angle/3)
+                            //-(int)(player.speed/3)
+                            ;
+                    if(player.turningRight){
+                        enemy.speed=player.speed;
+                        if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
+                            enemy.angle=-25;
+                            player.angle=25;
+                        } else{
+                        enemy.angle=player.angle*playerToEnemyAngleMultiple;
+                        
+                        
+                        if(enemy.angle<-25)
+                            player.angle=-10;
+                        else
+                            player.angle=5;
+//                        player.angle*=-0.5;
+                        }
+                    } else{  //normal
+                        enemy.speed=player.speed;
+                        if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
+                            enemy.angle=-25;
+                            player.angle=25;
+                        } else{
+                        enemy.angle=player.angle*playerToEnemyAngleMultiple;
+                        if(enemy.angle<-25)
+                            player.angle=10;
+                        else
+                            player.angle=-5;
+//                        player.angle*=-0.5;
+                        }
+                    }
+                    }
+                } else{ //player is to the left of the enemy
+                    if((enemy.rightNextToSide)){
+                    player.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace;
+                    player.screenLocation[0]-=5;
+                    player.angle=-15;
+                    } else{
+                    enemy.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0]+5+(int)(player.angle/3)
+                            //+(int)(player.speed/3)
+                            ;
+                    if(player.turningLeft){
+                        enemy.speed=player.speed;
+                        if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
+                            enemy.angle=25;
+                            player.angle=-25;
+                        } else{
+                        enemy.angle=player.angle*playerToEnemyAngleMultiple;
+                        
+                        if(enemy.angle<-25)
+                            player.angle=10;
+                        else
+                            player.angle=-5;
+//                        player.angle*=-0.5;
+                        }
+                        
+                    } else{  //normal
+                        enemy.speed=player.speed;
+                        if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
+                            enemy.angle=25;
+                            player.angle=-25;
+                        } else{
+                            enemy.angle=player.angle*playerToEnemyAngleMultiple;
+                            if(enemy.angle<-25)
+                                player.angle=-10;
+                            else
+                                player.angle=5;
+//                          player.angle*=-0.5;
+                        }
+                    }
+                    }
+                }
+                }
+                
+                
+            } else{ //was already colliding
+                if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]>enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]+enemy.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnBottom)){ //player below enemy
+                    enemy.speed+=5;
+                    player.speed-=10;
+                } else if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*player.CAR_PIXELS_VERTICAL<enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]){ //player above enemy
+                    enemy.hitPlayerFromSide=false;
+                    player.speed+=5;
+                    enemy.speed-=5;
+                }else{ //was from the side::
+                if((playerIsToRightOfEnemy(enemy)||(enemy.rightNextToSide&&!enemy.hitMapOnRightSideOfCar))&&!enemy.hittingRightSideOfMap){
+                    if((enemy.rightNextToSide&&!enemy.hitMapOnRightSideOfCar)){
+                        player.screenLocation[0]=enemy.screenLocation[0]+enemy.imageSize[0]-enemy.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0]+15;
+//                        player.angle=15;
+                        enemy.angle=0;
+                    } else{
+                        enemy.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]+(int)(player.angle/3)
+//                            //-(int)(player.speed/3)
+                            ;
+                    }
+                    
+                } else{
+                    if((enemy.rightNextToSide&&enemy.hitMapOnRightSideOfCar)){
+                    player.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace;
+//                    player.angle=-15;
+                    enemy.angle=0;
+                    } else{
+                        enemy.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0]+(int)(player.angle/3)
+//                      //+(int)(player.speed/3)
+                        ;
+                    }
+                }
+            }
+            }
+            
+            
+        } else enemy.collidingWithPlayer=false;
     }
     
     private boolean checkMapEnemyCollisions(EnemyFlow enemy){
@@ -1245,7 +1548,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         }
     }
     
-    public int MAX_CIVILIANS=15;
+    public int MAX_CIVILIANS=15,MAX_ENEMIES=1;
     private int shouldExpireCheckPing=0;
 
     /**

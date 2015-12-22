@@ -5,12 +5,46 @@
  */
 package lactoseintolerant;
 
+import java.awt.Graphics;
+import javax.swing.JFrame;
+
 /**
  *
  * @author 0001058857
  */
 public class OptionsMenu extends Menu{
     
+    public JFrame frame=null;
     
+    public CListener done=null;
+    
+    public OptionsMenu(CListener done,JFrame fr){
+        this.done=done;
+        (frame=fr).add(this);
+        
+        this.setLayout(null);
+        
+        addComponents();
+        
+        this.repaint();
+        this.revalidate();
+        
+    }
+    
+    private void addComponents(){
+        //exit::
+        this.add(new CButton(100,100,300,100,
+            new javax.swing.ImageIcon[]{null,null}){
+                @Override
+                public void released(){
+                    done.actionPerformed();
+                }
+            });
+    }
+    
+    @Override
+    public void paintComponent(Graphics p){
+        
+    }
     
 }

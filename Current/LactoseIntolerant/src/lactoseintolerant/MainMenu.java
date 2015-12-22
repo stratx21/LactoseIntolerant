@@ -29,7 +29,19 @@ public class MainMenu extends Menu{
     
     public MainMenu(JFrame f){
 //        GameFlow g=new GameFlow(f);//comment out to not auto-go to game
+        setUpMainMenu(f);
+    }
+    
+    @Override
+    public void paintComponent(Graphics p){
+        p.drawImage(mainBackground,0,0,null);
+    }
+    
+    private void setUpMainMenu(JFrame f){
+        System.out.println("setting up main menu...");
         
+        f.getContentPane().removeAll();
+        f.getContentPane().repaint();
         
         this.setLayout(null);
         
@@ -59,7 +71,12 @@ public class MainMenu extends Menu{
                     new ImageIcon(GraphicsAssets.getImage(31)) }             ){
         @Override
         public void released(){
-            GaragePanel g = new GaragePanel(f,1);
+            GaragePanel g = new GaragePanel(f,1){
+                @Override
+                public void backToMainMenu(){
+                    setUpMainMenu(f);
+                }
+            };
         }
         });
         
@@ -69,7 +86,15 @@ public class MainMenu extends Menu{
                     new ImageIcon(GraphicsAssets.getImage(33)) }             ){
         @Override
         public void released(){
-            
+            f.getContentPane().removeAll();
+                        f.getContentPane().repaint();
+                        f.add(new OptionsMenu(new CListener(){
+                                @Override
+                                public void actionPerformed(){
+                                    setUpMainMenu(f);
+                                }
+                            },f));
+                        f.repaint();
         }
         });
         
@@ -91,11 +116,6 @@ public class MainMenu extends Menu{
         }
         });
         
-    }
-    
-    @Override
-    public void paintComponent(Graphics p){
-        p.drawImage(mainBackground,0,0,null);
     }
     
     

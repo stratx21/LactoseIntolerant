@@ -52,7 +52,7 @@ public class OpeningPanel extends CPanel{
         }
         
         if(!done&&currentState!=0)
-        try{Thread.sleep(4000);
+        try{Thread.sleep(/*4000*/40);
         }catch(Exception e){
             ErrorLogger.logError(e,"OpeningPanel");
         }
