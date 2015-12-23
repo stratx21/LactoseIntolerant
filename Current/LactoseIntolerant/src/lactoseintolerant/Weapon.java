@@ -6,6 +6,7 @@
 package lactoseintolerant;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
@@ -51,18 +52,7 @@ public class Weapon {
         }
     }
     
-    public void fire(double angle){
-        switch(TYPE){
-            case 1:
-                
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
+    public void fire(double angle,int xC,int yC){
     }
     
     

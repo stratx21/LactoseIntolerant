@@ -18,6 +18,7 @@ public class GameFrame extends JFrame{
     public final int Y_SIZE=700;
     
     public GameFrame(){
+        this.setIconImage(GraphicsAssets.getIcon());
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setResizable(false);
         this.setSize(X_SIZE,Y_SIZE);

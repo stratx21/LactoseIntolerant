@@ -5,6 +5,9 @@
  */
 package lactoseintolerant;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Josh
@@ -15,7 +18,8 @@ public class StartGameFlow extends GameFrame{
     
     public StartGameFlow(){
         
-        
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JDialog.setDefaultLookAndFeelDecorated(true);
         
         //for full game and intro and stuff:: (also uncomment in MainMenu) ::
         currentPanel=new OpeningPanel();

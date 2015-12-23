@@ -97,9 +97,27 @@ public class Player{
                 break;
         }
         
+        setUpUpgradedStats();
         
         
+    }
+    
+    private void setUpUpgradedStats(){
+        if(Profile.upgrades[2][0]){ //speed
+            ORIGINAL_TOP_SPEED=TOP_SPEED+=21;
+        } else if(Profile.upgrades[1][0]){
+            ORIGINAL_TOP_SPEED=TOP_SPEED+=14;
+        } else if(Profile.upgrades[0][0]){
+            ORIGINAL_TOP_SPEED=TOP_SPEED+=7;
+        }
         
+        if(Profile.upgrades[2][1]){ //armor
+            health+=21;
+        } else if(Profile.upgrades[1][1]){
+            health+=14;
+        } else if(Profile.upgrades[0][1]){
+            health+=7;
+        }
     }
     
     

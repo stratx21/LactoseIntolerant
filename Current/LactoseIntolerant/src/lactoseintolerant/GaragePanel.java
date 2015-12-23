@@ -51,7 +51,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public CButton prev=null,next=null,play=null;
     public CButton[] bottomButtons=new CButton[4];
     
-    public CButton menu1=null,menu2=null,menu3=null;
+    public CButton menu0=null,menu1=null,menu2=null,menu3=null;
     
     public int missionIndex=1,allowedLevels=1;
     
@@ -79,6 +79,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public byte mode=0,oldMode=0;
     
     public GaragePanel(JFrame f,int level){
+        System.out.println("setting up GaragePanel...");
+        
         frame=f;
         
         frame.getContentPane().removeAll();
@@ -263,6 +265,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             case 2:
                 break;
             case 3:
+                this.remove(menu0);
                 this.remove(menu1);
                 this.remove(menu2);
                 this.remove(menu3);
@@ -317,7 +320,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                                 equipped=new int[]{xIndex,yIndex};
                                         }
                                     } else if(yIndex>1){//is a weapon type and is already owned
-                                        equipped=equipped[0]!=xIndex&&equipped[1]!=yIndex ? new int[]{xIndex,yIndex} : new int[2];
+                                        equipped=equipped[0]!=xIndex||equipped[1]!=yIndex ? new int[]{xIndex,yIndex} : new int[2];
                                         
                                         repaint();
                                     }
@@ -354,22 +357,35 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     
     private void setMenuButtonComponents(){
-        //save and quit
-        this.add(menu1=new CButton(250,75,500,100,
-                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(37)),
-                            new ImageIcon(GraphicsAssets.getImage(38))}
+        
+        //save
+        this.add(menu0=new CButton(375,30,250,100,
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(63)),
+                            new ImageIcon(GraphicsAssets.getImage(64))}
                 ){
                     @Override
                     public void released(){
+                        Profile.save();
+                    }
+            });
+        
+        //save and quit
+        this.add(menu1=new CButton(375,160,250,100,
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(59)),
+                            new ImageIcon(GraphicsAssets.getImage(60))}
+                ){
+                    @Override
+                    public void released(){
+                        Profile.save();
                         backToMainMenu();
                     }
             });
         
         
         //quit without saving
-        this.add(menu2=new CButton(250,225,500,100,
-            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(37)),
-                            new ImageIcon(GraphicsAssets.getImage(38))}
+        this.add(menu2=new CButton(375,290,250,100,
+            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(61)),
+                            new ImageIcon(GraphicsAssets.getImage(62))}
                 ){
                     @Override
                     public void released(){
@@ -378,7 +394,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             });
         
         //options
-        this.add(menu3=new CButton(250,375,500,100,
+        this.add(menu3=new CButton(375,420,250,100,
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(37)),
                             new ImageIcon(GraphicsAssets.getImage(38))}
                 ){
@@ -414,9 +430,11 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             });
     }
     
-    public void backToMainMenu(){
+    public void save(){
         
     }
+    
+    public void backToMainMenu(){}
     
     public void rmv(Component c){
         this.remove(c);

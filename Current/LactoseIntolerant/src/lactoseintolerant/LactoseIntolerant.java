@@ -5,6 +5,8 @@
  */
 package lactoseintolerant;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author 0001058857
@@ -15,6 +17,7 @@ public class LactoseIntolerant {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        JFrame.setDefaultLookAndFeelDecorated(true);
         new StartGameFlow();
     }
     

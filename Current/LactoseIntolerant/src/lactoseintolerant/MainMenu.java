@@ -5,14 +5,22 @@
  */
 package lactoseintolerant;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 /**
@@ -24,6 +32,9 @@ public class MainMenu extends Menu{
 //    private Rectangle nw=new Rectangle(462,293,646,346); //new game
 //    private Rectangle options=new Rectangle(245,379,646,432);
 //    private Rectangle exit=new Rectangle(245,469,646,523);
+    public boolean wrongFilePrompt=false;
+    
+    private CButton wrongFileOK=null;
     
     private BufferedImage mainBackground=GraphicsAssets.getImage(27);
     
@@ -34,12 +45,33 @@ public class MainMenu extends Menu{
     
     @Override
     public void paintComponent(Graphics p){
-        p.drawImage(mainBackground,0,0,null);
+        if(!wrongFilePrompt)
+            p.drawImage(mainBackground,0,0,null);
+        else{
+            p.setColor(new Color(0,0,0,150));
+            p.fillRect(0,0,1000,700);
+            try{
+                p.setColor(Color.white);
+                p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont(48f));
+                p.drawString("File input invalid",350,350);
+            } catch(Exception e){
+                ErrorLogger.logError(e,"paintComponent(Graphics) - MainMenu");
+            }
+            
+            //prompt OK for user knowing the file didn't work
+            this.add(wrongFileOK=new CButton(450,500,100,67,
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(65)),
+                            new ImageIcon(GraphicsAssets.getImage(66))}
+                ){
+                    @Override
+                    public void released(){
+                        
+                    }
+            });
+        }
     }
     
     private void setUpMainMenu(JFrame f){
-        System.out.println("setting up main menu...");
-        
         f.getContentPane().removeAll();
         f.getContentPane().repaint();
         
@@ -53,7 +85,18 @@ public class MainMenu extends Menu{
                     new ImageIcon(GraphicsAssets.getImage(35)) }             ){
         @Override
         public void released(){
-            
+            try{
+                Profile.open();
+            } catch(Exception e){
+                ErrorLogger.logError(e,"setUpMainMenu(JFrame) - MainMenu");
+            }
+            if(Profile.inputSaveFile!=null)
+                new GaragePanel(f,1){
+                    @Override
+                    public void backToMainMenu(){
+                        setUpMainMenu(f);
+                    }
+                };
         }
         @Override
         public void entered(){

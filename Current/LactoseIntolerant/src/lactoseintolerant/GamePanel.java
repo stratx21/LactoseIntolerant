@@ -123,6 +123,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument
         //affected by screenDistortY::
         mapDraw(p);
+        drawProjectiles(p);
         player.draw(p,screenDistortY);
         civiliansDraw(p);
         enemiesDraw(p);
@@ -304,7 +305,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         if(playerWeapon.isInAttack){
             if(canAttackPing==0){
                 if(!weaponIsBoost)
-                    playerWeapon.projectiles.add(null);
+                    playerWeapon.projectiles.add(new Projectile(
+                            player.angle,playerWeapon.TYPE,
+                            playerWeapon.LEVEL,
+                            player.screenLocation[0]+player.imageSize[0]/2,
+                            player.screenLocation[1]+player.imageSize[1]/2));
             }
             canAttackPing++;
             if(weaponIsBoost)
@@ -676,6 +681,13 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      */
     private void mapDraw(Graphics p){
         map.draw(p,screenDistortY);
+    }
+    
+    private void drawProjectiles(Graphics p){
+        for (Projectile projectile : playerWeapon.projectiles) {
+            projectile.draw(p,screenDistortY);
+            projectile.calc(-1*(getHowFarGoesUpForAIs((int)(Math.sin(projectile.angle)*projectile.speed))/2-playerScreenChange),screenDistortY);
+        }
     }
     
     

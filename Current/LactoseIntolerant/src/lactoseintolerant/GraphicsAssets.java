@@ -124,6 +124,19 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/upgradesMenu/unbought.png"))));//57
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/upgradesMenu/bought.png"))));//58
             
+            //Garage Menu tab::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/SaveQuit00.png"))));//59
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/SaveQuit01.png"))));//60
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/QuitWithoutSaving00.png"))));//61
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/QuitWithoutSaving01.png"))));//62
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/Save00.png"))));//63
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/Save01.png"))));//64
+            
+            //ok button::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/ok0.png"))));//65
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/ok1.png"))));//66
+            
+            
             
             
             
@@ -137,6 +150,16 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
     
     public static BufferedImage getImage(int index){
         return images.get(index);
+    }
+    
+    public static BufferedImage getIcon(){
+        BufferedImage i=null;
+        try{
+            i=(BufferedImage)(ImageIO.read(new File("src/Graphics/frameIcon.png")));
+        } catch(IOException e){
+            ErrorLogger.logIOError(e,"getIcon() - GraphicsAssets");
+        }
+        return i;
     }
     
     public static BufferedImage getFirstImage()throws IOException{
