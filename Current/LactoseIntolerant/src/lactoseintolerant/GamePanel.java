@@ -70,6 +70,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     public byte tempPing=0;
     
     private Color delayGreen=new Color(28,142,62,200),
+            underDelayGreen=new Color(19,98,43,200),
             speedBlue=new Color(63,105,252,200);
     
     public int level=0;
@@ -234,6 +235,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     //game components:::::
     
     private void drawWeaponDelay(Graphics p){
+        p.setColor(Color.gray);
+        p.fillRect(10,60,100,15);
         p.setColor(delayGreen);
         p.fillRect(10,60,(int)((1-(((double)canAttackPing)/playerWeapon.pingWaitDelay))*100.0),15);
     }
@@ -699,7 +702,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     }
     
     private final int TEST_MARGIN=20;
-    private boolean intersectingMedianPart(CivilianFlow c){
+    private boolean intersectingMedianPart(AIFlow c){
         Rectangle left,right;
         if(map.rLeft1!=null){
             left=new Rectangle(map.rLeft1.x-TEST_MARGIN,map.rLeft1.y,map.rLeft1.width+TEST_MARGIN,map.rLeft1.height);
@@ -772,7 +775,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             checkCivCivCollisions(civ,i);
             if(civ.rightNextToSide)
                 civ.angle=0;
-            checkAIProjectileCollisions(civ);
+            if(hasWeapon)
+                checkAIProjectileCollisions(civ);
     }
     
     private boolean checkCivilianMapCollisions(CivilianFlow civ){
@@ -1389,7 +1393,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     enemy.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]+(int)(player.angle/3)
                             //-(int)(player.speed/3)
                             ;
-                    if(player.turningRight||player.cantBeHitToRight){
+                    if(player.turningRight||player.cantBeHitToRight||intersectingMedianPart(enemy)){
                         enemy.speed=player.speed;
                         if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
                             enemy.angle=-25;
@@ -1428,7 +1432,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     enemy.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0]+5+(int)(player.angle/3)
                             //+(int)(player.speed/3)
                             ;
-                    if(player.turningLeft||player.cantBeHitToLeft){
+                    if(player.turningLeft||player.cantBeHitToLeft||intersectingMedianPart(enemy)){
                         enemy.speed=player.speed;
                         if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
                             enemy.angle=25;
@@ -1761,7 +1765,17 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 toAdd.screenLocation[1]=850;
             }
             
-            civilians.add(toAdd);
+            boolean a=true;
+            for(CivilianFlow civ : civilians){
+                if(toAdd.upperSpan.intersects(civ.lowerSpan)
+                    ||toAdd.upperSpan.intersects(civ.upperSpan)
+                    ||toAdd.lowerSpan.intersects(civ.upperSpan)
+                    ||toAdd.lowerSpan.intersects(civ.lowerSpan))
+                        a=false;
+            }
+            
+            if(a)//only add if it doesnt collide with another civilian
+                civilians.add(toAdd);
     }
     
     private void spawnEnemy(){

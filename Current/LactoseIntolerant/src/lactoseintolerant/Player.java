@@ -25,7 +25,7 @@ public class Player{
     public double ACCELERATION,TOP_SPEED,BRAKE_SPEED,ORIGINAL_TOP_SPEED,ORIGINAL_HEALTH;
     public boolean turningLeft=false,turningRight=false;
     
-    public boolean collidingWithMap=false;// unused?????????????????????????????????????????????????????
+    public boolean collidingWithMap=false;
     
     public boolean collidingWithCiv=false;
     
@@ -48,13 +48,11 @@ public class Player{
     public int currentTurnRate=0,stoppedTurningTurnRate=1;
     public boolean canTurnRight=true,canTurnLeft=true;
     
-    public float distanceTravelled=0;  //unused????????????????????????????????????????????????????  
-    
     public int[] screenLocation={200,400};
     public int[] imageSize={76,93};
     //public Polygon collisionSpan=new Polygon();
     
-    public long distancePixelsTotal=400;//unused?????????????????????????????????????????
+    public long distancePixelsTotal=400;
     
     public int[] IMG_BLANK_SPACE=new int[]{22,11}; //how much blank space there is
     
@@ -89,7 +87,7 @@ public class Player{
             case 0:
                 currentImage=GraphicsAssets.getImage(2);
                 health=100;//cars.getTopSpeed();
-                ACCELERATION=7;//cars.getAcceleration();
+                ACCELERATION=5;//cars.getAcceleration();
                 speed=ORIGINAL_TOP_SPEED=TOP_SPEED=75;//cars.getTopSpeed();
                 imageSize=new int[]{76,93};
                 IMG_BLANK_SPACE=new int[]{22,11};
