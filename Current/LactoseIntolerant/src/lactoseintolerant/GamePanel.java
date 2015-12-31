@@ -1042,6 +1042,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     }
     
     private void checkAIProjectileCollisions(AIFlow ai){
+        try{
         for(int i=0;i<playerWeapon.projectiles.size();i++){
             Projectile projectile=playerWeapon.projectiles.get(i);
             if(projectile.span.intersects(ai.upperSpan)
@@ -1058,6 +1059,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 playerWeapon.projectiles.remove(i);
                 i--;
             }
+        }        
+        }catch(Exception e)
+        {
+            System.out.println("Now it has a " + e);
         }
     }
     

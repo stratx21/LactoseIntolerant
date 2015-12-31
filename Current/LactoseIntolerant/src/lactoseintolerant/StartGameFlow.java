@@ -7,24 +7,28 @@ package lactoseintolerant;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 /**
  *
  * @author Josh
  */
 public class StartGameFlow extends JFrame{
     private CPanel currentPanel;
-    
-    public final int X_SIZE=1000;
-    public final int Y_SIZE=700;
+    private Button button;
+    public  int X_SIZE=0;
+    public  int Y_SIZE=0;
     
     public StartGameFlow(){  
+        
         this.setIconImage(GraphicsAssets.getIcon());
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setSize(X_SIZE,Y_SIZE);
         this.setVisible(true);
-        
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        setSIZE();
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
         
@@ -39,6 +43,17 @@ public class StartGameFlow extends JFrame{
         }
         
         setNewPanelType(new MainMenu(this));
+       
+        
+    }
+    
+    
+    public void setSIZE()
+    { 
+        X_SIZE=this.getWidth();
+        Y_SIZE=this.getHeight();
+        this.setSize(X_SIZE,Y_SIZE);
+        //TODO make game scale dinamicly
     }
     
     private void setNewPanelType(CPanel cp){    
