@@ -42,17 +42,18 @@ public class Weapon {
                 boostSpeed=lv*20;
                 break;
             case 1:
-                pingWaitDelay=20;
+                pingWaitDelay=3-lv;
                 break;
             case 2:
-                pingWaitDelay=150;
+                pingWaitDelay=70-lv*5;
                 break;
             case 3:
-                pingWaitDelay=200;
+                pingWaitDelay=125;
         }
     }
     
     public void fire(double angle,int xC,int yC){
+        
     }
     
     

@@ -20,11 +20,14 @@ public class Explosion {
     public BufferedImage image=GraphicsAssets.getImage(25);
     public boolean expired=false;
     
+    public int MAX_PING=55;
+    
     public Rectangle damageSpan=new Rectangle();//used??
     
-    public Explosion(int x,int y){
+    public Explosion(int x,int y,int maxPing){
         center.x=x;
         center.y=y;
+        MAX_PING=maxPing;
     }
     
     public void draw(Graphics p,int dy){
@@ -34,7 +37,7 @@ public class Explosion {
         angle+=35;
         radius+=2;
         
-        expired=radius>55;
+        expired=radius>MAX_PING;
     }
     
 }

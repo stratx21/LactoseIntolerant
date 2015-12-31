@@ -12,11 +12,18 @@ import javax.swing.JFrame;
  *
  * @author Josh
  */
-public class StartGameFlow extends GameFrame{
+public class StartGameFlow extends JFrame{
     private CPanel currentPanel;
     
+    public final int X_SIZE=1000;
+    public final int Y_SIZE=700;
     
-    public StartGameFlow(){
+    public StartGameFlow(){  
+        this.setIconImage(GraphicsAssets.getIcon());
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setResizable(false);
+        this.setSize(X_SIZE,Y_SIZE);
+        this.setVisible(true);
         
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
@@ -35,7 +42,7 @@ public class StartGameFlow extends GameFrame{
     }
     
     private void setNewPanelType(CPanel cp){    
-        this.setVisible(false);
+//        this.setVisible(false);
         this.remove(currentPanel);
         currentPanel=cp;
         this.add(currentPanel);

@@ -133,7 +133,7 @@ public class ErrorLogger {   //also static stuffs
         k.addActionListener((ActionEvent e) -> {
             System.out.println("-OK-");
             writeToFile(error,cmt.getText());
-            System.exit(0);
+//            System.exit(0);
         });
         
         if(aa==null||aa.equals(""))

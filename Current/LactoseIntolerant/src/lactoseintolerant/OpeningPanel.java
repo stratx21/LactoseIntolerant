@@ -19,6 +19,8 @@ public class OpeningPanel extends CPanel{
     private int currentState=0;//index #
     private int totalStates=3;//normal #s
     
+    private int ping=1;
+    
     private boolean imported=false;
     
     private ArrayList<BufferedImage> images=new ArrayList<BufferedImage>();
@@ -37,9 +39,10 @@ public class OpeningPanel extends CPanel{
         g.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
         if(currentState<totalStates){
             g.drawImage(images.get(currentState),0,100,FRAME_SIZE[0],FRAME_SIZE[1]-200,null);
-            currentState++;
+            if(ping%85==0)
+                currentState++;
         }else if(currentState==totalStates)
-            currentState++;
+                currentState++;
         else{
             done=true;
         }
@@ -51,8 +54,10 @@ public class OpeningPanel extends CPanel{
             imported=true;
         }
         
-        if(!done&&currentState!=0)
-        try{Thread.sleep(/*4000*/40);
+        ping++;
+        
+        if(!done&&currentState!=totalStates)
+        try{Thread.sleep(40);
         }catch(Exception e){
             ErrorLogger.logError(e,"OpeningPanel");
         }

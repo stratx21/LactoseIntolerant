@@ -74,14 +74,18 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public int level=0;
     
+    public boolean hasWeapon=false;
+    
     /**
      *
      * @param size size of JPanel, index 0 as the x size and 
      *      index 1 as the y size
      */
     public GamePanel(int[] size,int lv,CListener done,Weapon w){
-        if((playerWeapon=w).TYPE==0)
+        if(w!=null&&(playerWeapon=w).TYPE==0)
             weaponIsBoost=true;
+        
+        hasWeapon=playerWeapon!=null;
         
         map=new MapManager(0,1,done);
         //calcTimer.start();
@@ -120,10 +124,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      * 
      * @param p Graphics class instance that is being used to draw on the panel
      */
-    public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument
+    public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument.
         //affected by screenDistortY::
         mapDraw(p);
-        drawProjectiles(p);
+        if(hasWeapon)
+            drawProjectiles(p);
         player.draw(p,screenDistortY);
         civiliansDraw(p);
         enemiesDraw(p);
@@ -133,7 +138,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         drawSpeedBar(p);
         drawHealthBar(p);
         drawTimer(p);
-        drawWeaponDelay(p);
+        if(hasWeapon)
+            drawWeaponDelay(p);
     }
     
     
@@ -165,7 +171,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 e.calculate(-1*(getHowFarGoesUpForAIs((int)e.speed)/2-playerScreenChange),screenDistortY);
                 checkEnemyCollisions(e,i);
             } else{
-                explosions.add(new Explosion(e.screenLocation[0]+e.imageSize[0],e.screenLocation[1]+e.imageSize[1]/2));
+                explosions.add(new Explosion(e.screenLocation[0]+e.imageSize[0],e.screenLocation[1]+e.imageSize[1]/2,55));
                 enemies.remove(i);
                 i--;
             }
@@ -183,7 +189,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 c.calculate(-1*(getHowFarGoesUpForAIs((int)c.speed)/2-playerScreenChange),screenDistortY);
                 checkCivilianCollisions(c,i);
             }else{
-                explosions.add(new Explosion(c.screenLocation[0]+c.imageSize[0]/2,c.screenLocation[1]+c.imageSize[1]/2));
+                explosions.add(new Explosion(c.screenLocation[0]+c.imageSize[0]/2,c.screenLocation[1]+c.imageSize[1]/2,55));
                 civilians.remove(i);
                 i--;
             }
@@ -286,6 +292,16 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     ////////////////////////////////////////////////////////////////////////////
     //player functions:::::
     
+    private void spawnProjectile(int yInc){
+        playerWeapon.projectiles.add(new Projectile(
+                            player.angle,playerWeapon.TYPE,
+                            playerWeapon.LEVEL,
+                            player.screenLocation[0]+player.imageSize[0]/2,
+                            player.screenLocation[1]+player.imageSize[1]/2-yInc));
+    }
+    
+    public boolean weaponHeld=false;
+    
     /**
      * calculate the player and player's Weapon statistics. This is to be called after the delay so
      * it is called every however many milliseconds the delay is
@@ -302,32 +318,39 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 screenDistortY+=t/3;
         }
         
-        if(playerWeapon.isInAttack){
-            if(canAttackPing==0){
-                if(!weaponIsBoost)
-                    playerWeapon.projectiles.add(new Projectile(
-                            player.angle,playerWeapon.TYPE,
-                            playerWeapon.LEVEL,
-                            player.screenLocation[0]+player.imageSize[0]/2,
-                            player.screenLocation[1]+player.imageSize[1]/2));
+        if(hasWeapon){
+            if(weaponHeld&&canAttackPing==0){
+                    playerWeapon.canAttack=false;
+                    playerWeapon.isInAttack=true;
+                }
+            if(playerWeapon.isInAttack){
+                if(canAttackPing==0){
+                    if(!weaponIsBoost){
+                        spawnProjectile(0);
+                        if(playerWeapon.TYPE==1){
+                            spawnProjectile(24);
+                            spawnProjectile(48);
+                        }
+                            
+                    }
+                }
+                canAttackPing++;
+                if(weaponIsBoost)
+                    player.speed=player.TOP_SPEED+playerWeapon.boostSpeed;
+                
+                if(canAttackPing==playerWeapon.pingWaitDelay){
+                    playerWeapon.isInAttack=false;
+                    playerWeapon.canAttack=true;
+                }
+                
+            } else if(canAttackPing>0){
+                if(tempPing==5){
+                    canAttackPing--;
+                    tempPing=0;
+                }
+                tempPing++;
             }
-            canAttackPing++;
-            if(weaponIsBoost)
-                player.speed=player.TOP_SPEED+playerWeapon.boostSpeed;
-            
-            if(canAttackPing==playerWeapon.pingWaitDelay){
-                playerWeapon.isInAttack=false;
-                playerWeapon.canAttack=true;
-            }
-            
-        } else if(canAttackPing>0){
-            if(tempPing==5){
-                canAttackPing--;
-                tempPing=0;
-            }
-            tempPing++;
         }
-        
     }
     
     /**
@@ -339,27 +362,39 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         boolean b=false;
         Rectangle r;
         Polygon p;
+        
         //side collisions::
         if(player.lowerSpan.intersects(map.leftSide)||player.upperSpan.intersects(map.leftSide)){//left side/player collision::
             hittingLeftFromRight(MEDIAN_ANGLE);
+            player.cantBeHitToRight=false;
+            player.cantBeHitToLeft=true;
             player.screenLocation[0]=map.leftSide.x+map.leftSide.width-player.IMG_BLANK_SPACE[0];//132-10;
             b=true;
         } else if(player.lowerSpan.intersects(map.rightSide)||player.upperSpan.intersects(map.rightSide)){//right side/player collsion::
             hittingRightFromLeft(-1*MEDIAN_ANGLE);
+            player.cantBeHitToRight=true;
+            player.cantBeHitToLeft=false;
             player.screenLocation[0]=872-player.IMG_BLANK_SPACE[0]-player.CAR_PIXELS_HORIZONTAL;
             b=true;
+        } else{
+            player.cantBeHitToRight=false;
+            player.cantBeHitToLeft=false;
         }
         
         //median collisions::
-        else if(map.rLeft1!=null||map.rLeft2!=null){
+        if(map.rLeft1!=null||map.rLeft2!=null){
                 if((map.rLeft1!=null&&((p=map.upTri1).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))
                         ||(map.rLeft2!=null&&((p=map.upTri2).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))){
                     //car hit the upper triangular point of the median
-                    if(player.screenLocation[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN)
+                    if(player.screenLocation[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN){
                         hittingLeftFromRight(HIT_MEDIAN_FROM_TOP_CHANGE);
-                    else 
-                        hittingRightFromLeft(HIT_MEDIAN_FROM_TOP_CHANGE);
+                        player.screenLocation[0]+=7;
+                    } else{
+                        hittingRightFromLeft(-1*HIT_MEDIAN_FROM_TOP_CHANGE);
+                        player.screenLocation[0]-=7;
+                    }
                     
+                    player.speed=15;
                     b=true;
                     
                 }else if((map.rLeft1!=null&&((p=map.downTri1).intersects(player.lowerSpan)||p.intersects(player.upperSpan)))
@@ -367,13 +402,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     //car hit the lower triangular point of the median
                     if(player.screenLocation[0]+player.rectSize[0]>map.CENTER_OF_MEDIAN){//right part
                         hittingLeftFromRight(HIT_MEDIAN_FRONT_ANGLE_CHANGE);
-                        player.screenLocation[0]+=5;
-                        player.speed=5;
+                        player.screenLocation[0]+=7;
                     }else {                                                             //left part
                         hittingRightFromLeft(-1*HIT_MEDIAN_FRONT_ANGLE_CHANGE);
-                        player.screenLocation[0]-=5;
-                        player.speed=5;
+                        player.screenLocation[0]-=7;
                     }
+                    player.speed=-50;
                     
                     b=true;
                 }else if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rLeft1)||player.upperSpan.intersects(r)))
@@ -383,6 +417,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     player.screenLocation[0]=420-player.IMG_BLANK_SPACE[0]-player.CAR_PIXELS_HORIZONTAL;
                     b=true;
                     
+                    player.cantBeHitToRight=true;
+                    player.cantBeHitToLeft=false;
+                    
                 }else if((map.rLeft1!=null&&(player.lowerSpan.intersects(r=map.rRight1)||player.upperSpan.intersects(r)))
                         ||(map.rLeft2!=null&&(player.lowerSpan.intersects(r=map.rRight2)||player.upperSpan.intersects(r)))){
                     //car hit right side of median
@@ -390,6 +427,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     player.screenLocation[0]=590-player.IMG_BLANK_SPACE[0];
                     b=true;
                     
+                    player.cantBeHitToRight=false;
+                    player.cantBeHitToLeft=true;
+                    
+                } else{
+                    player.cantBeHitToRight=false;
+                    player.cantBeHitToLeft=false;
                 }
         }
         
@@ -495,7 +538,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      * @return civ CivilianFlow instance used to tell if the civilian is in
      * collision with the player, and includes the flow for the cases
      */
-    private double playerToCivAngleMultiple=3;
+    private final double playerToCivAngleMultiple=3;
     private void checkPlayerCivilianCollisions(CivilianFlow civ){
         if(player.upperSpan.intersects(civ.upperSpan)
             ||player.upperSpan.intersects(civ.lowerSpan)
@@ -522,11 +565,13 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     civ.hitPlayerFromSide=false;
                     swapVA(civ);
                 }else{
+                boolean a=false;
                 if(playerIsToRightOfCiv(civ)){
-                    if((civ.rightNextToSide)){
-                        player.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0];
-                        player.screenLocation[0]+=15;
+                    
+                    if((civ.rightNextToSide)||(a=intersectingMedianPart(civ))){
+                        player.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]-player.IMG_BLANK_SPACE[0];
                         player.angle=15;
+                        System.out.println(a);
                     } else{
                     civ.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-civ.imageSizeActual[0]+(int)(player.angle/3)
                             //-(int)(player.speed/3)
@@ -562,10 +607,10 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     }
                     }
                 } else{ //player is to the left of the civilian
-                    if((civ.rightNextToSide)){
-                    player.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace;
-                    player.screenLocation[0]-=5;
-                    player.angle=-15;
+                    if((civ.rightNextToSide)||(a=intersectingMedianPart(civ))){
+                        System.out.println(a);
+                        player.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-player.imageSize[0];
+                        player.angle=-15;
                     } else{
                     civ.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]+5+(int)(player.angle/3)
                             //+(int)(player.speed/3)
@@ -642,6 +687,22 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         } else civ.collidingWithPlayer=false;
     }
     
+    private final int TEST_MARGIN=20;
+    private boolean intersectingMedianPart(CivilianFlow c){
+        Rectangle left,right;
+        if(map.rLeft1!=null){
+            left=new Rectangle(map.rLeft1.x-TEST_MARGIN,map.rLeft1.y,map.rLeft1.width+TEST_MARGIN,map.rLeft1.height);
+            right=new Rectangle(map.rRight1.x,map.rRight1.y,map.rRight1.width+TEST_MARGIN,map.rRight1.height);
+            return c.upperSpan.intersects(left)||c.lowerSpan.intersects(left)
+                    ||c.upperSpan.intersects(right)||c.lowerSpan.intersects(right);
+        } else if(map.rLeft2!=null){
+            left=new Rectangle(map.rLeft2.x-TEST_MARGIN,map.rLeft2.y,map.rLeft2.width+TEST_MARGIN,map.rLeft2.height);
+            right=new Rectangle(map.rRight2.x,map.rRight2.y,map.rRight2.width+TEST_MARGIN,map.rRight2.height);
+            return c.upperSpan.intersects(left)||c.lowerSpan.intersects(left)
+                    ||c.upperSpan.intersects(right)||c.lowerSpan.intersects(right);
+        } else return false;
+    }
+    
     /**
      * 
      * draw each CivilianFlow object
@@ -685,8 +746,9 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     private void drawProjectiles(Graphics p){
         for (Projectile projectile : playerWeapon.projectiles) {
+            System.out.println(projectile.speed);
             projectile.draw(p,screenDistortY);
-            projectile.calc(-1*(getHowFarGoesUpForAIs((int)(Math.sin(projectile.angle)*projectile.speed))/2-playerScreenChange),screenDistortY);
+            projectile.calc(-1*(getHowFarGoesUpForAIs((int)(/*Math.cos(projectile.angle)**/projectile.speed))/2-playerScreenChange),screenDistortY);
         }
     }
     
@@ -699,6 +761,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             checkCivCivCollisions(civ,i);
             if(civ.rightNextToSide)
                 civ.angle=0;
+            checkAIProjectileCollisions(civ);
     }
     
     private boolean checkCivilianMapCollisions(CivilianFlow civ){
@@ -963,6 +1026,28 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         checkPlayerEnemyCollisions(enemy);
         checkMapEnemyCollisions(enemy);
         checkEnemyCivCollisions(enemy);
+        if(hasWeapon)
+            checkAIProjectileCollisions(enemy);
+    }
+    
+    private void checkAIProjectileCollisions(AIFlow ai){
+        for(int i=0;i<playerWeapon.projectiles.size();i++){
+            Projectile projectile=playerWeapon.projectiles.get(i);
+            if(projectile.span.intersects(ai.upperSpan)
+                    ||projectile.span.intersects(ai.lowerSpan)){
+                ai.health-=projectile.damage;
+                int exTime;
+                if(projectile.TYPE==1){
+                    exTime=7;
+                } else{
+                    exTime=40;
+                }
+                explosions.add(new Explosion(projectile.screenLocation[0]+projectile.size[0]/2,projectile.screenLocation[1]+projectile.size[1]/2,exTime));
+                
+                playerWeapon.projectiles.remove(i);
+                i--;
+            }
+        }
     }
     
     private double enemyToCivAngleMultiple=3;
@@ -1293,7 +1378,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     enemy.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]+(int)(player.angle/3)
                             //-(int)(player.speed/3)
                             ;
-                    if(player.turningRight){
+                    if(player.turningRight||player.cantBeHitToRight){
                         enemy.speed=player.speed;
                         if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
                             enemy.angle=-25;
@@ -1332,7 +1417,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     enemy.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0]+5+(int)(player.angle/3)
                             //+(int)(player.speed/3)
                             ;
-                    if(player.turningLeft){
+                    if(player.turningLeft||player.cantBeHitToLeft){
                         enemy.speed=player.speed;
                         if(enemy.angle>player.angle-3&&enemy.angle<player.angle+3){
                             enemy.angle=25;
@@ -1547,7 +1632,14 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     //=====================================================================VVVVV
     @Override
     public void keyTyped(KeyEvent e) {
-        
+//        switch(Character.toUpperCase(e.getKeyChar())){
+//            case ' ':
+//                if(hasWeapon&&canAttackPing==0){
+//                    playerWeapon.canAttack=false;
+//                    playerWeapon.isInAttack=true;
+//                }
+//                break;
+//        }
     }
     
     @Override
@@ -1570,10 +1662,11 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 player.turningLeft=false;//if was turning left, then starts to turn right instead.
                 break;
             case ' ':
-                if(canAttackPing==0){
+                if(hasWeapon&&canAttackPing==0){
                     playerWeapon.canAttack=false;
                     playerWeapon.isInAttack=true;
                 }
+                weaponHeld=true;
                 break;
         }
     }
@@ -1596,7 +1689,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 player.shouldCheckStoppedTurning=true;
                 break;
             case ' ':
-                
+                weaponHeld=false;
                 break;
         }
     }

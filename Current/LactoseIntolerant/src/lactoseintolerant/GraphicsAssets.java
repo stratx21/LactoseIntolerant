@@ -136,7 +136,14 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/ok0.png"))));//65
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/MainMenu/ok1.png"))));//66
             
+            //projectiles::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Projectiles/Bullet.png"))));//67
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Projectiles/Mine.png"))));//68
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Projectiles/Missile.png"))));//69
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Projectiles/Mine1.png"))));//70
             
+            //options menu background::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/OptionsMenu/Background.png"))));//71
             
             
             

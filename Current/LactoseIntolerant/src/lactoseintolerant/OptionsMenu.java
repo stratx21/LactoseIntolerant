@@ -44,7 +44,8 @@ public class OptionsMenu extends Menu{
     
     @Override
     public void paintComponent(Graphics p){
-        
+        //draw background::
+        p.drawImage(GraphicsAssets.getImage(71),0,0,1000,700,null);
     }
     
 }

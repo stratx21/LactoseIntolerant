@@ -66,6 +66,8 @@ public class Player{
     
     public boolean collidedMap=false;
     
+    public boolean cantBeHitToRight=false,cantBeHitToLeft=false;
+    
     public Rectangle upperSpan=new Rectangle(),lowerSpan=new Rectangle();
     public int[] rectSize=new int[]{31,36},
             addForOriginRect=new int[]{7,-7};//what is this variable? is it just something i used to figure it out once i looked
@@ -155,7 +157,7 @@ public class Player{
         
 //        System.out.println(TOP_SPEED);
         
-        if(accelerating){ //speed in kilometers per hour
+        if(accelerating){
             speedChange=ACCELERATION;
             if(speed<TOP_SPEED){
                 speed+=ACCELERATION;
