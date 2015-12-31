@@ -32,11 +32,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     private OptionsMenu optionsMenu=null;
     
-    public byte currentCar=0,currentCarDisplayed=0;
+    public int currentCar=0,currentCarDisplayed=0;
     
     public int[] equipped=new int[2];
-    
-    
     
     //speed, health, boost, machine gun, missiles
     
@@ -258,9 +256,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 }
                 break;
             case 1:
-                for(int i=0;i<6;i++)
-                    for(int j=0;j<3;j++)
-                        this.remove(upgradesButtons[j][i]);
+                removeAllBuyUpgradesButtons();
                 break;
             case 2:
                 break;
@@ -292,6 +288,15 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         repaint();
     }
     
+    //note :: to switch cars, try running removeAllBuyUpgradesButtons, then change currentCarDispalyed to whatever id should be displayed, then run addUpgradesComponents - but will also need to look for the stuff on top deciding which car is chosen, this is not in at all yet. 
+    
+    
+    private void removeAllBuyUpgradesButtons(){
+        for(int i=0;i<6;i++)
+            for(int j=0;j<3;j++)
+                this.remove(upgradesButtons[j][i]);
+    }
+    
     private void addUpgradesComponents(){
         CButton temp;
         for(int i=0;i<6;i++)
@@ -301,14 +306,14 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                             new ImageIcon(GraphicsAssets.getImage(57))},false){
                                 @Override
                                 public void released(){
-                                    if(!Profile.upgrades[xIndex][yIndex]){
+                                    if(!Profile.upgrades[currentCarDisplayed][xIndex][yIndex]){
                                         double t;
-                                        if(Profile.money>(t=Profile.prices[xIndex][yIndex])
-                                                &&(xIndex==0||Profile.upgrades[0][yIndex])
-                                                &&(xIndex<2||Profile.upgrades[1][yIndex])
-                                                &&(xIndex<3||Profile.upgrades[2][yIndex])){//can buy it
+                                        if(Profile.money>(t=Profile.prices[currentCarDisplayed][xIndex][yIndex])
+                                                &&(xIndex==0||Profile.upgrades[currentCarDisplayed][0][yIndex])
+                                                &&(xIndex<2||Profile.upgrades[currentCarDisplayed][1][yIndex])
+                                                &&(xIndex<3||Profile.upgrades[currentCarDisplayed][2][yIndex])){//can buy it
                                             Profile.money-=t;
-                                            Profile.upgrades[xIndex][yIndex]=true;
+                                            Profile.upgrades[currentCarDisplayed][xIndex][yIndex]=true;
                                             
                                             icons=new ImageIcon[]{
                                                 new ImageIcon(GraphicsAssets.getImage(58)),
@@ -329,7 +334,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 
                                 @Override
                                 public void entered(){
-                                    currentPriceToDisplay=Profile.prices[xIndex][yIndex];
+                                    currentPriceToDisplay=Profile.prices[currentCarDisplayed][xIndex][yIndex];
                                     rpnt();
                                 }
                                 
@@ -344,7 +349,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 temp.xIndex=j;
                 temp.yIndex=i;
                 
-                if(Profile.upgrades[j][i]){
+                if(Profile.upgrades[currentCarDisplayed][j][i]){
                     temp.icons=new ImageIcon[]{
                         new ImageIcon(GraphicsAssets.getImage(58)),
                         new ImageIcon(GraphicsAssets.getImage(58))};

@@ -27,6 +27,8 @@ public class Player{
     
     public boolean collidingWithMap=false;// unused?????????????????????????????????????????????????????
     
+    public boolean collidingWithCiv=false;
+    
     public boolean accelerating=false,brakes=false;
     
     public boolean hittingSideMap=false;
@@ -41,7 +43,7 @@ public class Player{
     
     public double speed=40;
     public double angle=25,ANGLE_MIN=-25,ANGLE_MAX=25,angleIncrement=5; //angle 0=straight up
-    public double health,moneyHolding;
+    public double health;
     public double noEffectDecrease=3,brakeDecrease=5;
     public int currentTurnRate=0,stoppedTurningTurnRate=1;
     public boolean canTurnRight=true,canTurnLeft=true;
@@ -105,19 +107,19 @@ public class Player{
     }
     
     private void setUpUpgradedStats(){
-        if(Profile.upgrades[2][0]){ //speed
+        if(Profile.upgrades[CAR_TYPE][2][0]){ //speed
             ORIGINAL_TOP_SPEED=TOP_SPEED+=21;
-        } else if(Profile.upgrades[1][0]){
+        } else if(Profile.upgrades[CAR_TYPE][1][0]){
             ORIGINAL_TOP_SPEED=TOP_SPEED+=14;
-        } else if(Profile.upgrades[0][0]){
+        } else if(Profile.upgrades[CAR_TYPE][0][0]){
             ORIGINAL_TOP_SPEED=TOP_SPEED+=7;
         }
         
-        if(Profile.upgrades[2][1]){ //armor
+        if(Profile.upgrades[CAR_TYPE][2][1]){ //armor
             health+=21;
-        } else if(Profile.upgrades[1][1]){
+        } else if(Profile.upgrades[CAR_TYPE][1][1]){
             health+=14;
-        } else if(Profile.upgrades[0][1]){
+        } else if(Profile.upgrades[CAR_TYPE][0][1]){
             health+=7;
         }
     }

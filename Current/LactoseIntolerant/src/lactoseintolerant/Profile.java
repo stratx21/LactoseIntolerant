@@ -19,14 +19,54 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Profile {
     
-    //speed, health, boost, machine gun, mines, missiles
-    public static boolean[][] upgrades=new boolean[3][6]; //make a 3d array for each car type added in
+    /**
+     * first is the car type, out of:: 
+     * getaway van, race car, armored van, tank
+     * 
+     * second is the level of the upgrade of the third (1-3) - this is before 
+     * the third only for the sake of using x-y easy access for the upgrades
+     * menu in GarageMenu.
+     * 
+     * third is the type of upgrade for that car::
+     * speed, health, boost, machine gun, mines, missiles
+     * 
+     * 
+     */
+    public static boolean[][][] upgrades=new boolean[5][3][6]; //make a 3d array for each car type added in
     
-    public static final double[][] prices=new double[][]{
+    public static final double[][][] prices=new double[][][]{
+        {//sudan
         {10000,15000,30000,45000,65000,85000},
         {15000,22500,10000,17500,20000,22500},
         {22500,27500,15000,22500,25000,32500}
+        },
+        
+        {//getaway van
+        {10000,15000,30000,45000,65000,85000},
+        {15000,22500,10000,17500,20000,22500},
+        {22500,27500,15000,22500,25000,32500}
+        },
+        
+        {//race car
+        {10000,15000,30000,45000,65000,85000},
+        {15000,22500,10000,17500,20000,22500},
+        {22500,27500,15000,22500,25000,32500}
+        },
+        
+        {//armored van
+        {10000,15000,30000,45000,65000,85000},
+        {15000,22500,10000,17500,20000,22500},
+        {22500,27500,15000,22500,25000,32500}
+        },
+        
+        {//tank
+        {10000,15000,30000,45000,65000,85000},
+        {15000,22500,10000,17500,20000,22500},
+        {22500,27500,15000,22500,25000,32500}
+        },
     };
+    
+    
     
     public static int equipped=0; 
     
@@ -43,12 +83,12 @@ public class Profile {
             //save.write......
             
             save.write(money+":");
-            
-            for(int i=0;i<3;i++){
-                for(int j=0;j<6;j++){
-                    save.write(upgrades[i][j]+":");
+            for(int k=0;k<5;k++)
+                for(int i=0;i<3;i++){
+                    for(int j=0;j<6;j++){
+                        save.write(upgrades[k][i][j]+":");
+                    }
                 }
-            }
             
             save.close();
         } catch(Exception ex){
@@ -72,11 +112,12 @@ public class Profile {
         money=Double.parseDouble(in[0]);
         
         int c=1;
-        for(int i=0;i<3;i++)
-            for(int j=0;j<6;j++){
-                upgrades[i][j]=Boolean.parseBoolean(in[c]);
-                c++;
-            }
+        for(int k=0;k<5;k++)
+            for(int i=0;i<3;i++)
+                for(int j=0;j<6;j++){
+                    upgrades[k][i][j]=Boolean.parseBoolean(in[c]);
+                    c++;
+                }
     }
     
 }

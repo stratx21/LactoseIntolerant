@@ -96,7 +96,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         
         objectiveTime=map.currentLevel.objectiveTime;
         
-        System.out.println("thru the GamePanel constructor");
+//        System.out.println("thru the GamePanel constructor");
     }
     
     /**
@@ -189,10 +189,20 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 c.calculate(-1*(getHowFarGoesUpForAIs((int)c.speed)/2-playerScreenChange),screenDistortY);
                 checkCivilianCollisions(c,i);
             }else{
-                explosions.add(new Explosion(c.screenLocation[0]+c.imageSize[0]/2,c.screenLocation[1]+c.imageSize[1]/2,55));
+                explosions.add(new Explosion(c.screenLocation[0]+c.imageSizeActual[0]/2,c.screenLocation[1]+c.imageSizeActual[1]/2,55));
                 civilians.remove(i);
                 i--;
             }
+        }
+        
+        boolean a=false;
+        for(int i=0;i<civilians.size();i++)
+            if(civilians.get(i).collidingWithPlayer)
+                a=true;
+        
+        if(!a){//player is not colliding with any civilians
+            player.canTurnLeft=true;
+            player.canTurnRight=true;
         }
     }
     
@@ -571,7 +581,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     if((civ.rightNextToSide)||(a=intersectingMedianPart(civ))){
                         player.screenLocation[0]=civ.screenLocation[0]+civ.imageSize[0]-civ.IMG_BLANK_SPACE_ACTUAL[0]-player.IMG_BLANK_SPACE[0];
                         player.angle=15;
-                        System.out.println(a);
+//                        System.out.println(a);
                     } else{
                     civ.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-civ.imageSizeActual[0]+(int)(player.angle/3)
                             //-(int)(player.speed/3)
@@ -608,7 +618,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     }
                 } else{ //player is to the left of the civilian
                     if((civ.rightNextToSide)||(a=intersectingMedianPart(civ))){
-                        System.out.println(a);
+//                        System.out.println(a);
                         player.screenLocation[0]=civ.screenLocation[0]+civ.IMG_BLANK_SPACE_ACTUAL[0]-player.imageSize[0];
                         player.angle=-15;
                     } else{
@@ -683,6 +693,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
             }
             }
             
+            System.out.println("hit  "+player.turningLeft+player.turningRight+"  "+time);
             
         } else civ.collidingWithPlayer=false;
     }
@@ -746,7 +757,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     private void drawProjectiles(Graphics p){
         for (Projectile projectile : playerWeapon.projectiles) {
-            System.out.println(projectile.speed);
+//            System.out.println(projectile.speed);
             projectile.draw(p,screenDistortY);
             projectile.calc(-1*(getHowFarGoesUpForAIs((int)(/*Math.cos(projectile.angle)**/projectile.speed))/2-playerScreenChange),screenDistortY);
         }
@@ -950,7 +961,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE_ACTUAL[1]>civ.screenLocation[1]+civ.IMG_BLANK_SPACE_ACTUAL[1]+civ.CAR_PIXELS_VERTICAL_ACTUAL*(bottomCivCivRatio)){
                     //testing top is below 3/4 down of the civilian, and therefore the civilian should be pushed up and the angle changed
 //                    civ.hitPlayerFromSide=false;
-                    System.out.println("car hit vertical 1");
+//                    System.out.println("car hit vertical 1");
                     if(!civ.collidingWithMap)
                         civ.angle=testing.angle/2
                                 -3*((testing.screenLocation[0]+testing.imageSize[0]/2)-(civ.screenLocation[0]+civ.imageSize[0]/2));
@@ -962,13 +973,13 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                     
                 } else if(testing.screenLocation[1]+testing.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*testing.CAR_PIXELS_VERTICAL<civ.screenLocation[1]+civ.IMG_BLANK_SPACE[1]+10){
 //                    civ.hitPlayerFromSide=false;
-                    System.out.println("car hit vertical 2");
+//                    System.out.println("car hit vertical 2");
                     swapVA(civ,testing);
                 }else{             //is from the side
 //                    civ.hitPlayerFromSide=true; 
                 //was not hit from the bottom or the top; was the side::    VVVVVVVV
                     
-                    System.out.println("from side");
+//                    System.out.println("from side");
                     
                     if(!civ.collidingWithMap&&!civ.rightNextToSide){
                         civ.angle=testing.angle*2;
