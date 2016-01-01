@@ -569,7 +569,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 else{
                     if(justStarting){
                     p.setColor(new Color(0,0,0,(t=(int)(175-(time)/20))));
-                    p.fillRect(0,0,1100,800);
+                    p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
                     
                     try{
                         p.setColor(Color.black);
@@ -609,7 +609,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     repaint();
                  else{
                     p.setColor(new Color(0,0,0,215));
-                    p.fillRect(0,0,1100,800);
+                    p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
                     
                     try{
                         String a;
