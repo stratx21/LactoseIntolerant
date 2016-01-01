@@ -226,7 +226,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 break;
             case 3: //menu
                 p.setColor(new Color(0,0,0,110));
-                p.fillRect(0,0,1000,BOTTOM_BUTTONS_Y);//all the space except where the lower buttons are
+                p.fillRect(0,0,FRAME_SIZE[0]*4,(int)(FRAME_SIZE[1]*2.2-(int)(FRAME_SIZE[1]*.0)));//all the space except where the lower buttons are
                 
                 break;
         }
