@@ -35,6 +35,7 @@ public class OpeningPanel extends CPanel{
     
     @Override
     public void paintComponent(Graphics g){
+        super.setFrameS();
         g.setColor(Color.black);
         g.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
         if(currentState<totalStates){

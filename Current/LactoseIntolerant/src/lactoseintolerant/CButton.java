@@ -13,7 +13,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
+import javax.swing.*;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Image;
 /**
  *
  * @author 0001058857
@@ -23,7 +26,7 @@ public class CButton extends JButton implements MouseListener{
     public int xIndex,yIndex;//when applicable 
     
     ImageIcon[] icons=null;
-    
+    ImageIcon g;
     public boolean pernamantSelect=false;
     
     ImageIcon disabledIcon=null;
@@ -51,12 +54,29 @@ public class CButton extends JButton implements MouseListener{
     public CButton(int x,int y,int xs,int ys,ImageIcon[] ic){
         icons=ic;
         
-        this.setIcon(ic[0]);
+        //////
+        //////Method rescaling buton label
+        //////
+        //ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
+        Image image = icons[0].getImage(); // transform it
+        Image newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
+        g = new ImageIcon(newimg);
+        ic[0] =g;
+        
+        
+             image = icons[1].getImage(); // transform it
+         newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
+        g = new ImageIcon(newimg); 
+        ic[1]=g;
+        
+       
         super.setBounds(x,y,xs,ys);
+         this.setIcon(ic[0]);
         this.addMouseListener(this);
         
         setContentAreaFilled(true);
     }
+
     
     public void disable(boolean dis){
         if(disabled=dis){

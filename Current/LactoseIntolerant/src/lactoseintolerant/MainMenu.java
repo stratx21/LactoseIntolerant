@@ -45,11 +45,14 @@ public class MainMenu extends Menu{
     
     @Override
     public void paintComponent(Graphics p){
-        if(!wrongFilePrompt)
-            p.drawImage(mainBackground,0,0,null);
+        if(!wrongFilePrompt){
+            super.setFrameS();
+            p.drawImage(mainBackground,0,0,FRAME_SIZE[0],FRAME_SIZE[1],null);
+        }
         else{
             p.setColor(new Color(0,0,0,150));
-            p.fillRect(0,0,1000,700);
+            super.setFrameS();
+            p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
             try{
                 p.setColor(Color.white);
                 p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont(48f));
@@ -80,7 +83,7 @@ public class MainMenu extends Menu{
         f.add(this);
         
         //start button::
-        this.add(new CButton(245,293,184,54,
+        this.add(new CButton((int)(FRAME_SIZE[0]*.937),(int)(FRAME_SIZE[1]*1.28),(int)(FRAME_SIZE[0]*.937*1.65*.46),(int)(FRAME_SIZE[1]*.237),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(34)),
                     new ImageIcon(GraphicsAssets.getImage(35)) }             ){
         @Override
@@ -109,7 +112,7 @@ public class MainMenu extends Menu{
         });
         
         //new game button::
-        this.add(new CButton(462,293,184,54,
+        this.add(new CButton((int)(FRAME_SIZE[0]*1.77),(int)(FRAME_SIZE[1]*1.28),(int)(FRAME_SIZE[0]*.937*1.65*.46),(int)(FRAME_SIZE[1]*.237),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(30)),
                     new ImageIcon(GraphicsAssets.getImage(31)) }             ){
         @Override
@@ -124,9 +127,9 @@ public class MainMenu extends Menu{
         });
         
         //options button::
-        this.add(new CButton(245,379,401,52,
+        this.add(new CButton((int)(FRAME_SIZE[0]*.937),(int)(FRAME_SIZE[1]*1.65),(int)(FRAME_SIZE[0]*.937*1.65),(int)(FRAME_SIZE[1]*.237),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(32)),
-                    new ImageIcon(GraphicsAssets.getImage(33)) }             ){
+                    new ImageIcon(GraphicsAssets.getImage(33)) }           ){
         @Override
         public void released(){
             f.getContentPane().removeAll();
@@ -142,7 +145,7 @@ public class MainMenu extends Menu{
         });
         
         //exit button::
-        this.add(new CButton(245,469,401,53,
+        this.add(new CButton((int)(FRAME_SIZE[0]*.937),(int)(FRAME_SIZE[1]*1.65*1.243),(int)(FRAME_SIZE[0]*.937*1.65),(int)(FRAME_SIZE[1]*.237),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(28)),
                     new ImageIcon(GraphicsAssets.getImage(29)) }             ){
         @Override

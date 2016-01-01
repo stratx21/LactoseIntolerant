@@ -15,7 +15,11 @@ public class CPanel extends JPanel{
     public int DELAY=40;
     public int[] FRAME_SIZE=new int[]{1000,700};
     public boolean done=false;
- 
+    public void setFrameS()
+    { 
+        FRAME_SIZE[0]=this.getWidth();
+        FRAME_SIZE[1]=this.getHeight();
+    }
     public CPanel(){
         this.setLayout(null);
     }
