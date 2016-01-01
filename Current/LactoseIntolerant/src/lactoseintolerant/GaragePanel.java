@@ -100,11 +100,11 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     }
     
     private void addLowerModeButtons(){
+        double o=.96;
         //missions button::
-        this.add(bottomButtons[0]=new CButton(0,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[0]=new CButton(0,(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)(FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(43)),
-                                new ImageIcon(GraphicsAssets.getImage(44))},
-                false){
+                                new ImageIcon(GraphicsAssets.getImage(44))}){
                     
             @Override
             public void released(){
@@ -114,10 +114,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         });
         
         //upgrades button::
-        this.add(bottomButtons[1]=new CButton(250,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[1]=new CButton((int)(FRAME_SIZE[0]*o),(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)((int)FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(45)),
-                                new ImageIcon(GraphicsAssets.getImage(46))},
-                false){
+                                new ImageIcon(GraphicsAssets.getImage(46))}){
            @Override
            public void released(){
                mode=1;
@@ -126,10 +125,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         });
         
         //team button::
-        this.add(bottomButtons[2]=new CButton(500,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[2]=new CButton((int)(FRAME_SIZE[0]*o)*2,(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)((int)FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(47)),
-                                new ImageIcon(GraphicsAssets.getImage(48))},
-                false){
+                                new ImageIcon(GraphicsAssets.getImage(48))}){
            @Override
            public void released(){
                mode=2;
@@ -139,10 +137,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         
         //menu button::
-        this.add(bottomButtons[3]=new CButton(750,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[3]=new CButton((int)(FRAME_SIZE[0]*o)*3,(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)((int)FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(49)),
-                                new ImageIcon(GraphicsAssets.getImage(50))},
-                false){
+                                new ImageIcon(GraphicsAssets.getImage(50))}){
            @Override
            public void released(){
                mode=3;
@@ -599,7 +596,14 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 
                 
                 frameRate=1000/delay;
-                    
+                   if(player.health<0)
+                   {
+                       missionSuccess=false;
+                       gamePanel.time=100000000;
+                        p.setColor(new Color(0,0,0,215));
+                    p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
+                    changeBackToGarage();
+                          }
 //                System.out.println(frameRate+", "+gamePanel.player.speed);
                 
                  try{Thread.sleep(delay);}
