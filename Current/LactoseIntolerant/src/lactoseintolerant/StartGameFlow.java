@@ -50,8 +50,8 @@ public class StartGameFlow extends JFrame{
     
     public void setSIZE()
     { 
-        X_SIZE=this.getWidth();
-        Y_SIZE=this.getHeight();
+        X_SIZE=1000;//this.getWidth();
+        Y_SIZE=700;//this.getHeight();
         
         this.setSize(X_SIZE,Y_SIZE);
         //TODO make game scale dinamicly
