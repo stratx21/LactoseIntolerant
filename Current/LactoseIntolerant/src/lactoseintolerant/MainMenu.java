@@ -93,8 +93,8 @@ public class MainMenu extends Menu{
 
         //this.add(new CButton((int)(FRAME_SIZE[0]*.2),(int)(FRAME_SIZE[1]*.2),(int)(FRAME_SIZE[0]*.937*1.65*.46*.5),(int)(FRAME_SIZE[1]*.237*.5),
 
-        this.add(new CButton((int)(FRAME_SIZE[0]*.2),(int)(FRAME_SIZE[1]*.2),
-                (int)(FRAME_SIZE[0]*.937*1.65*.46),(int)(FRAME_SIZE[1]*.237),
+        this.add(new CButton((int)(FRAME_SIZE[0]*.245),(int)(FRAME_SIZE[1]*.415),
+                (int)(FRAME_SIZE[0]*.185),(int)(FRAME_SIZE[1]*.075),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(34)),
                     new ImageIcon(GraphicsAssets.getImage(35)) }             ){
         @Override
