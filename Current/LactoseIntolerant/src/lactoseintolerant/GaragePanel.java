@@ -25,7 +25,8 @@ import javax.swing.JFrame;
  * @author Josh
  */
 public class GaragePanel extends CPanel /*implements MouseListener*/{
-    
+    public int[] FRAME_SIZE={StartGameFlow.X_SIZE,StartGameFlow.Y_SIZE};
+       
     private JFrame frame=null;
     
     private GamePanel gamePanel=null;
@@ -41,7 +42,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public CButton[][] upgradesButtons=new CButton[3][6];
     
     
-    
+     
     private double currentPriceToDisplay=0.0;
     
     
@@ -172,6 +173,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     @Override
     public void paintComponent(Graphics p){
+        
         p.drawImage(background,0,0,FRAME_SIZE[0],FRAME_SIZE[1],null);
         drawMoneyDisplay(p);
         

@@ -38,7 +38,7 @@ public class MainMenu extends Menu{
     
     private BufferedImage mainBackground=GraphicsAssets.getImage(27);
     
-    int[] FRAME_SIZE = new int[2];
+    int[] FRAME_SIZE = {StartGameFlow.X_SIZE,StartGameFlow.Y_SIZE};
     
     public MainMenu(JFrame f){
 //        GameFlow g=new GameFlow(f);//comment out to not auto-go to game
@@ -90,12 +90,11 @@ public class MainMenu extends Menu{
         f.add(this);
         
         //start button::
-<<<<<<< HEAD
-        this.add(new CButton((int)(FRAME_SIZE[0]*.2),(int)(FRAME_SIZE[1]*.2),(int)(FRAME_SIZE[0]*.937*1.65*.46*.5),(int)(FRAME_SIZE[1]*.237*.5),
-=======
-        this.add(new CButton(245,293,184,54,
-        //this.add(new CButton((int)(FRAME_SIZE[0]*.937),(int)(FRAME_SIZE[1]*1.28),(int)(FRAME_SIZE[0]*.937*1.65*.46),(int)(FRAME_SIZE[1]*.237),
->>>>>>> 27c9901b9d4a8281e5ca93cdb3589d451c52b86a
+
+        //this.add(new CButton((int)(FRAME_SIZE[0]*.2),(int)(FRAME_SIZE[1]*.2),(int)(FRAME_SIZE[0]*.937*1.65*.46*.5),(int)(FRAME_SIZE[1]*.237*.5),
+
+        this.add(new CButton((int)(FRAME_SIZE[0]*.2),(int)(FRAME_SIZE[1]*.2),
+                (int)(FRAME_SIZE[0]*.937*1.65*.46),(int)(FRAME_SIZE[1]*.237),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(34)),
                     new ImageIcon(GraphicsAssets.getImage(35)) }             ){
         @Override
