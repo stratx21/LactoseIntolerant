@@ -123,10 +123,11 @@ public class MainMenu extends Menu{
         });
         
         //new game button::
-        this.add(new CButton(462,293,184,54,
-        //this.add(new CButton((int)(FRAME_SIZE[0]*1.77),(int)(FRAME_SIZE[1]*1.28),(int)(FRAME_SIZE[0]*.937*1.65*.46),(int)(FRAME_SIZE[1]*.237),
+       // this.add(new CButton(462,293,184,54,
+        this.add(new CButton((int)(int)(FRAME_SIZE[0]*.461),(int)(FRAME_SIZE[1]*.415),
+                (int)(FRAME_SIZE[0]*.185),(int)(FRAME_SIZE[1]*.075),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(30)),
-                    new ImageIcon(GraphicsAssets.getImage(31)) }             ){
+                    new ImageIcon(GraphicsAssets.getImage(31)) }         ){
         @Override
         public void released(){
             GaragePanel g = new GaragePanel(f,1){
@@ -139,8 +140,9 @@ public class MainMenu extends Menu{
         });
         
         //options button::
-        this.add(new CButton(245,379,401,52,
-        //this.add(new CButton((int)(FRAME_SIZE[0]*.937),(int)(FRAME_SIZE[1]*1.65),(int)(FRAME_SIZE[0]*.937*1.65),(int)(FRAME_SIZE[1]*.237),
+        //this.add(new CButton(245,379,401,52,
+        this.add(new CButton((int)(int)(FRAME_SIZE[0]*.245),(int)(FRAME_SIZE[1]*.536),
+                (int)(FRAME_SIZE[0]*.185*2.17),(int)(FRAME_SIZE[1]*.075),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(32)),
                     new ImageIcon(GraphicsAssets.getImage(33)) }           ){
         @Override
@@ -158,8 +160,8 @@ public class MainMenu extends Menu{
         });
         
         //exit button::
-        this.add(new CButton(245,469,401,53,
-//        this.add(new CButton((int)(FRAME_SIZE[0]*.937),(int)(FRAME_SIZE[1]*1.65*1.243),(int)(FRAME_SIZE[0]*.937*1.65),(int)(FRAME_SIZE[1]*.237),
+       // this.add(new CButton(245,469,401,53,
+        this.add(new CButton((int)(FRAME_SIZE[0]*.245),(int)(FRAME_SIZE[1]*.665),(int)(FRAME_SIZE[0]*.185*2.17),(int)(FRAME_SIZE[1]*.075),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(28)),
                     new ImageIcon(GraphicsAssets.getImage(29)) }             ){
         @Override
