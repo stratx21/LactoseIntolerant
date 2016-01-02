@@ -38,6 +38,8 @@ public class MainMenu extends Menu{
     
     private BufferedImage mainBackground=GraphicsAssets.getImage(27);
     
+    int[] FRAME_SIZE = new int[2];
+    
     public MainMenu(JFrame f){
 //        GameFlow g=new GameFlow(f);//comment out to not auto-go to game
         setUpMainMenu(f);
@@ -45,13 +47,14 @@ public class MainMenu extends Menu{
     
     @Override
     public void paintComponent(Graphics p){
+        FRAME_SIZE[0] = this.getWidth();
+        FRAME_SIZE[1] = this.getHeight();
+        
         if(!wrongFilePrompt){
-            super.setFrameS();
             p.drawImage(mainBackground,0,0,FRAME_SIZE[0],FRAME_SIZE[1],null);
         }
         else{
             p.setColor(new Color(0,0,0,150));
-            super.setFrameS();
             p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
             try{
                 p.setColor(Color.white);
@@ -75,6 +78,10 @@ public class MainMenu extends Menu{
     }
     
     private void setUpMainMenu(JFrame f){
+        
+        FRAME_SIZE[0] = StartGameFlow.X_SIZE;
+        FRAME_SIZE[1] = StartGameFlow.Y_SIZE;
+        
         f.getContentPane().removeAll();
         f.getContentPane().repaint();
         
@@ -83,7 +90,7 @@ public class MainMenu extends Menu{
         f.add(this);
         
         //start button::
-        this.add(new CButton((int)(FRAME_SIZE[0]*.937),(int)(FRAME_SIZE[1]*1.28),(int)(FRAME_SIZE[0]*.937*1.65*.46),(int)(FRAME_SIZE[1]*.237),
+        this.add(new CButton((int)(FRAME_SIZE[0]*.2),(int)(FRAME_SIZE[1]*.2),(int)(FRAME_SIZE[0]*.937*1.65*.46*.5),(int)(FRAME_SIZE[1]*.237*.5),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(34)),
                     new ImageIcon(GraphicsAssets.getImage(35)) }             ){
         @Override

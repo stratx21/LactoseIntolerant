@@ -17,8 +17,8 @@ import java.awt.event.*;
 public class StartGameFlow extends JFrame{
     private CPanel currentPanel;
     private Button button;
-    public  int X_SIZE=0;
-    public  int Y_SIZE=0;
+    public static int X_SIZE=0;
+    public static  int Y_SIZE=0;
     
     public StartGameFlow(){  
         
@@ -29,6 +29,7 @@ public class StartGameFlow extends JFrame{
         this.setVisible(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         setSIZE();
+        
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);
         
@@ -52,8 +53,7 @@ public class StartGameFlow extends JFrame{
     { 
         X_SIZE=this.getWidth();
         Y_SIZE=this.getHeight();
-        
-        this.setSize(X_SIZE,Y_SIZE);
+        System.out.println(X_SIZE);
         //TODO make game scale dinamicly
     }
     
