@@ -34,6 +34,12 @@ public class Profile {
      */
     public static boolean[][][] upgrades=new boolean[5][3][6]; //make a 3d array for each car type added in
     
+    
+    /**
+     * prices for each upgrade; each set includes the prices for the upgrades
+     * menu for each type of car, an empty space between each set for type
+     * of car
+     */
     public static final double[][][] prices=new double[][][]{
         {//sudan
         {10000,15000,30000,45000,65000,85000},
@@ -67,13 +73,14 @@ public class Profile {
     };
     
     
-    
-    public static int equipped=0; 
-    
     public static File inputSaveFile=null;
     
     public static double money=1000000.00;
     
+    /**
+     * save current progress in a save file, using the JFileChooser to let the
+     * user identify a name and where to save it.
+     */
     public static void save(){
         JFileChooser sv=new JFileChooser();
         if(sv.showSaveDialog(null)==JFileChooser.APPROVE_OPTION){
@@ -97,6 +104,12 @@ public class Profile {
     }
     }
     
+    /**
+     * 
+     * @throws Exception Exception thrown if the file is not found for the 
+     * Scanner "in" uses to import the data from the save file specified by
+     * the user through the JFileChooser
+     */
     public static void open() throws Exception{
         JFileChooser fc=new JFileChooser();
         fc.setFileFilter(new FileNameExtensionFilter("*.txt", "txt"));
