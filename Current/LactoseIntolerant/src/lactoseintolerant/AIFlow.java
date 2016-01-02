@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
  * @author 0001058857
  */
 public class AIFlow {
-    public boolean wipedOut=false,exploded=false;
     
     //keep the same between types::::              VVVVVVVVVV
     public int TYPE;
@@ -25,20 +24,15 @@ public class AIFlow {
         
     public boolean accelerating=false,brakes=false;
     
-    public boolean attacking=false,canAttack=true,isDoneWithAttack=false;
-    public int canAttackPing=0,attackReachPing=50;
-    
     public double speed=30;
     //has no angle max/min values (will go straight unless hit by another vehicle; will not turn on its own.
     public double angle=0;//angle 0=straight up
-    
     
     public double noEffectDecrease=3,brakeDecrease=5;
     public int currentTurnRate=0;
     
     public int angleIncrement=5;
     
-    public float distanceTravelled=0;
     public int[] screenLocation={180,400};
     public int[] IMG_BLANK_SPACE=new int[2];
     

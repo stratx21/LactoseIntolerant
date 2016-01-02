@@ -14,7 +14,14 @@ import javax.swing.JPanel;
 public class CPanel extends JPanel{
     public int DELAY=40;
     public boolean done=false;
+<<<<<<< HEAD
 
+=======
+    public void setFrameS(){ 
+//        FRAME_SIZE[0]=this.getWidth();
+//        FRAME_SIZE[1]=this.getHeight();
+    }
+>>>>>>> 27c9901b9d4a8281e5ca93cdb3589d451c52b86a
     public CPanel(){
         this.setLayout(null);
     }
