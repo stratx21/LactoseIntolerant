@@ -76,6 +76,19 @@ public class CButton extends JButton implements MouseListener{
         
         setContentAreaFilled(true);
     }
+    
+    public void changeIconSizes(){
+        Image image = icons[0].getImage(); // transform it
+        Image newimg = image.getScaledInstance(getWidth(), getHeight(),  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
+        g = new ImageIcon(newimg);
+        icons[0] =g;
+        
+        
+             image = icons[1].getImage(); // transform it
+         newimg = image.getScaledInstance(getWidth(), getHeight(),  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
+        g = new ImageIcon(newimg); 
+        icons[1]=g;
+    }
 
     
     public void disable(boolean dis){

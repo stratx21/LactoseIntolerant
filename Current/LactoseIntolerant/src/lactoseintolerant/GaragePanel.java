@@ -89,6 +89,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         frame.setVisible(true);
         
+        FRAME_SIZE=new int[]{f.getWidth(),f.getHeight()};
+        
         missionIndex=allowedLevels=level;
         
         addLowerModeButtons();
@@ -100,11 +102,24 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         switchBottomButtonComponents();
     }
     
+    public int getNewSizeX(double a){
+        return (int)(a*FRAME_SIZE[0]);
+    }
+    
+    public int getNewSizeY(double a){
+        return (int)(a*FRAME_SIZE[1]);
+    }
+    
+    private final double BOTTOM_BUTTONS_Y_RATIO=11.0/14.0;
+    
     private void addLowerModeButtons(){
-        double o=.96;
+//        double o=.96;
+        int y=(int)(BOTTOM_BUTTONS_Y_RATIO*FRAME_SIZE[1]);
+        int height=FRAME_SIZE[1]-y;
         //missions button::
         //this.add(bottomButtons[0]=new CButton(0,(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)(FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
-        this.add(bottomButtons[0]=new CButton(0,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+//        this.add(bottomButtons[0]=new CButton(0,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[0]=new CButton(0,y,FRAME_SIZE[0]/4,height,
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(43)),
                                 new ImageIcon(GraphicsAssets.getImage(44))}){
                     
@@ -117,7 +132,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //upgrades button::
         //this.add(bottomButtons[1]=new CButton((int)(FRAME_SIZE[0]*o),(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)((int)FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
-        this.add(bottomButtons[1]=new CButton(250,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+//        this.add(bottomButtons[1]=new CButton(250,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[1]=new CButton(FRAME_SIZE[0]/4,y,FRAME_SIZE[0]/4,height,
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(45)),
                                 new ImageIcon(GraphicsAssets.getImage(46))}){
            @Override
@@ -129,7 +145,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //team button::
         //this.add(bottomButtons[2]=new CButton((int)(FRAME_SIZE[0]*o)*2,(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)((int)FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
-        this.add(bottomButtons[2]=new CButton(500,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+//        this.add(bottomButtons[2]=new CButton(500,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[2]=new CButton(FRAME_SIZE[0]/2,y,FRAME_SIZE[0]/4,height,
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(47)),
                                 new ImageIcon(GraphicsAssets.getImage(48))}){
            @Override
@@ -142,7 +159,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //menu button::
         //this.add(bottomButtons[3]=new CButton((int)(FRAME_SIZE[0]*o)*3,(int)(FRAME_SIZE[1]*3.1-FRAME_SIZE[1]),(int)((int)FRAME_SIZE[0]*o),((int)FRAME_SIZE[1]),
-        this.add(bottomButtons[3]=new CButton(750,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+//        this.add(bottomButtons[3]=new CButton(750,BOTTOM_BUTTONS_Y,250,BOTTOM_BUTTONS_HEIGHT,
+        this.add(bottomButtons[3]=new CButton((int)(FRAME_SIZE[0]*0.75),y,FRAME_SIZE[0]/4,height,
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(49)),
                                 new ImageIcon(GraphicsAssets.getImage(50))}){
            @Override
@@ -180,17 +198,17 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         switch(mode){
             case 0: //missions
                 updateNextPrevPlay();
-                p.drawImage(missionBoard,150,100,700,500,null);
+                p.drawImage(missionBoard,(int)(0.15*FRAME_SIZE[0]),(int)(0.142*FRAME_SIZE[1]),(int)(0.7*FRAME_SIZE[0]),(int)(0.714*FRAME_SIZE[1]),null);
 //                p.drawImage(missionBoard,FRAME_SIZE[0],(int)(FRAME_SIZE[1]*.2),FRAME_SIZE[0]*2,(int)(FRAME_SIZE[1]*3),null);
                 
                 try{
                     String[] lines=missionInfo[missionIndex-1].split(toSplitString);
                     p.setColor(Color.black);
-                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/AA_typewriter.ttf")).deriveFont(18f));
-                    int y=170;
+                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/AA_typewriter.ttf")).deriveFont((float)(0.025714*FRAME_SIZE[1])));
+                    int y=170,addToY=getNewSizeY(0.05);
 //                    y=(int)(FRAME_SIZE[1]*.6);
                     for(int i=0;i<lines.length;i++){
-                        p.drawString(lines[i],235,y+=25);
+                        p.drawString(lines[i],getNewSizeX(0.235),y+=addToY);
                         
 //                        p.drawString(lines[i],(int)(FRAME_SIZE[0]*1.2),y);
 //                        y+=(int)(FRAME_SIZE[1]*.1);
@@ -202,13 +220,14 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             case 1: //upgrades
                 try{
                     p.setColor(Color.black);
-                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont(18f));
-                    p.drawString("Speed",250,240);
-                    p.drawString("Armor",250,290);
-                    p.drawString("Boost",250,340);
-                    p.drawString("Auto Gun",250,390);
-                    p.drawString("Mines",250,440);
-                    p.drawString("Missiles",250,490);
+                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont((float)(0.025714*FRAME_SIZE[1])));
+                    int a=FRAME_SIZE[0]/4-50;
+                    p.drawString("Speed",a,(int)(0.315*FRAME_SIZE[1]));
+                    p.drawString("Armor",a,(int)(0.387*FRAME_SIZE[1]));
+                    p.drawString("Boost",a,(int)(0.458*FRAME_SIZE[1]));
+                    p.drawString("Auto Gun",a,(int)(0.530*FRAME_SIZE[1]));
+                    p.drawString("Mines",a,(int)(0.601*FRAME_SIZE[1]));
+                    p.drawString("Missiles",a,(int)(0.673*FRAME_SIZE[1]));
                     
                     
                     p.setColor(new Color(127,127,127));
@@ -216,13 +235,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     //price text::
                     if(currentPriceToDisplay>0){
                         p.setColor(gold);
-                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont(32f));
-                        p.drawString(formatMoney(currentPriceToDisplay),405,187);
+                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont((float)(0.045714*FRAME_SIZE[1])));
+                        p.drawString(formatMoney(currentPriceToDisplay),getNewSizeX(0.405),getNewSizeY(0.187));
                     }
                     
                     if(equipped[1]>1){ //325
                         p.setColor(gold);
-                        p.drawRect(395+135*equipped[0],220+(equipped[1])*50,73,30);
+                        p.drawRect(getNewSizeX((395+135*equipped[0])/100.0),getNewSizeY((220+(equipped[1])*50)/100.0),getNewSizeX(0.073),getNewSizeY(0.030));
                     }
                     
                     
@@ -305,11 +324,16 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 this.remove(upgradesButtons[j][i]);
     }
     
+    
     private void addUpgradesComponents(){
+        int xS=(int)(0.135*FRAME_SIZE[0]),
+            yS=(int)(0.07142*FRAME_SIZE[1]),
+            upWidth=(int)(0.063*FRAME_SIZE[0]),
+            upHeight=(int)(0.0285*FRAME_SIZE[1]);
         CButton temp;
         for(int i=0;i<6;i++)
             for(int j=0;j<3;j++){
-                this.add(temp=new CButton(400+j*135,225+i*50,63,20,
+                this.add(temp=new CButton(400+j*xS,225+i*yS,upWidth,upHeight,
                     new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(57)),
                             new ImageIcon(GraphicsAssets.getImage(57))},false){
                                 @Override
@@ -322,6 +346,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                                 &&(xIndex<3||Profile.upgrades[currentCarDisplayed][2][yIndex])){//can buy it
                                             Profile.money-=t;
                                             Profile.upgrades[currentCarDisplayed][xIndex][yIndex]=true;
+                                            
+                                            changeIconSizes();
                                             
                                             icons=new ImageIcon[]{
                                                 new ImageIcon(GraphicsAssets.getImage(58)),
@@ -370,9 +396,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     
     private void setMenuButtonComponents(){
-        
         //save
-        this.add(menu0=new CButton(375,30,250,100,
+        this.add(menu0=new CButton(getNewSizeX(0.375),getNewSizeY(0.03),getNewSizeX(0.250),getNewSizeY(0.1),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(63)),
                             new ImageIcon(GraphicsAssets.getImage(64))}
                 ){
@@ -383,7 +408,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             });
         
         //save and quit
-        this.add(menu1=new CButton(375,160,250,100,
+        this.add(menu1=new CButton(getNewSizeX(0.375),getNewSizeY(0.16),getNewSizeX(0.250),getNewSizeY(100),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(59)),
                             new ImageIcon(GraphicsAssets.getImage(60))}
                 ){
@@ -396,7 +421,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         
         //quit without saving
-        this.add(menu2=new CButton(375,290,250,100,
+        this.add(menu2=new CButton(getNewSizeX(0.375),getNewSizeY(0.29),getNewSizeX(0.250),getNewSizeY(100),
             new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(61)),
                             new ImageIcon(GraphicsAssets.getImage(62))}
                 ){
@@ -407,7 +432,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             });
         
         //options
-        this.add(menu3=new CButton(375,420,250,100,
+        this.add(menu3=new CButton(getNewSizeX(0.375),getNewSizeY(0.42),getNewSizeX(0.250),getNewSizeY(100),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(37)),
                             new ImageIcon(GraphicsAssets.getImage(38))}
                 ){
@@ -443,10 +468,6 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             });
     }
     
-    public void save(){
-        
-    }
-    
     public void backToMainMenu(){}
     
     public void rmv(Component c){
@@ -460,7 +481,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     private void addNextPrevPlayButtons(){  // x 63, y  24
         //prev::
         //this.add(prev=new CButton((int)(FRAME_SIZE[0]*.5),(int)(FRAME_SIZE[1]*1.2),(int)(FRAME_SIZE[0]*.4),(int)(FRAME_SIZE[1]*.3),
-        this.add(prev=new CButton(25,400,63,24,
+        this.add(prev=new CButton(getNewSizeX(0.025),getNewSizeY(0.400),getNewSizeX(0.063),2*getNewSizeY(0.024),
             new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(37)),
                             new ImageIcon(GraphicsAssets.getImage(38))},
             new ImageIcon(GraphicsAssets.getImage(39)),false){
@@ -476,7 +497,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //next::
         //this.add(next=new CButton((int)(FRAME_SIZE[0]*3.1),(int)(FRAME_SIZE[1]*1.2),(int)(FRAME_SIZE[0]*.4),(int)(FRAME_SIZE[1]*.3),
-        this.add(next=new CButton(912,400,63,24,
+        this.add(next=new CButton(getNewSizeX(0.912),getNewSizeY(0.400),getNewSizeX(0.063),2*getNewSizeY(0.024),
             new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(40)),
                             new ImageIcon(GraphicsAssets.getImage(41))},
             new ImageIcon(GraphicsAssets.getImage(42)),false){
@@ -492,7 +513,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //play:: 
         //this.add(play=new CButton((int)(FRAME_SIZE[0]*3*.6),(int)(FRAME_SIZE[1]*1.5),(int)(FRAME_SIZE[0]*.4),(int)(FRAME_SIZE[1]*.3),
-        this.add(play=new CButton(600,350,125,59,
+        this.add(play=new CButton(getNewSizeX(0.600),getNewSizeY(0.350),getNewSizeX(0.125),2*getNewSizeY(0.059),
             new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(52)),
                             new ImageIcon(GraphicsAssets.getImage(53))},
             new ImageIcon(GraphicsAssets.getImage(54)),false){
@@ -518,8 +539,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     private void drawMoneyDisplay(Graphics p){
         try{
             p.setColor(gold);
-            p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/AA_typewriter.ttf")).deriveFont(18f));
-            p.drawString(formatMoney(Profile.money),5,18);
+            p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/AA_typewriter.ttf")).deriveFont((float)(0.025714*FRAME_SIZE[1])));
+            p.drawString(formatMoney(Profile.money),getNewSizeX(0.005),getNewSizeY(0.018)+10);
         } catch(Exception e){
             ErrorLogger.logError(e,"drawMoneyDisplay(Graphics) - GaragePanel");
         }
