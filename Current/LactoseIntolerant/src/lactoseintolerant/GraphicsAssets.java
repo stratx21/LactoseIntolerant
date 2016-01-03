@@ -20,13 +20,6 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
     public static ArrayList<BufferedImage> images=new ArrayList<BufferedImage>();
     
     
-    /**
-     * improvement to import images idea::
-     * 
-     * private BufferedImage import(String index){
-     *      return (BufferedImage)(ImageIO.read(new File(index)));
-     * }
-     */
     
     /**
      * 
