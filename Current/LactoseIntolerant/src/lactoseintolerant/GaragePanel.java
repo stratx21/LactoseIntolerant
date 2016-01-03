@@ -231,7 +231,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     
                     
                     p.setColor(new Color(127,127,127));
-                    p.fillRect(390,155,175,35);
+                    p.fillRect(getNewSizeX(0.390),getNewSizeY(0.155)-5,getNewSizeX(0.175),getNewSizeY(0.035)+10);
                     //price text::
                     if(currentPriceToDisplay>0){
                         p.setColor(gold);
@@ -326,14 +326,14 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     
     private void addUpgradesComponents(){
-        int xS=(int)(0.135*FRAME_SIZE[0]),
+        int xS=(int)(0.135*FRAME_SIZE[0]*0.75),
             yS=(int)(0.07142*FRAME_SIZE[1]),
             upWidth=(int)(0.063*FRAME_SIZE[0]),
             upHeight=(int)(0.0285*FRAME_SIZE[1]);
         CButton temp;
         for(int i=0;i<6;i++)
             for(int j=0;j<3;j++){
-                this.add(temp=new CButton(400+j*xS,225+i*yS,upWidth,upHeight,
+                this.add(temp=new CButton(475+j*xS,225+i*yS,upWidth,upHeight,
                     new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(57)),
                             new ImageIcon(GraphicsAssets.getImage(57))},false){
                                 @Override
@@ -347,12 +347,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                             Profile.money-=t;
                                             Profile.upgrades[currentCarDisplayed][xIndex][yIndex]=true;
                                             
-                                            changeIconSizes();
-                                            
                                             icons=new ImageIcon[]{
                                                 new ImageIcon(GraphicsAssets.getImage(58)),
                                                 new ImageIcon(GraphicsAssets.getImage(58))
                                                 };
+                                            
+                                            changeIconSizes();
+                                            
                                             setIcon(icons[0]);
                                             
                                             if(yIndex>1)
