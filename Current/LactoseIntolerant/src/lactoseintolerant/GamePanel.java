@@ -129,6 +129,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
      * @param p Graphics class instance that is being used to draw on the panel
      */
     public void paintC(Graphics p){ //when mission ends, set player to null, and instantiate another one later with the constructor with one integer argument.
+        p.setColor(Color.black);
+        p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
         //affected by screenDistortY::
         mapDraw(p);
         if(hasWeapon)
@@ -253,7 +255,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         // length of one color on top of the other  (green on gray) :: (player.speed/player.topSpeed[or whatever it was])*totalLength
         //make it pretty thin, and maybe top right or lower left bottom. Think of The Heist 2 style
         p.setColor(speedBlue);
-        p.fillRect(10,35,(int)player.speed,15);
+        p.fillRect(10,35,Math.abs((int)player.speed),15);
     }
     
     /**
