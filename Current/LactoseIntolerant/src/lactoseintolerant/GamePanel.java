@@ -25,8 +25,10 @@ import javax.swing.Timer;
  * @author 0001058857
  */
 public class GamePanel extends CPanel implements KeyListener,Runnable{
-    public int screenDistortY=0; //for if the player stops, then the screen goes up to follow then bounces back, etc.
-    //^only used for drawing!!!!!!!!!!!!!!!!!!!!!!!
+    
+    public int screenDistortY=0; //for if the player stops, then the screen 
+                        //goes up to follow then bounces back, etc.
+    
     public long time=0;
     
     public boolean paused=true, canUnpause=false;
@@ -98,6 +100,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         objectiveTime=map.currentLevel.objectiveTime;
         
 //        System.out.println("thru the GamePanel constructor");
+        Profile.xStart=FRAME_SIZE[0]/2-518;
     }
     
     /**

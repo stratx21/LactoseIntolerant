@@ -250,9 +250,9 @@ public class MapManager {
      *  whole image based on the player speed. 
      */
     public void draw(Graphics p,int dY){
-        p.drawImage(images.get(curIndex),0,yLoc.get(curIndex)+(yDistort=dY),null);
+        p.drawImage(images.get(curIndex),Profile.xStart,yLoc.get(curIndex)+(yDistort=dY),null);
         if(drawSecond&&curIndex+1<images.size())
-            p.drawImage(images.get(curIndex+1),0,yLoc.get(curIndex+1)+dY,null);
+            p.drawImage(images.get(curIndex+1),Profile.xStart,yLoc.get(curIndex+1)+dY,null);
     }
     
     /**

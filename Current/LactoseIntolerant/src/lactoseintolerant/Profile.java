@@ -72,6 +72,11 @@ public class Profile {
         },
     };
     
+    /**
+     * based on the resolution of the user's screen, this is how much space 
+     * should be added from x 0 so that the game is in the center of the screen
+     */
+    public static int xStart=0;
     
     public static File inputSaveFile=null;
     

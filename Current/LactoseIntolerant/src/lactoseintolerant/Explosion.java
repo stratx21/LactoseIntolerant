@@ -55,7 +55,7 @@ public class Explosion {
      */
     public void draw(Graphics p,int dy){
         int t;
-        p.drawImage(ImageUtils.rotateImage(image,angle), center.x-radius,center.y+dy-radius,radius*2,radius*2,null);  //radius/sqrt(2)
+        p.drawImage(ImageUtils.rotateImage(image,angle),center.x-radius,center.y+dy-radius,radius*2+Profile.xStart,radius*2,null);  //radius/sqrt(2)
         
         angle+=35;
         radius+=2;

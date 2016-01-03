@@ -87,9 +87,9 @@ public class CivilianFlow extends AIFlow{
      */
     public void draw(Graphics p,int dY){
         if(angle==0)
-            p.drawImage(currentImage,screenLocation[0],screenLocation[1]+dY,imageSize[0],imageSize[1],null);
+            p.drawImage(currentImage,screenLocation[0]+Profile.xStart,screenLocation[1]+dY,imageSize[0],imageSize[1],null);
         else //aka angle is not 0
-            p.drawImage(ImageUtils.rotateImage(currentImage,angle),screenLocation[0],screenLocation[1]+dY,imageSize[0],imageSize[1],null);
+            p.drawImage(ImageUtils.rotateImage(currentImage,angle),screenLocation[0]+Profile.xStart,screenLocation[1]+dY,imageSize[0],imageSize[1],null);
            
         
 //        p.setColor(Color.pink);

@@ -123,19 +123,22 @@ public class Player{
     }
     
     
-    /*
+    /**
     * Draw the image::
     *
-    *@param Graphics p the graphics class used in the game's frame, used in the function to draw the vehicle.
+    * @param p the graphics class used in the game's frame, used in the function to draw the vehicle.
+    * 
+    * @param dY displacement based on the player speeding up/slowing down and 
+     * is only a component of graphical representation
     */
     public void draw(Graphics p,int dY){
         
         
         //draw actual car::
         if(angle==0)
-            p.drawImage(currentImage,screenLocation[0],screenLocation[1]+dY,imageSize[0],imageSize[1],null);
+            p.drawImage(currentImage,screenLocation[0]+Profile.xStart,screenLocation[1]+dY,imageSize[0],imageSize[1],null);
         else
-            p.drawImage(ImageUtils.rotateImage(currentImage,angle*(speed/TOP_SPEED)),screenLocation[0],screenLocation[1]+dY,imageSize[0],imageSize[1],null);
+            p.drawImage(ImageUtils.rotateImage(currentImage,angle*(speed/TOP_SPEED)),screenLocation[0]+Profile.xStart,screenLocation[1]+dY,imageSize[0],imageSize[1],null);
         
         
 //        p.setColor(Color.pink);
@@ -149,7 +152,10 @@ public class Player{
     }
     
     /**
-     *Logic flow for player::
+     * cycle flow for calculating the player location and other 
+     * 
+     * @param dY displacement based on the player speeding up/slowing down and 
+     * is only a component of graphical representation
      */
     public int calculate(int dY){
         
@@ -243,13 +249,25 @@ public class Player{
             attacking=false; //after all attacking code has been run so that the player is not attacking again and the canAttack boolean flow may initialize.
         }
         
-        updateCollisionRectangles(dY); //keep last
+        
+        xInc=(int)(angle/5);
+        upperSpan=ShapeUtils.getRectByPoint(screenLocation[0]+xInc+addForOriginRect[0],dY+screenLocation[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
+        lowerSpan=ShapeUtils.getRectByPoint(screenLocation[0]-xInc+addForOriginRect[0],dY+screenLocation[1]+rectSize[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
         
         return (int)speedChange;
         
     }
     
-    int divideBy=3,t;
+    
+    //how much the speed should be divided by to get how far the map 
+    //should be moved down.
+    private int divideBy=3;
+    
+    /**
+     * get how much the map should move down based on the player's speed
+     * 
+     * @return how much the map should move down as an integer value
+     */
     public int getMapDown(){
         return (int)(speed/divideBy); 
     }
@@ -279,11 +297,5 @@ public class Player{
 //        
 //        angle/=2;
 //    }
-    
-    private void updateCollisionRectangles(int dY){
-        xInc=(int)(angle/5);
-        upperSpan=ShapeUtils.getRectByPoint(screenLocation[0]+xInc+addForOriginRect[0],dY+screenLocation[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
-        lowerSpan=ShapeUtils.getRectByPoint(screenLocation[0]-xInc+addForOriginRect[0],dY+screenLocation[1]+rectSize[1]+addForOriginRect[1],rectSize[0],rectSize[1]);
-    }
     
 }

@@ -15,7 +15,7 @@ public class CPanel extends JPanel{
     public int DELAY=40;
     public boolean done=false;
 
-
+    public int[] FRAME_SIZE=new int[2];
 
 
 

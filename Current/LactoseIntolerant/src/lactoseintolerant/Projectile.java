@@ -101,7 +101,7 @@ public class Projectile {
             ping++;
         }
         
-        p.drawImage(image,screenLocation[0],screenLocation[1],null);
+        p.drawImage(image,screenLocation[0]+Profile.xStart,screenLocation[1],null);
     }
     
     /**
