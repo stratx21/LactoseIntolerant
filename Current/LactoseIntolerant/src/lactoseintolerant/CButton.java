@@ -54,27 +54,46 @@ public class CButton extends JButton implements MouseListener{
     public CButton(int x,int y,int xs,int ys,ImageIcon[] ic){
         icons=ic;
         
-        //////
-        //////Method rescaling buton label
-        //////
-        //ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
-        Image image = icons[0].getImage(); // transform it
-        Image newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        g = new ImageIcon(newimg);
-        ic[0] =g;
-        
-        
-             image = icons[1].getImage(); // transform it
-         newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        g = new ImageIcon(newimg); 
-        ic[1]=g;
-        
+        changeIconSizes();
        
         super.setBounds(x,y,xs,ys);
          this.setIcon(ic[0]);
         this.addMouseListener(this);
         
         setContentAreaFilled(true);
+    }
+    
+    
+
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,ImageIcon dis,boolean border){
+        icons=ic;
+        disabledIcon=dis;
+        
+        changeIconSizes();
+        
+        this.setIcon(ic[0]);
+        super.setBounds(x,y,xs,ys);
+        this.addMouseListener(this);
+        
+        setContentAreaFilled(true);
+        
+        if(!border)
+            setBorder(BorderFactory.createEmptyBorder());
+    }
+    
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,boolean border){
+        icons=ic;
+        
+        changeIconSizes();
+        
+        this.setIcon(ic[0]);
+        super.setBounds(x,y,xs,ys);
+        this.addMouseListener(this);
+        
+        setContentAreaFilled(true);
+        
+        if(!border)
+            setBorder(BorderFactory.createEmptyBorder());
     }
     
     public void changeIconSizes(){
@@ -88,8 +107,15 @@ public class CButton extends JButton implements MouseListener{
          newimg = image.getScaledInstance(getWidth(), getHeight(),  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
         g = new ImageIcon(newimg); 
         icons[1]=g;
+        
+        if(disabledIcon!=null){
+            image = disabledIcon.getImage(); // transform it
+            newimg = image.getScaledInstance(getWidth(), getHeight(),  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
+            g = new ImageIcon(newimg); 
+            disabledIcon=g;
+        }
     }
-
+    
     
     public void disable(boolean dis){
         if(disabled=dis){
@@ -112,68 +138,7 @@ public class CButton extends JButton implements MouseListener{
 //        return pernamantSelect;
 //    }
     
-    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,ImageIcon dis,boolean border){
-        icons=ic;
-        disabledIcon=dis;
-        
-        
-                //////
-        //////Method rescaling buton label
-        //////
-        //ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
-        Image image = icons[0].getImage(); // transform it
-        Image newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        g = new ImageIcon(newimg);
-        ic[0] =g;
-        
-        
-             image = icons[1].getImage(); // transform it
-         newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        g = new ImageIcon(newimg); 
-        ic[1]=g;
-        
-               image = disabledIcon.getImage(); // transform it
-         newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        g = new ImageIcon(newimg); 
-        disabledIcon=g;
-        
-        this.setIcon(ic[0]);
-        super.setBounds(x,y,xs,ys);
-        this.addMouseListener(this);
-        
-        setContentAreaFilled(true);
-        
-        if(!border)
-            setBorder(BorderFactory.createEmptyBorder());
-    }
     
-    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,boolean border){
-        icons=ic;
-        
-        //////
-        //////Method rescaling buton label
-        //////
-        //ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
-        Image image = icons[0].getImage(); // transform it
-        Image newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        g = new ImageIcon(newimg);
-        ic[0] =g;
-        
-        
-             image = icons[1].getImage(); // transform it
-         newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        g = new ImageIcon(newimg); 
-        ic[1]=g;
-        
-        this.setIcon(ic[0]);
-        super.setBounds(x,y,xs,ys);
-        this.addMouseListener(this);
-        
-        setContentAreaFilled(true);
-        
-        if(!border)
-            setBorder(BorderFactory.createEmptyBorder());
-    }
 
     @Override
     public void mouseClicked(MouseEvent e) {clicked();}
