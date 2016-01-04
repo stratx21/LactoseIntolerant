@@ -314,9 +314,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 break;
         }
         repaint();
-    }
-    
-    //note :: to switch cars, try running removeAllBuyUpgradesButtons, then change currentCarDispalyed to whatever id should be displayed, then run addUpgradesComponents - but will also need to look for the stuff on top deciding which car is chosen, this is not in at all yet. 
+    } 
     
     
     private void removeAllUpgradesButtons(){
@@ -763,99 +761,89 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     
                     roundDone=true;
                 }
-                },w){
-             @Override
-             public void paintComponent(Graphics p){
-                time+=System.currentTimeMillis()-lastTime;
-                
-                lastTime=System.currentTimeMillis();
-                
-                gamePanel.paintC(p);
-                
-                int t=0;
-                
-                if(!gamePanel.paused)
-                    gamePanel.calcFlow();
-                else{
-                    if(justStarting){
-                    p.setColor(new Color(0,0,0,(t=(int)(175-(time)/20))));
-                    p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
-                    
-                    try{
-                        p.setColor(Color.black);
-                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(48f));
-                        p.drawString((3-(int)(time/1000))+"",450,300);
-                    } catch(Exception e){
-                        ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
-                    }
-                    
-                    if(time>3000)
-                        gamePanel.paused=false;
-                    } else{ //pause menu
-                        drawPauseMenu(p);
-                    }
-                }
-                
-                thisTime=System.currentTimeMillis()-lastTime;
-                
-//                System.out.println(t+", "+time);
-                
-                int delay=0;
-                if(thisTime<frameRateMillisecondsInGame)
-                    delay=frameRateMillisecondsInGame-(int)thisTime;
-                
-                if(delay<frameRateMillisecondsInGame)
-                    delay=20;
-                
-                
-                frameRate=1000/delay;
-                   if(player.health<0)
-                   {
-                       missionSuccess=false;
-                       gamePanel.time=100000000;
-                        p.setColor(new Color(0,0,0,215));
-                    p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
-                    changeBackToGarage();
-                          }
-//                System.out.println(frameRate+", "+gamePanel.player.speed);
-                
-                 try{Thread.sleep(delay);}
-                 catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
-                 
-                 if(!roundDone)
-                    repaint();
-                 else{
-                    p.setColor(new Color(0,0,0,215));
-                    p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
-                    
-                    try{
-                        String a;
-                        if(missionSuccess)
-                            a="You won!";
-                        else 
-                            a="You lost";
-                        
-                        p.setColor(Color.white);
-                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(24f));
-                        p.drawString(a,400,300);
-                        p.drawString("Needed time:: "+lastNeededTime/1000+" s",400,350);
-                        p.drawString("Your time::   "+yourTime/1000+" s",400,400);
-                        
-                        add(new CButton(400,500,150,50,new ImageIcon[]{
-                                                    new ImageIcon(GraphicsAssets.getImage(55)),
-                                                    new ImageIcon(GraphicsAssets.getImage(56))}){
-                            @Override
-                            public void released(){
-                                changeBackToGarage();
+                    },w){
+                     @Override
+                     public void paintComponent(Graphics p){
+                        time+=System.currentTimeMillis()-lastTime;
+
+                        lastTime=System.currentTimeMillis();
+
+                        gamePanel.paintC(p);
+
+                        int t=0;
+
+                        if(!gamePanel.paused)
+                            gamePanel.calcFlow();
+                        else{
+                            if(justStarting){
+                            p.setColor(new Color(0,0,0,(t=(int)(175-(time)/20))));
+                            p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
+
+                            try{
+                                p.setColor(Color.black);
+                                p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(48f));
+                                p.drawString((3-(int)(time/1000))+"",450,300);
+                            } catch(Exception e){
+                                ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
                             }
-                        });
-                        
-                    } catch(Exception e){
-                        ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
-                    }
-                 }
-             }
-         });
+
+                            if(time>3000)
+                                gamePanel.paused=false;
+                            } else{ //pause menu
+                                drawPauseMenu(p);
+                            }
+                        }
+
+                        thisTime=System.currentTimeMillis()-lastTime;
+
+        //                System.out.println(t+", "+time);
+
+                        int delay=0;
+                        if(thisTime<frameRateMillisecondsInGame)
+                            delay=frameRateMillisecondsInGame-(int)thisTime;
+
+                        if(delay<frameRateMillisecondsInGame)
+                            delay=20;
+
+
+                        frameRate=1000/delay;
+                         try{Thread.sleep(delay);}
+                         catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
+
+                         if(!roundDone)
+                            repaint();
+                         else{
+                            p.setColor(new Color(0,0,0,215));
+                            p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
+
+                            try{
+                                String a;
+                                if(missionSuccess)
+                                    a="You won!";
+                                else 
+                                    a="You lost";
+
+                                p.setColor(Color.white);
+                                p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(24f));
+                                p.drawString(a,400,300);
+                                p.drawString("Needed time:: "+lastNeededTime/1000+" s",400,350);
+                                p.drawString("Your time::   "+yourTime/1000+" s",400,400);
+
+                                add(new CButton(400,500,150,50,new ImageIcon[]{
+                                                            new ImageIcon(GraphicsAssets.getImage(55)),
+                                                            new ImageIcon(GraphicsAssets.getImage(56))}){
+                                    @Override
+                                    public void released(){
+                                        changeBackToGarage();
+                                    }
+                                });
+
+                            } catch(Exception e){
+                                ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
+                            }
+                         }
+                     }
+                 });
          frame.setVisible(true);
          
          frame.addKeyListener(gamePanel);
