@@ -138,6 +138,19 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             //options menu background::
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/OptionsMenu/Background.png"))));//71
             
+            //side views of the player cars::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/Sudan.png"))));//72
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/Van.png"))));//73
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/RaceCar.png"))));//74
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/ArmoredVan.png"))));//75
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/Tank.png"))));//76
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/Sudan1.png"))));//77
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/Van1.png"))));//78
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/RaceCar1.png"))));//79
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/ArmoredVan1.png"))));//80
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/Tank1.png"))));//81
+            
             
             
             

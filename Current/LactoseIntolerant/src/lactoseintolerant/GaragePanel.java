@@ -35,11 +35,12 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     public int currentCar=0,currentCarDisplayed=0;
     
-    public int[] equipped=new int[2];
+    public int[][] equipped=new int[5][2];
     
     //speed, health, boost, machine gun, missiles
     
     public CButton[][] upgradesButtons=new CButton[3][6];
+    public CButton[] upgradesCarTypes=new CButton[5];
     
     
      
@@ -239,9 +240,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                         p.drawString(formatMoney(currentPriceToDisplay),getNewSizeX(0.405),getNewSizeY(0.187));
                     }
                     
-                    if(equipped[1]>1){ //325
+                    if(equipped[currentCar][1]>1){
                         p.setColor(gold);
-                        p.drawRect(getNewSizeX((395+135*equipped[0])/1000.0),getNewSizeY((220+(equipped[1])*50)/1000.0),getNewSizeX(0.073),getNewSizeY(0.040));
+                        p.drawRect(getNewSizeX((395+135*equipped[currentCar][0])/1000.0),getNewSizeY((220+(equipped[currentCar][1])*50)/1000.0),getNewSizeX(0.073),getNewSizeY(0.040));
                     }
                     
                     
@@ -283,7 +284,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 }
                 break;
             case 1:
-                removeAllBuyUpgradesButtons();
+                removeAllUpgradesButtons();
                 break;
             case 2:
                 break;
@@ -318,14 +319,101 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     //note :: to switch cars, try running removeAllBuyUpgradesButtons, then change currentCarDispalyed to whatever id should be displayed, then run addUpgradesComponents - but will also need to look for the stuff on top deciding which car is chosen, this is not in at all yet. 
     
     
-    private void removeAllBuyUpgradesButtons(){
+    private void removeAllUpgradesButtons(){
         for(int i=0;i<6;i++)
             for(int j=0;j<3;j++)
                 this.remove(upgradesButtons[j][i]);
+        
+        for(int i=0;i<5;i++)
+            this.remove(upgradesCarTypes[i]);
     }
     
-    
+    ///upgradesCarTypes
     private void addUpgradesComponents(){
+        //sudan
+        this.add(upgradesCarTypes[0]=new CButton(getNewSizeX(0.142),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
+            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(72)),
+                            new ImageIcon(GraphicsAssets.getImage(77))},
+            new ImageIcon(GraphicsAssets.getImage(39)),false){
+                
+            @Override
+            public void released(){
+                currentCar=0;
+                removeAllUpgradesButtons();
+                addUpgradesComponents();
+                repaint();
+            }
+        });
+        
+        //van
+        this.add(upgradesCarTypes[1]=new CButton(getNewSizeX(0.286),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
+            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(73)),
+                            new ImageIcon(GraphicsAssets.getImage(78))},
+            new ImageIcon(GraphicsAssets.getImage(39)),false){
+                
+            @Override
+            public void released(){
+                currentCar=1;
+                removeAllUpgradesButtons();
+                addUpgradesComponents();
+                repaint();
+            }
+        });
+        
+        
+        //racecar
+        this.add(upgradesCarTypes[2]=new CButton(getNewSizeX(0.430),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
+            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(74)),
+                            new ImageIcon(GraphicsAssets.getImage(79))},
+            new ImageIcon(GraphicsAssets.getImage(39)),false){
+                
+            @Override
+            public void released(){
+                currentCar=2;
+                removeAllUpgradesButtons();
+                addUpgradesComponents();
+                repaint();
+            }
+        });
+        
+        //armored van
+        this.add(upgradesCarTypes[3]=new CButton(getNewSizeX(0.574),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
+            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(75)),
+                            new ImageIcon(GraphicsAssets.getImage(80))},
+            new ImageIcon(GraphicsAssets.getImage(39)),false){
+                
+            @Override
+            public void released(){
+                currentCar=3;
+                removeAllUpgradesButtons();
+                addUpgradesComponents();
+                repaint();
+            }
+        });
+        
+        //tank
+        this.add(upgradesCarTypes[4]=new CButton(getNewSizeX(0.718),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
+            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(76)),
+                            new ImageIcon(GraphicsAssets.getImage(81))},
+            new ImageIcon(GraphicsAssets.getImage(39)),false){
+                
+            @Override
+            public void released(){
+                System.out.println("aaaaaaaaaaaaa");
+                currentCar=4;
+                removeAllUpgradesButtons();
+                addUpgradesComponents();
+                repaint();
+            }
+        });
+        
+        System.out.println("currentCar=="+currentCar);
+        
+        upgradesCarTypes[currentCar].setPernamantSelect(true);
+        
+        
+        //buy upgrades for the car::
+        
         //400+j*135,225+i*50,63,20,
         int upWidth=(int)(0.063*FRAME_SIZE[0]),
             upHeight=(int)(0.04*FRAME_SIZE[1]);
@@ -337,14 +425,14 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                             new ImageIcon(GraphicsAssets.getImage(57))},false){
                                 @Override
                                 public void released(){
-                                    if(!Profile.upgrades[currentCarDisplayed][xIndex][yIndex]){
+                                    if(!Profile.upgrades[currentCar][xIndex][yIndex]){
                                         double t;
-                                        if(Profile.money>(t=Profile.prices[currentCarDisplayed][xIndex][yIndex])
-                                                &&(xIndex==0||Profile.upgrades[currentCarDisplayed][0][yIndex])
-                                                &&(xIndex<2||Profile.upgrades[currentCarDisplayed][1][yIndex])
-                                                &&(xIndex<3||Profile.upgrades[currentCarDisplayed][2][yIndex])){//can buy it
+                                        if(Profile.money>(t=Profile.prices[currentCar][xIndex][yIndex])
+                                                &&(xIndex==0||Profile.upgrades[currentCar][0][yIndex])
+                                                &&(xIndex<2||Profile.upgrades[currentCar][1][yIndex])
+                                                &&(xIndex<3||Profile.upgrades[currentCar][2][yIndex])){//can buy it
                                             Profile.money-=t;
-                                            Profile.upgrades[currentCarDisplayed][xIndex][yIndex]=true;
+                                            Profile.upgrades[currentCar][xIndex][yIndex]=true;
                                             
                                             icons=new ImageIcon[]{
                                                 new ImageIcon(GraphicsAssets.getImage(58)),
@@ -356,10 +444,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                             setIcon(icons[0]);
                                             
                                             if(yIndex>1)
-                                                equipped=new int[]{xIndex,yIndex};
+                                                equipped[currentCar]=new int[]{xIndex,yIndex};
                                         }
                                     } else if(yIndex>1){//is a weapon type and is already owned
-                                        equipped=equipped[0]!=xIndex||equipped[1]!=yIndex ? new int[]{xIndex,yIndex} : new int[2];
+                                        equipped[currentCar]=equipped[currentCar][0]!=xIndex||equipped[currentCar][1]!=yIndex ? new int[]{xIndex,yIndex} : new int[2];
                                         
                                         repaint();
                                     }
@@ -368,7 +456,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 
                                 @Override
                                 public void entered(){
-                                    currentPriceToDisplay=Profile.prices[currentCarDisplayed][xIndex][yIndex];
+                                    currentPriceToDisplay=Profile.prices[currentCar][xIndex][yIndex];
                                     rpnt();
                                 }
                                 
@@ -383,7 +471,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 temp.xIndex=j;
                 temp.yIndex=i;
                 
-                if(Profile.upgrades[currentCarDisplayed][j][i]){
+                if(Profile.upgrades[currentCar][j][i]){
                     temp.icons=new ImageIcon[]{
                         new ImageIcon(GraphicsAssets.getImage(58)),
                         new ImageIcon(GraphicsAssets.getImage(58))};
@@ -393,6 +481,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 
                 upgradesButtons[j][i]=temp;
             }
+        
+        repaint();
     }
     
     
@@ -570,8 +660,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
          
         Weapon w=null;
         
-        if(equipped[1]>1)
-            w=new Weapon(equipped[1]-2,equipped[0]);
+        if(equipped[currentCar][1]>1)
+            w=new Weapon(equipped[currentCar][1]-2,equipped[currentCar][0]);
         
         frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},missionIndex,new CListener(){
                 @Override
