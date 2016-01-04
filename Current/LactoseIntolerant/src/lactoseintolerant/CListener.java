@@ -12,5 +12,6 @@ package lactoseintolerant;
 public class CListener {
     
     public void actionPerformed(){}
+    public void actionPerformed(boolean a){}
     
 }
