@@ -353,10 +353,32 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 
             @Override
             public void released(){
-                currentCar=1;
-                removeAllUpgradesButtons();
-                addUpgradesComponents();
+                if(Profile.boughtCars[1]){
+                    currentCar=1;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                } else if(Profile.carPrices[1]<Profile.money){//has enough to buy it
+                    Profile.money-=Profile.carPrices[1];
+                    Profile.boughtCars[1]=true;
+                    currentCar=1;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                }
                 repaint();
+            }
+            
+            @Override
+            public void entered(){
+                if(!Profile.boughtCars[1]){
+                    currentPriceToDisplay=Profile.carPrices[1];
+                    rpnt();
+                }
+            }
+
+            @Override
+            public void exited(){
+                currentPriceToDisplay=0;
+                rpnt();
             }
         });
         
@@ -369,10 +391,32 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 
             @Override
             public void released(){
-                currentCar=2;
-                removeAllUpgradesButtons();
-                addUpgradesComponents();
+                if(Profile.boughtCars[2]){
+                    currentCar=2;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                } else if(Profile.carPrices[2]<Profile.money){//has enough to buy it
+                    Profile.money-=Profile.carPrices[2];
+                    Profile.boughtCars[2]=true;
+                    currentCar=2;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                }
                 repaint();
+            }
+            
+            @Override
+            public void entered(){
+                if(!Profile.boughtCars[2]){
+                    currentPriceToDisplay=Profile.carPrices[2];
+                    rpnt();
+                }
+            }
+
+            @Override
+            public void exited(){
+                currentPriceToDisplay=0;
+                rpnt();
             }
         });
         
@@ -384,10 +428,32 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 
             @Override
             public void released(){
-                currentCar=3;
-                removeAllUpgradesButtons();
-                addUpgradesComponents();
+                if(Profile.boughtCars[3]){
+                    currentCar=3;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                } else if(Profile.carPrices[3]<Profile.money){//has enough to buy it
+                    Profile.money-=Profile.carPrices[3];
+                    Profile.boughtCars[3]=true;
+                    currentCar=3;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                }
                 repaint();
+            }
+            
+            @Override
+            public void entered(){
+                if(!Profile.boughtCars[3]){
+                    currentPriceToDisplay=Profile.carPrices[3];
+                    rpnt();
+                }
+            }
+
+            @Override
+            public void exited(){
+                currentPriceToDisplay=0;
+                rpnt();
             }
         });
         
@@ -399,11 +465,32 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 
             @Override
             public void released(){
-                System.out.println("aaaaaaaaaaaaa");
-                currentCar=4;
-                removeAllUpgradesButtons();
-                addUpgradesComponents();
+                if(Profile.boughtCars[4]){
+                    currentCar=4;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                } else if(Profile.carPrices[4]<Profile.money){//has enough to buy it
+                    Profile.money-=Profile.carPrices[4];
+                    Profile.boughtCars[4]=true;
+                    currentCar=4;
+                    removeAllUpgradesButtons();
+                    addUpgradesComponents();
+                }
                 repaint();
+            }
+            
+            @Override
+            public void entered(){
+                if(!Profile.boughtCars[4]){
+                    currentPriceToDisplay=Profile.carPrices[4];
+                    rpnt();
+                }
+            }
+
+            @Override
+            public void exited(){
+                currentPriceToDisplay=0;
+                rpnt();
             }
         });
         

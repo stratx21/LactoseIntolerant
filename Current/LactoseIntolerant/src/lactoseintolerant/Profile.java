@@ -72,6 +72,14 @@ public class Profile {
         },
     };
     
+    public static double[] carPrices=new double[]{
+        0,100000,250000,600000,1000000
+    };
+    
+    public static boolean[] boughtCars=new boolean[]{
+        true,false,false,false,false
+    };
+    
     /**
      * based on the resolution of the user's screen, this is how much space 
      * should be added from x 0 so that the game is in the center of the screen
@@ -101,6 +109,9 @@ public class Profile {
                         save.write(upgrades[k][i][j]+":");
                     }
                 }
+            
+            for(int i=0;i<5;i++)
+                save.write(boughtCars[i]+":");
             
             save.close();
         } catch(Exception ex){
@@ -136,6 +147,10 @@ public class Profile {
                     upgrades[k][i][j]=Boolean.parseBoolean(in[c]);
                     c++;
                 }
+        for(int i=0;i<5;i++){
+            boughtCars[i]=Boolean.parseBoolean(in[c]);
+            c++;
+        }
     }
     
 }
