@@ -330,8 +330,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     private void addUpgradesComponents(){
         //sudan
         this.add(upgradesCarTypes[0]=new CButton(getNewSizeX(0.142),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
-            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(72)),
-                            new ImageIcon(GraphicsAssets.getImage(77))},
+            Profile.boughtCars[0] ? new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(82)),new ImageIcon(GraphicsAssets.getImage(87))}
+                    :new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(72)),new ImageIcon(GraphicsAssets.getImage(77))},
             new ImageIcon(GraphicsAssets.getImage(39)),false){
                 
             @Override
@@ -343,10 +343,11 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             }
         });
         
+        
         //van
         this.add(upgradesCarTypes[1]=new CButton(getNewSizeX(0.286),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
-            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(73)),
-                            new ImageIcon(GraphicsAssets.getImage(78))},
+            Profile.boughtCars[1] ? new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(83)),new ImageIcon(GraphicsAssets.getImage(88))}
+                    :new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(73)),new ImageIcon(GraphicsAssets.getImage(78))},
             new ImageIcon(GraphicsAssets.getImage(39)),false){
                 
             @Override
@@ -380,11 +381,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             }
         });
         
-        
         //racecar
         this.add(upgradesCarTypes[2]=new CButton(getNewSizeX(0.430),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
-            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(74)),
-                            new ImageIcon(GraphicsAssets.getImage(79))},
+            Profile.boughtCars[2] ? new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(84)),new ImageIcon(GraphicsAssets.getImage(89))}
+                    :new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(74)),new ImageIcon(GraphicsAssets.getImage(79))},
             new ImageIcon(GraphicsAssets.getImage(39)),false){
                 
             @Override
@@ -418,10 +418,11 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             }
         });
         
+        
         //armored van
         this.add(upgradesCarTypes[3]=new CButton(getNewSizeX(0.574),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
-            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(75)),
-                            new ImageIcon(GraphicsAssets.getImage(80))},
+            Profile.boughtCars[3] ? new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(85)),new ImageIcon(GraphicsAssets.getImage(90))}
+                    :new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(75)),new ImageIcon(GraphicsAssets.getImage(80))},
             new ImageIcon(GraphicsAssets.getImage(39)),false){
                 
             @Override
@@ -455,10 +456,11 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             }
         });
         
+        
         //tank
         this.add(upgradesCarTypes[4]=new CButton(getNewSizeX(0.718),getNewSizeY(0.015),getNewSizeX(0.144),getNewSizeY(0.072),
-            new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(76)),
-                            new ImageIcon(GraphicsAssets.getImage(81))},
+            Profile.boughtCars[4] ? new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(86)),new ImageIcon(GraphicsAssets.getImage(91))}
+                    :new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(76)),new ImageIcon(GraphicsAssets.getImage(81))},
             new ImageIcon(GraphicsAssets.getImage(39)),false){
                 
             @Override
@@ -491,8 +493,6 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 rpnt();
             }
         });
-        
-        System.out.println("currentCar=="+currentCar);
         
         upgradesCarTypes[currentCar].setPernamantSelect(true);
         

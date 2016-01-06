@@ -151,13 +151,26 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/ArmoredVan1.png"))));//80
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/Tank1.png"))));//81
             
+            //side view owned::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedSudan.png"))));//82
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedVan.png"))));//83
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedRaceCar.png"))));//84
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedArmoredVan.png"))));//85
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedTank.png"))));//86
+            
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedSudan1.png"))));//87
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedVan1.png"))));//88
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedRaceCar1.png"))));//89
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedArmoredVan1.png"))));//90
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedTank1.png"))));//91
+            
             
             
             
             
             
         } catch(Exception e){
-            ErrorLogger.logError(e,"importImages");
+            ErrorLogger.logError(e,"GraphicsAssets.importImages");
         }
     }
     
