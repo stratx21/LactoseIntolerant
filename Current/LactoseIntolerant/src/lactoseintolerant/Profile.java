@@ -88,7 +88,7 @@ public class Profile {
     
     public static File inputSaveFile=null;
     
-    public static double money=1000000.00;
+    public static double money=10000000.00;
     
     /**
      * save current progress in a save file, using the JFileChooser to let the
