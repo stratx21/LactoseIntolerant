@@ -19,6 +19,7 @@ public class OptionsMenu extends Menu{
     public CListener done=null;
     
     public OptionsMenu(CListener done,JFrame fr){
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         this.done=done;
         (frame=fr).add(this);
         
@@ -28,6 +29,10 @@ public class OptionsMenu extends Menu{
         
         this.repaint();
         this.revalidate();
+        
+        FRAME_SIZE=new int[]{fr.getWidth(),fr.getHeight()};
+        
+        repaint();
         
     }
     
@@ -45,7 +50,7 @@ public class OptionsMenu extends Menu{
     @Override
     public void paintComponent(Graphics p){
         //draw background::
-        p.drawImage(GraphicsAssets.getImage(71),0,0,1000,700,null);
+        p.drawImage(GraphicsAssets.getImage(71),0,0,FRAME_SIZE[0],FRAME_SIZE[1],null);
     }
     
 }
