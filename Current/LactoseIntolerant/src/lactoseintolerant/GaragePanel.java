@@ -9,10 +9,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.DecimalFormat;
@@ -753,7 +749,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     public boolean missionSuccess=false;
     
-    private boolean roundDone=false,justStarting=true;
+    private boolean roundDone=false,died=false,justStarting=true;
     private int frameRateMillisecondsInGame=20;
     public long time=0,lastTime=0,thisTime=0,
             lastNeededTime=0,yourTime=0;
@@ -779,11 +775,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},missionIndex,new CListener(){
                 @Override
-                public void actionPerformed(){
-                    if((yourTime=gamePanel.time-3000)<(lastNeededTime=gamePanel.objectiveTime))
-                        missionSuccess=true;
-                    else
-                        missionSuccess=false;
+                public void actionPerformed(boolean a){
+                    if(missionSuccess=!(died=a))//if player did not die, then the success depends on the time. 
+                        missionSuccess=(yourTime=gamePanel.time-3000)<(lastNeededTime=gamePanel.objectiveTime);
                     
                     if(missionSuccess&&(allowedLevels<gamePanel.level+1))
                         allowedLevels=gamePanel.level+1;
@@ -847,16 +841,18 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 
                             try{
                                 String a;
-                                if(missionSuccess)
-                                    a="You won!";
-                                else 
-                                    a="You lost";
+                                if(!died)
+                                    a=missionSuccess ? "You won!" : "You lost!";
+                                else
+                                    a="You died!";
 
                                 p.setColor(Color.white);
                                 p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(24f));
                                 p.drawString(a,400,300);
-                                p.drawString("Needed time:: "+lastNeededTime/1000+" s",400,350);
-                                p.drawString("Your time::   "+yourTime/1000+" s",400,400);
+                                if(!died){
+                                    p.drawString("Needed time:: "+lastNeededTime/1000+" s",400,350);
+                                    p.drawString("Your time::   "+yourTime/1000+" s",400,400);
+                                }
 
                                 add(new CButton(400,500,150,50,new ImageIcon[]{
                                                             new ImageIcon(GraphicsAssets.getImage(55)),

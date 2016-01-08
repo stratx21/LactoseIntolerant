@@ -11,10 +11,7 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ import javax.swing.Timer;
  *
  * @author 0001058857
  */
-public class GamePanel extends CPanel implements KeyListener,Runnable{
+public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runnable{
     
     public int screenDistortY=0; //for if the player stops, then the screen 
                         //goes up to follow then bounces back, etc.
@@ -77,14 +74,21 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public boolean hasWeapon=false;
     
+    public CListener done=null;
+    
     /**
      *
      * @param size size of JPanel, index 0 as the x size and 
      *      index 1 as the y size
+     * @param lv
+     * @param done
+     * @param w
      */
     public GamePanel(int[] size,int lv,CListener done,Weapon w){
         if(w!=null&&(playerWeapon=w).TYPE==0)
             weaponIsBoost=true;
+        
+        this.done=done;
         
         hasWeapon=playerWeapon!=null;
         
@@ -370,6 +374,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 tempPing++;
             }
         }
+        if(player.health<=0)
+            done.actionPerformed(true);
     }
     
     /**

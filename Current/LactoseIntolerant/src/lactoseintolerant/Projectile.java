@@ -55,18 +55,18 @@ public class Projectile {
             case 1:
                 damage=4+5*lv;
                 speed=125;
-                size=new int[]{9*StartGameFlow.FRAME_SIZE[0]/1000,8*StartGameFlow.FRAME_SIZE[1]/1000};
+                size=new int[]{9*StartGameFlow.FRAME_SIZE[0]/1000,8*StartGameFlow.FRAME_SIZE[1]/700};
                 break;
             case 2:
                 damage=50+lv*10;
                 speed=0;
                 imageGroup=new BufferedImage[]{GraphicsAssets.getImage(70),GraphicsAssets.getImage(68)};
-                size=new int[]{25*StartGameFlow.FRAME_SIZE[0]/1000,25*StartGameFlow.FRAME_SIZE[1]/1000};
+                size=new int[]{25*StartGameFlow.FRAME_SIZE[0]/1000,25*StartGameFlow.FRAME_SIZE[1]/700};
                 break;
             case 3:
                 speed=150+50*lv;
                 damage=100+30*lv;
-                size=new int[]{30*StartGameFlow.FRAME_SIZE[0]/1000,46*StartGameFlow.FRAME_SIZE[1]/1000};
+                size=new int[]{30*StartGameFlow.FRAME_SIZE[0]/1000,46*StartGameFlow.FRAME_SIZE[1]/700};
                 break;
         }
         
@@ -102,7 +102,7 @@ public class Projectile {
             ping++;
         }
         
-        p.drawImage(image,screenLocation[0]+Profile.xStart,screenLocation[1],size[0],size[1],null);
+        p.drawImage(image,screenLocation[0]+Profile.xStart,screenLocation[1]+dY,size[0],size[1],null);
     }
     
     /**

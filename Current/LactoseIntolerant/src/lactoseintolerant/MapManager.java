@@ -144,7 +144,7 @@ public class MapManager {
 //        updateMedianPolygons(p);
         if(curIndex==yLoc.size()-2){
             System.out.println("!!!!!!!!!!@@@@@@@@@@@@@@@@@@");
-            done.actionPerformed();
+            done.actionPerformed(false);
         }
         
         
