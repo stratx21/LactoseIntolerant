@@ -35,6 +35,8 @@ public class Profile {
     public static boolean[][][] upgrades=new boolean[5][3][6]; //make a 3d array for each car type added in
     
     
+    public static boolean soundEffectsOn=true,musicOn=true;
+    
     /**
      * prices for each upgrade; each set includes the prices for the upgrades
      * menu for each type of car, an empty space between each set for type
