@@ -1800,6 +1800,8 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         else
             toAdd.screenLocation[1]=850;
         
+        toAdd.speed=player.TOP_SPEED+15;
+        
         enemies.add(toAdd);
         
     }
