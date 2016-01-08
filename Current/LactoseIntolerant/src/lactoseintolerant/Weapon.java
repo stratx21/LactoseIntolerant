@@ -71,7 +71,7 @@ public class Weapon {
                 pingWaitDelay=70-lv*5;
                 break;
             case 3:
-                pingWaitDelay=125;
+                pingWaitDelay=90-lv*20;
         }
     }
     

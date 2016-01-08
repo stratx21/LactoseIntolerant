@@ -66,6 +66,7 @@ public class Projectile {
             case 3:
                 speed=150+50*lv;
                 damage=100+30*lv;
+                size=new int[]{30,46};
                 break;
         }
         
@@ -101,7 +102,7 @@ public class Projectile {
             ping++;
         }
         
-        p.drawImage(image,screenLocation[0]+Profile.xStart,screenLocation[1],null);
+        p.drawImage(image,screenLocation[0]+Profile.xStart,screenLocation[1],size[0],size[1],null);
     }
     
     /**

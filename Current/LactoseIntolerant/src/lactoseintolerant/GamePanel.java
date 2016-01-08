@@ -1066,7 +1066,7 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
                 } else{
                     exTime=40;
                 }
-                explosions.add(new Explosion(projectile.screenLocation[0]+projectile.size[0]/2,projectile.screenLocation[1]+projectile.size[1]/2,exTime));
+//                explosions.add(new Explosion(projectile.screenLocation[0]+projectile.size[0]/2,projectile.screenLocation[1]+projectile.size[1]/2,exTime));
                 
                 playerWeapon.projectiles.remove(i);
                 i--;
