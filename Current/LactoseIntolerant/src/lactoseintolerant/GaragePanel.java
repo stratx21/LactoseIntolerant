@@ -320,7 +320,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     private void removeAllUpgradesButtons(){
         for(int i=0;i<6;i++)
             for(int j=0;j<3;j++)
-                this.remove(upgradesButtons[j][i]);
+                if(upgradesButtons[j][i]!=null)
+                    this.remove(upgradesButtons[j][i]);
         
         for(int i=0;i<5;i++)
             this.remove(upgradesCarTypes[i]);
@@ -505,66 +506,68 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         CButton temp;
         for(int i=0;i<6;i++)
             for(int j=0;j<3;j++){
-                this.add(temp=new CButton(getNewSizeX((400+j*135)/1000.0),getNewSizeY((222+i*50)/1000.0),upWidth,upHeight,
-                    new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(57)),
-                            new ImageIcon(GraphicsAssets.getImage(57))},false){
-                                @Override
-                                public void released(){
-                                    if(!Profile.upgrades[currentCar][xIndex][yIndex]){
-                                        double t;
-                                        if(Profile.money>(t=Profile.prices[currentCar][xIndex][yIndex])
-                                                &&(xIndex==0||Profile.upgrades[currentCar][0][yIndex])
-                                                &&(xIndex<2||Profile.upgrades[currentCar][1][yIndex])
-                                                &&(xIndex<3||Profile.upgrades[currentCar][2][yIndex])){//can buy it
-                                            Profile.money-=t;
-                                            Profile.upgrades[currentCar][xIndex][yIndex]=true;
-                                            
-                                            icons=new ImageIcon[]{
-                                                new ImageIcon(GraphicsAssets.getImage(58)),
-                                                new ImageIcon(GraphicsAssets.getImage(58))
-                                                };
-                                            
-                                            changeIconSizes();
-                                            
-                                            setIcon(icons[0]);
-                                            
-                                            if(yIndex>1)
-                                                equipped[currentCar]=new int[]{xIndex,yIndex};
+                if(Profile.prices[currentCar][j][i]!=0){
+                    this.add(temp=new CButton(getNewSizeX((400+j*135)/1000.0),getNewSizeY((222+i*50)/1000.0),upWidth,upHeight,
+                        new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(57)),
+                                new ImageIcon(GraphicsAssets.getImage(57))},false){
+                                    @Override
+                                    public void released(){
+                                        if(!Profile.upgrades[currentCar][xIndex][yIndex]){
+                                            double t;
+                                            if(Profile.money>(t=Profile.prices[currentCar][xIndex][yIndex])
+                                                    &&(xIndex==0||Profile.upgrades[currentCar][0][yIndex])
+                                                    &&(xIndex<2||Profile.upgrades[currentCar][1][yIndex])
+                                                    &&(xIndex<3||Profile.upgrades[currentCar][2][yIndex])){//can buy it
+                                                Profile.money-=t;
+                                                Profile.upgrades[currentCar][xIndex][yIndex]=true;
+
+                                                icons=new ImageIcon[]{
+                                                    new ImageIcon(GraphicsAssets.getImage(58)),
+                                                    new ImageIcon(GraphicsAssets.getImage(58))
+                                                    };
+
+                                                changeIconSizes();
+
+                                                setIcon(icons[0]);
+
+                                                if(yIndex>1)
+                                                    equipped[currentCar]=new int[]{xIndex,yIndex};
+                                            }
+                                        } else if(yIndex>1){//is a weapon type and is already owned
+                                            equipped[currentCar]=equipped[currentCar][0]!=xIndex||equipped[currentCar][1]!=yIndex ? new int[]{xIndex,yIndex} : new int[2];
+
+                                            repaint();
                                         }
-                                    } else if(yIndex>1){//is a weapon type and is already owned
-                                        equipped[currentCar]=equipped[currentCar][0]!=xIndex||equipped[currentCar][1]!=yIndex ? new int[]{xIndex,yIndex} : new int[2];
-                                        
-                                        repaint();
+                                        rpnt();
                                     }
-                                    rpnt();
+
+                                    @Override
+                                    public void entered(){
+                                        currentPriceToDisplay=Profile.prices[currentCar][xIndex][yIndex];
+                                        rpnt();
+                                    }
+
+                                    @Override
+                                    public void exited(){
+                                        currentPriceToDisplay=0;
+                                        rpnt();
+                                    }
                                 }
-                                
-                                @Override
-                                public void entered(){
-                                    currentPriceToDisplay=Profile.prices[currentCar][xIndex][yIndex];
-                                    rpnt();
-                                }
-                                
-                                @Override
-                                public void exited(){
-                                    currentPriceToDisplay=0;
-                                    rpnt();
-                                }
-                            }
-                            );
-                
-                temp.xIndex=j;
-                temp.yIndex=i;
-                
-                if(Profile.upgrades[currentCar][j][i]){
-                    temp.icons=new ImageIcon[]{
-                        new ImageIcon(GraphicsAssets.getImage(58)),
-                        new ImageIcon(GraphicsAssets.getImage(58))};
-                    temp.changeIconSizes();
-                    temp.setIcon(temp.icons[0]);
+                                );
+
+                    temp.xIndex=j;
+                    temp.yIndex=i;
+
+                    if(Profile.upgrades[currentCar][j][i]){
+                        temp.icons=new ImageIcon[]{
+                            new ImageIcon(GraphicsAssets.getImage(58)),
+                            new ImageIcon(GraphicsAssets.getImage(58))};
+                        temp.changeIconSizes();
+                        temp.setIcon(temp.icons[0]);
+                    }
+
+                    upgradesButtons[j][i]=temp;
                 }
-                
-                upgradesButtons[j][i]=temp;
             }
         
         repaint();
