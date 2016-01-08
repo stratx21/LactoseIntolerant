@@ -38,7 +38,7 @@ public class MainMenu extends Menu{
     
     private BufferedImage mainBackground=GraphicsAssets.getImage(27);
     
-    int[] FRAME_SIZE = {StartGameFlow.X_SIZE,StartGameFlow.Y_SIZE};
+    int[] FRAME_SIZE = {StartGameFlow.FRAME_SIZE[0],StartGameFlow.FRAME_SIZE[1]};
     
     public MainMenu(JFrame f){
 //        GameFlow g=new GameFlow(f);//comment out to not auto-go to game
@@ -79,8 +79,8 @@ public class MainMenu extends Menu{
     
     private void setUpMainMenu(JFrame f){
         
-        FRAME_SIZE[0] = StartGameFlow.X_SIZE;
-        FRAME_SIZE[1] = StartGameFlow.Y_SIZE;
+        FRAME_SIZE[0] = StartGameFlow.FRAME_SIZE[0];
+        FRAME_SIZE[1] = StartGameFlow.FRAME_SIZE[1];
         
         f.getContentPane().removeAll();
         f.getContentPane().repaint();

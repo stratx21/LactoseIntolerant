@@ -19,6 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Profile {
     
+    public int[] FRAME_SIZE=new int[2];
+    
     /**
      * first is the car type, out of:: 
      * getaway van, race car, armored van, tank

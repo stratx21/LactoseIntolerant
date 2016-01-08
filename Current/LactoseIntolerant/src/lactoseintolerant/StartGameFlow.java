@@ -17,15 +17,14 @@ import java.awt.event.*;
 public class StartGameFlow extends JFrame{
     private CPanel currentPanel;
     private Button button;
-    public static int X_SIZE=0;
-    public static  int Y_SIZE=0;
+    public static int[] FRAME_SIZE=new int[2];
     
     public StartGameFlow(){  
         
         this.setIconImage(GraphicsAssets.getIcon());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setSize(X_SIZE,Y_SIZE);
+        this.setSize(FRAME_SIZE[0],FRAME_SIZE[1]);
         this.setVisible(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         setSIZE();
@@ -49,15 +48,12 @@ public class StartGameFlow extends JFrame{
     }
     
     
-    public void setSIZE()
-    { 
+    public void setSIZE(){ 
 
-        X_SIZE=this.getWidth();
-        Y_SIZE=this.getHeight();
-        System.out.println(X_SIZE);
+        FRAME_SIZE[0]=this.getWidth();
+        FRAME_SIZE[1]=this.getHeight();
 
-
-        this.setSize(X_SIZE,Y_SIZE);
+        this.setSize(FRAME_SIZE[0],FRAME_SIZE[1]);
 
         //TODO make game scale dinamicly
     }

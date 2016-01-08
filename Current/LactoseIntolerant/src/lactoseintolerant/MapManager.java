@@ -152,7 +152,7 @@ public class MapManager {
         int temDis,//temporary distance (y)
                 temp;//temp used after while ends
         while(go){
-            if((temDis=yLoc.get(curIndex))>700){//image has expired
+            if((temDis=yLoc.get(curIndex))>StartGameFlow.FRAME_SIZE[1]){//image has expired
                 curIndex++;
             } else if(temDis>-50){
                 drawSecond=true;

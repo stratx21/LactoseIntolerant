@@ -25,7 +25,7 @@ import javax.swing.JFrame;
  * @author Josh
  */
 public class GaragePanel extends CPanel /*implements MouseListener*/{
-    public int[] FRAME_SIZE={StartGameFlow.X_SIZE,StartGameFlow.Y_SIZE};
+    public int[] FRAME_SIZE={StartGameFlow.FRAME_SIZE[0],StartGameFlow.FRAME_SIZE[1]};
        
     private JFrame frame=null;
     

@@ -31,12 +31,13 @@ public class OpeningPanel extends CPanel{
             images.add(GraphicsAssets.getFirstImage());
             images.add(GraphicsAssets.getSecondImage());
         }catch(IOException e){ErrorLogger.logIOError(e,"OpeningPanel()");}
+        FRAME_SIZE[0]=StartGameFlow.FRAME_SIZE[0];
+        FRAME_SIZE[1]=StartGameFlow.FRAME_SIZE[1];
     }
-    int[] FRAME_SIZE = new int[2];
+    
     @Override
     public void paintComponent(Graphics g){
-        FRAME_SIZE[0] = StartGameFlow.X_SIZE;
-        FRAME_SIZE[1] = StartGameFlow.Y_SIZE;
+        
         
         g.setColor(Color.black);
         g.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
