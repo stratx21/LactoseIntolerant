@@ -33,8 +33,6 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
     
     public boolean paused=true, canUnpause=false;
     
-    public boolean done=false;
-    
     public long objectiveTime=10000;
     
     public final int[] laneStarts=new int[]{201,248,294,340,628,674,720,766};
@@ -1805,7 +1803,12 @@ public class GamePanel extends CPanel implements KeyListener,Runnable{
         enemies.add(toAdd);
         
     }
-
+    
+    /**
+     * run is currently not being used; previously it was used to calculate every
+     * calcDelay milliseconds, while another loop would paint the Graphical
+     * representation; now the two loops are combined into one.
+     */
     public final int calcDelay=20;
     @Override
     public void run() {
