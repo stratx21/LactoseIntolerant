@@ -78,6 +78,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
      */
     public byte mode=0,oldMode=0;
     
+    /**
+     * initialize the garage panel and set it up in the Container 
+     * javax.swing.JFrame passed in as JFrame f
+     * 
+     * @param f the javax.swing.JFrame Container that is used for the game
+     * @param level the level that the user is currently on. 
+     */
     public GaragePanel(JFrame f,int level){
         System.out.println("setting up GaragePanel...");
         
@@ -103,10 +110,29 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         switchBottomButtonComponents();
     }
     
+    /**
+     * take the original measurements used and translate them to the new sizes
+     * that should be used instead, depending on the frame's size, which
+     * depends on the screen since the game is full screen. 
+     * 
+     * @param a the original size divided by 1000 since that is the original x
+     *      size that was used
+     * @return the new x dimension
+     */
     public int getNewSizeX(double a){
         return (int)(a*FRAME_SIZE[0]);
     }
     
+    /**
+     * take the original measurements used and translate them to the new sizes
+     * that should be used instead, depending on the frame's size, which
+     * depends on the screen since the game is full screen. 
+     * 
+     * @param a the original size divided by 1000 to make it simpler than dividing
+     *      by 700, the original y size; this function formats the number to as
+     *      if it was divided by 1000. 
+     * @return the new y dimension
+     */
     public int getNewSizeY(double a){
         return (int)(a*1.42857*FRAME_SIZE[1]);
     }

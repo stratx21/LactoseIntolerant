@@ -19,8 +19,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Profile {
     
-    public int[] FRAME_SIZE=new int[2];
-    
     /**
      * first is the car type, out of:: 
      * getaway van, race car, armored van, tank
@@ -74,10 +72,20 @@ public class Profile {
         },
     };
     
-    public static double[] carPrices=new double[]{
+    /**
+     * contains prices of the 5 different types of cars; the first, the sudan, is zero
+     * since the user already owns this car at the beginning of the game; This
+     * is used more as a reference than as a Profile variable since it holds 
+     * variables that are not influenced by input save data. 
+     */
+    public final static double[] carPrices=new double[]{
         0,100000,250000,600000,1000000
     };
     
+    /**
+     * a boolean for every type of car, this is variable to the actual Profile
+     * of the user, telling if they have purchased the car yet.
+     */
     public static boolean[] boughtCars=new boolean[]{
         true,false,false,false,false
     };
@@ -88,8 +96,12 @@ public class Profile {
      */
     public static int xStart=0;
     
+    //file used to input the data from a save location
     public static File inputSaveFile=null;
     
+    //money the user has; the value here, if not influenced by an import of data
+    //by save file, is the default amount of money the user will start with in
+    //a new game. 
     public static double money=10000000.00;
     
     /**
@@ -123,6 +135,9 @@ public class Profile {
     }
     
     /**
+     * 
+     * opens the save file specified by the user in the JFileChooser, and
+     * imports the data from it to give the user their progress back. 
      * 
      * @throws Exception Exception thrown if the file is not found for the 
      * Scanner "in" uses to import the data from the save file specified by
