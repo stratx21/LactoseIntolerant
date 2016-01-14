@@ -143,7 +143,6 @@ public class MapManager {
 //        
 //        updateMedianPolygons(p);
         if(curIndex==yLoc.size()-2){
-            System.out.println("!!!!!!!!!!@@@@@@@@@@@@@@@@@@");
             done.actionPerformed(false);
         }
         
@@ -157,7 +156,7 @@ public class MapManager {
             } else if(temDis>-50){
                 drawSecond=true;
                 go=false;
-            } else if(temDis<-1*STRAIGHT_LENGTH_PIXELS+400){ //picture is getting out of view of screen (is just going up beyond the lower boundary)
+            } else if(temDis<-1*STRAIGHT_LENGTH_PIXELS){ //picture is getting out of view of screen (is just going up beyond the lower boundary)
                 curIndex--;
                 go=false;
                 drawSecond=true;
