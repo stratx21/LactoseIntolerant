@@ -51,14 +51,138 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     public int missionIndex=1,allowedLevels=1;
     
-    private final int TOTAL_LEVELS=2;////////////////////// *  9090
-    
     public String toSplitString="::::";
     
-    public String[] missionInfo=new String[]{"Mission #1:  ::::defeat the first timed mission!",
-        "Mission #2:   ::::defeat another timed mission!"}; //\n not working with Graphics.drawString
+    public static final int[] rewards=new int[]{
+        22000,32000,50000,85000,98000,125000,160000,210000,305000,420000,
+        750000,1250000,1850000,2750000,
+    };
     
-    private final int BOTTOM_BUTTONS_Y=550,BOTTOM_BUTTONS_HEIGHT=150;
+    public String[] missionInfo=new String[]{
+        "Mission 1: ::::"
+            + "You are running away and taking::::"
+            + "some of your belongings with ::::"
+            + "you, such as a gun, some money,::::"
+            + "and your sudan. If you successfully::::"
+            + "escape you can keep the $22,000::::"
+            + "that you have stored in your safe.",
+        "Mission 2: ::::"
+            + "Billy John Doe wants you to transport::::"
+            + "his mechanic to the garage for::::"
+            + "confidential purposes; he did not::::"
+            + "give any details but the location.::::"
+            + "Doe will pay you $32,000 to do so::::"
+            + "and the mechanic may fix your old::::"
+            + "sudan while he’s with Doe. ",
+        "Mission 3: ::::"
+            + "Billy John Doe wants you to::::"
+            + "transport a weapons expert to::::"
+            + "the garage since he has an::::"
+            + "agreement with him. He will pay::::"
+            + "you $50,000 to do so and he will::::"
+            + "be able to upgrade your car with::::"
+            + "weapon capabilities for a price.",
+        "Mission 4: ::::"
+            + "The mechanic needs you to transport::::"
+            + "his tools from his place. He is::::"
+            + "willing to pay you $85,000 for::::"
+            + "doing the job.",
+        "Mission 5: ::::"
+            + "Billy John Doe has seen your great::::"
+            + "driving skills and will now hire::::"
+            + "you as his getaway driver. He is::::"
+            + "robbing Sir WIlliam Sheep, the::::"
+            + "Mayor of SheepMania. You will go::::"
+            + "to a small town near by where::::"
+            + "he keeps his prized sheep to sell::::"
+            + "on the black market in Sheepmania.::::"
+            + "The cut for the job is $98000 if::::"
+            + "you can drive Doe's crew far enough::::"
+            + "away by the time anyone notices the::::"
+            + "missing sheep.",
+        "Mission 6: ::::"
+            + "Billy John Doe wants you to bring::::"
+            + "back some medical supplies from a::::"
+            + "friend at St. Patrick's Hospital.::::"
+            + "He will pay you $125,000 for the job.",
+        "Mission 7: ::::"
+            + "Billy Doe realized that he cannot ::::"
+            + "do anything without at first having ::::"
+            + "some knowledge about what he is ::::"
+            + "doing, so he wants you to transport ::::"
+            + "a doctor who knows how to use the ::::"
+            + "medical equipment. He is willing to::::"
+            + "give $160,000 for this job, but you:::"
+            + "must transport him before the time::::"
+            + "runs out!",
+        "Mission 8: ::::"
+            + "An Ultimate Speed derby is being held.::::"
+            + "You will be driving for a time along a::::"
+            + "straight track. You’ll get paid $210,000::::"
+            + "for completing the mission.",
+        "Mission 9: ::::"
+            + "Billy John Doe needs you to transport::::"
+            + "weapons for his next job. Like last ::::"
+            + "time, all you need to do is drive::::"
+            + "the getaway car, but this time to::::"
+            + "earn a whopping $305,000.",
+        "MIssion 10: ::::"
+            + "The Sheep collection jewelry is ::::"
+            + "being delivered to Sheepmania’s ::::"
+            + "top jewelry store, Sheep Glamour ::::"
+            + "Galore. Like last time, just drive::::"
+            + "the getaway car straight back to::::"
+            + "the garage to earn $420,000.",
+        "Mission 11: ::::"
+            + "Billy John Doe wants you to transport::::"
+            + "some mysterious material from a::::"
+            + "far away town named Little Lamb. ::::"
+            + "Doe said the mission would be so ::::"
+            + "easy that the payment of $750,000 ::::"
+            + "makes it sound too good to be true.",
+        "Mission 12: ::::"
+            + "Billy John Doe feels bad for having ::::"
+            + "mislead you on how easy the job was::::"
+            + "going to be, so to make it up to::::"
+            + "you he has entered you in a timed::::"
+            + "street race. The prize money of::::"
+            + "$1,250,000 is all yours if you win. ",
+        "MIssion 13: ::::"
+            + "The weapons expert was so impressed::::"
+            + "by your driving that he is willing::::"
+            + "to give you a temporary job of ::::"
+            + "transporting weapons for him. He gave::::"
+            + "you the map to where the drop off will::::"
+            + "be, and tells you that the payment for::::"
+            + "the job is $1,850,000.",
+        "Mission 14: ::::"
+            + "Before leaving from a recent delivery,::::"
+            + "Billy John Doe called and asked you to::::"
+            + "pick up some packages for him and then::::"
+            + "return to the garage to meet him there.::::"
+            + "Curiously, you open a box and see that::::"
+            + "one is a time bomb counting down. From::::"
+            + "the looks of it you have 2 minutes to::::"
+            + "return to the garage if you want a chance::::"
+            + "of surviving, and once you do your::::"
+            + "getting paid $2,750,000.",
+        "Mission 15: ::::"
+            + "With everything gathered Billy has one::::"
+            + "final job for you. HE wants you to::::"
+            + "deliver one of the time bombs to the::::"
+            + "corrupt mayor of Sheepmania since once::::"
+            + "he is out of the way Billy John Doe can::::"
+            + "take his place and fix this city. He is::::"
+            + "willing to pay you $3,750,000 dollars to::::"
+            + "do so.",
+        "Mission 16: ::::"
+            + "The STC kidnapped Billy John Doe and you::::"
+            + "just broke him out. If you are to::::"
+            + "successfully save him he will pay you::::"
+            + "$5,000,000."
+            
+            
+    }; //\n not working with Graphics.drawString
     
     public ArrayList<Component> innerComponents=new ArrayList<Component>();
     
@@ -200,7 +324,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         else 
             prev.disable(false);
         
-        if(missionIndex==TOTAL_LEVELS)
+        if(missionIndex==missionInfo.length)
             next.disable(true);
         else
             next.disable(false);
@@ -228,7 +352,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     String[] lines=missionInfo[missionIndex-1].split(toSplitString);
                     p.setColor(Color.black);
                     p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/AA_typewriter.ttf")).deriveFont((float)(0.025714*FRAME_SIZE[1])));
-                    int y=170,addToY=getNewSizeY(0.05);
+                    int y=170,addToY=getNewSizeY(0.025);
 //                    y=(int)(FRAME_SIZE[1]*.6);
                     for(int i=0;i<lines.length;i++){
                         p.drawString(lines[i],getNewSizeX(0.235),y+=addToY);
@@ -634,8 +758,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //options
         this.add(menu3=new CButton(getNewSizeX(0.375),getNewSizeY(0.42),getNewSizeX(0.250),getNewSizeY(0.100),
-                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(37)),
-                            new ImageIcon(GraphicsAssets.getImage(38))}
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(92)),
+                            new ImageIcon(GraphicsAssets.getImage(93))}
                 ){
                     @Override
                     public void released(){

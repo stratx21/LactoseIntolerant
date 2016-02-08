@@ -164,6 +164,10 @@ public class GraphicsAssets { //EVERYTING shall be static here ;)
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedArmoredVan1.png"))));//90
             images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Cars/Player/SideViews/OwnedTank1.png"))));//91
             
+            //options button for in the menu of GarageMenu::
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/Options00.png"))));//92
+            images.add((BufferedImage)(ImageIO.read(new File("src/Graphics/Menus/Garage/Menu/Options01.png"))));//93
+            
             
             
             

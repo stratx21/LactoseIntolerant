@@ -7,8 +7,10 @@ package lactoseintolerant;
 
 /**
  *
- * @author 0001058857
+ * @author Josh
  */
-public class TeamMember {
+public class TeamManager {
     
+    
+    java.util.ArrayList<Integer> team=new java.util.ArrayList<Integer>();
 }
