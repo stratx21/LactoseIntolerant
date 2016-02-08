@@ -132,6 +132,7 @@ public class Profile {
                 save.write(boughtCars[i]+":");
             
             for(int i=0;i<completedMissions.length;i++)
+                save.write(completedMissions[i]+":");
             
             save.close();
         } catch(Exception ex){
@@ -172,6 +173,11 @@ public class Profile {
                 }
         for(int i=0;i<5;i++){
             boughtCars[i]=Boolean.parseBoolean(in[c]);
+            c++;
+        }
+        
+        for(int i=0;i<completedMissions.length;i++){
+            completedMissions[i]=Boolean.parseBoolean(in[c]);
             c++;
         }
     }
