@@ -8,9 +8,11 @@ package lactoseintolerant;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -930,7 +932,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 p.setColor(Color.black);
                                 p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(48f));
                                 p.drawString((3-(int)(time/1000))+"",450,300);
-                            } catch(Exception e){
+                            } catch(FontFormatException | IOException e){
                                 ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
                             }
 
@@ -965,9 +967,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 
                             try{
                                 String a;
-                                if(!died)
+                                if(!died){
+                                    if(missionSuccess){
+                                        Profile.money+=rewards[missionIndex];
+                                        Profile.completedMissions[missionIndex]=true;
+                                    }
                                     a=missionSuccess ? "You won!" : "You lost!";
-                                else
+                                }else
                                     a="You died!";
 
                                 p.setColor(Color.white);
