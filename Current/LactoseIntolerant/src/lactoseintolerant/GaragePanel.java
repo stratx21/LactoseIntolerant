@@ -59,7 +59,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         22000,32000,50000,85000,98000,125000,160000,210000,305000,420000,
         750000,1250000,1850000,2750000,
     };
-    
+    /**
+     *Creates a String Array filled with an array that
+     *carries the paragraph taht describes each mission.
+     */
     public String[] missionInfo=new String[]{
         "Mission 1: ::::"
             + "You are running away and taking::::"
