@@ -60,8 +60,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         750000,1250000,1850000,2750000,
     };
     /**
-     *Creates a String Array filled with an array that
-     *carries the paragraph taht describes each mission.
+     * Array of type String that contains the mission prompts for each mission
      */
     public String[] missionInfo=new String[]{
         "Mission 1: ::::"
@@ -192,7 +191,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public ArrayList<Component> innerComponents=new ArrayList<Component>();
     
     public BufferedImage missionBoard=GraphicsAssets.getImage(36),
-            background=GraphicsAssets.getImage(51);
+                         background=GraphicsAssets.getImage(51);
     
     /**
      * 0 - Missions
