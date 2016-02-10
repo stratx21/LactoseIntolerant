@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lactoseintolerant;
+package LactoseIntolerant;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -13,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -355,7 +356,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 try{
                     String[] lines=missionInfo[missionIndex-1].split(toSplitString);
                     p.setColor(Color.black);
-                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/AA_typewriter.ttf")).deriveFont((float)(0.025714*FRAME_SIZE[1])));
+                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/AA_typewriter.ttf").openStream()).deriveFont((float)(0.025714*FRAME_SIZE[1])));
                     int y=170,addToY=getNewSizeY(0.025);
 //                    y=(int)(FRAME_SIZE[1]*.6);
                     for(int i=0;i<lines.length;i++){
@@ -371,7 +372,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             case 1: //upgrades
                 try{
                     p.setColor(Color.black);
-                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont((float)(0.036*FRAME_SIZE[1])));
+                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/Square.ttf").openStream()).deriveFont((float)(0.036*FRAME_SIZE[1])));
                     int a=FRAME_SIZE[0]/4-50;
                     p.drawString("Speed",a,getNewSizeY(0.240));
                     p.drawString("Armor",a,getNewSizeY(0.290));
@@ -386,7 +387,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     //price text::
                     if(currentPriceToDisplay>0){
                         p.setColor(gold);
-                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/Square.ttf")).deriveFont((float)(0.045714*FRAME_SIZE[1])));
+                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/Square.ttf").openStream()).deriveFont((float)(0.045714*FRAME_SIZE[1])));
                         p.drawString(formatMoney(currentPriceToDisplay),getNewSizeX(0.405),getNewSizeY(0.187));
                     }
                     
@@ -804,7 +805,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     }
     
     public void addThis(){
-        frame.add(this);
+        frame.add((CPanel)this);
     }
     
     private void addNextPrevPlayButtons(){  // x 63, y  24
@@ -868,7 +869,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     private void drawMoneyDisplay(Graphics p){
         try{
             p.setColor(gold);
-            p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/AA_typewriter.ttf")).deriveFont((float)(0.025714*FRAME_SIZE[1])));
+            p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/AA_typewriter.ttf").openStream()).deriveFont((float)(0.025714*FRAME_SIZE[1])));
             p.drawString(formatMoney(Profile.money),getNewSizeX(0.005),getNewSizeY(0.018)+10);
         } catch(Exception e){
             ErrorLogger.logError(e,"drawMoneyDisplay(Graphics) - GaragePanel");
@@ -932,7 +933,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 
                             try{
                                 p.setColor(Color.black);
-                                p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(48f));
+                                p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/straight.ttf").openStream()).deriveFont(48f));
                                 p.drawString((3-(int)(time/1000))+"",450,300);
                             } catch(FontFormatException | IOException e){
                                 ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
@@ -979,7 +980,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                     a="You died!";
 
                                 p.setColor(Color.white);
-                                p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(24f));
+                                p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/straight.ttf").openStream()).deriveFont(24f));
                                 p.drawString(a,400,300);
                                 if(!died){
                                     p.drawString("Needed time:: "+lastNeededTime/1000+" s",400,350);

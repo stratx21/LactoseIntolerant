@@ -1,6 +1,0 @@
-- go by the style provided/whatever was told idk lol
-- make sure to, AFTER adding the Components for the menu (components are buttons, labels, and such, not Graphics) to reset the setVisible(boolean) in the GameFrame class
-- also make sure to add all components when the menu is initialized (the contructor will be called, but you may initialize setup another way if you REALLY want to.... rather not
-- I already added a start button just for other stuff developmment i dont care if you delete it or anything
-- ^ for the resetting the visible, it may already be done you may need to check thru the flow
-- Make sure the layout is set to null in the original contructor
