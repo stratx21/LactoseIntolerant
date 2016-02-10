@@ -1,0 +1,5 @@
+try making variables to change it based on what type it is, and these variables should
+be stored in the class and changed based on type in the constructor, and add into the code 
+wherever when needed/applicable for that function.
+
+seems stupid but it might be easier than going thru it all again and then failing to fix the issue
