@@ -25,11 +25,11 @@ import javax.swing.JTextField;
  * @author Josh
  */
 public class ErrorLogger {   //also static stuffs
-    private static String error;
+    private static String error,o;
     
     //---------Log error of type [Exception]::
     protected static void logError(Exception e,String f){ //f= function name
-        System.err.println("/-Error [Exception type used] in function<"+f
+        System.err.println("/-Error [Exception type used] in function<"+(o=f)
                 +"> -\\ Error :: "+e);
         error=e+"";
         promptDeveloper(""+e);
@@ -37,7 +37,7 @@ public class ErrorLogger {   //also static stuffs
     
     //--------Log error fo type [IOException]::
     protected static void logIOError(IOException e,String f){
-        System.err.println("/-Error [IOException type used] in function<"+f
+        System.err.println("/-Error [IOException type used] in function<"+(o=f)
                 +"> -\\ IO Error :: "+e);
         error=e+"";
         promptDeveloper(""+e);
@@ -69,6 +69,8 @@ public class ErrorLogger {   //also static stuffs
                 
                 f.write("--------------------------------------------------------"
                         +"------------------------------------------");
+                f.newLine();
+                f.write(o);
                 f.newLine();
                 f.write("Error Occured at [YYYY/MM/DD HH:MM:SS]:: "+date);
                 f.newLine();
