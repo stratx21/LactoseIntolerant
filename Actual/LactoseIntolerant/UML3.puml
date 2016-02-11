@@ -1,0 +1,223 @@
+@startuml
+annotation java.lang.Override
+class java.awt.Color
+class java.awt.Component
+class java.awt.Font
+class java.awt.Graphics
+class java.awt.Graphics2D
+class java.awt.GraphicsConfiguration
+class java.awt.GraphicsDevice
+class java.awt.GraphicsEnvironment
+class java.awt.Point
+class java.awt.Polygon
+class java.awt.Rectangle
+class java.awt.Shape
+class java.awt.Transparency
+class java.awt.event.ActionEvent
+class java.awt.event.ActionListener
+class java.awt.event.KeyEvent
+class java.awt.event.MouseEvent
+class java.awt.geom.AffineTransform
+class java.awt.geom.Rectangle2D
+class java.awt.image.BufferedImage
+class java.io.BufferedWriter
+class java.io.File
+class java.io.FileInputStream
+class java.io.FileWriter
+class java.io.IOException
+class java.text.DecimalFormat
+class java.util.ArrayList
+class java.util.Date
+class java.util.Scanner
+class javax.imageio.ImageIO
+class javax.swing.BorderFactory
+class javax.swing.ImageIcon
+class javax.swing.JButton
+class javax.swing.JFrame
+class javax.swing.JLabel
+class javax.swing.JOptionPane
+class javax.swing.JPanel
+class javax.swing.JTextField
+class javax.swing.Timer
+class lactoseintolerant.AIFlow
+class lactoseintolerant.AudioAssets
+class lactoseintolerant.BetweenLevelMenu
+class lactoseintolerant.CButton
+class lactoseintolerant.CListener
+class lactoseintolerant.CPanel
+class lactoseintolerant.CivilianFlow
+class lactoseintolerant.EnemyFlow
+class lactoseintolerant.ErrorLogger
+class lactoseintolerant.Explosion
+class lactoseintolerant.GameFlow
+class lactoseintolerant.GameFrame
+class lactoseintolerant.GamePanel
+class lactoseintolerant.GaragePanel
+class lactoseintolerant.GraphicsAssets
+class lactoseintolerant.ImageUtils
+class lactoseintolerant.InstPanel
+class lactoseintolerant.LactoseIntolerant
+class lactoseintolerant.LevelInfo
+class lactoseintolerant.LevelManager
+class lactoseintolerant.LoadingPanel
+class lactoseintolerant.MainMenu
+class lactoseintolerant.MapManager
+class lactoseintolerant.Menu
+class lactoseintolerant.OpeningPanel
+class lactoseintolerant.OptionsMenu
+class lactoseintolerant.PauseMenu
+class lactoseintolerant.Player
+class lactoseintolerant.Profile
+class lactoseintolerant.Ramp
+class lactoseintolerant.ShapeUtils
+class lactoseintolerant.Shot
+class lactoseintolerant.StartGameFlow
+class lactoseintolerant.StartingFrame
+class lactoseintolerant.TeamMember
+class lactoseintolerant.Triangle
+class lactoseintolerant.Weapon
+class lactoseintolerant.WeaponProjectile
+interface java.awt.event.KeyListener
+interface java.awt.event.MouseListener
+interface java.lang.Runnable
+lactoseintolerant.AIFlow ..> java.awt.Graphics
+lactoseintolerant.AIFlow ..> java.awt.Polygon
+lactoseintolerant.AIFlow ..> java.awt.Rectangle
+lactoseintolerant.AIFlow ..> java.awt.image.BufferedImage
+lactoseintolerant.BetweenLevelMenu --|> lactoseintolerant.Menu
+lactoseintolerant.CButton ..> java.lang.Override
+lactoseintolerant.CButton ..> java.awt.event.MouseEvent
+lactoseintolerant.CButton ..> java.awt.image.BufferedImage
+lactoseintolerant.CButton ..> java.util.ArrayList
+lactoseintolerant.CButton ..> javax.swing.BorderFactory
+lactoseintolerant.CButton ..> javax.swing.ImageIcon
+lactoseintolerant.CButton --|> javax.swing.JButton
+lactoseintolerant.CButton --|> java.awt.event.MouseListener
+lactoseintolerant.CPanel --|> javax.swing.JPanel
+lactoseintolerant.CivilianFlow ..> java.awt.Color
+lactoseintolerant.CivilianFlow ..> java.awt.Graphics
+lactoseintolerant.CivilianFlow ..> java.awt.Rectangle
+lactoseintolerant.CivilianFlow --|> lactoseintolerant.AIFlow
+lactoseintolerant.EnemyFlow ..> java.awt.Color
+lactoseintolerant.EnemyFlow ..> java.awt.Graphics
+lactoseintolerant.EnemyFlow ..> java.awt.Rectangle
+lactoseintolerant.EnemyFlow --|> lactoseintolerant.AIFlow
+lactoseintolerant.ErrorLogger ..> java.awt.event.ActionEvent
+lactoseintolerant.ErrorLogger ..> java.io.BufferedWriter
+lactoseintolerant.ErrorLogger ..> java.io.FileInputStream
+lactoseintolerant.ErrorLogger ..> java.io.FileWriter
+lactoseintolerant.ErrorLogger ..> java.io.IOException
+lactoseintolerant.ErrorLogger ..> java.util.ArrayList
+lactoseintolerant.ErrorLogger ..> java.util.Date
+lactoseintolerant.ErrorLogger ..> java.util.Scanner
+lactoseintolerant.ErrorLogger ..> javax.swing.JButton
+lactoseintolerant.ErrorLogger ..> javax.swing.JFrame
+lactoseintolerant.ErrorLogger ..> javax.swing.JLabel
+lactoseintolerant.ErrorLogger ..> javax.swing.JOptionPane
+lactoseintolerant.ErrorLogger ..> javax.swing.JPanel
+lactoseintolerant.ErrorLogger ..> javax.swing.JTextField
+lactoseintolerant.Explosion ..> java.awt.Graphics
+lactoseintolerant.Explosion ..> java.awt.Point
+lactoseintolerant.Explosion ..> java.awt.Rectangle
+lactoseintolerant.Explosion ..> java.awt.image.BufferedImage
+lactoseintolerant.GameFlow ..> java.awt.Graphics
+lactoseintolerant.GameFlow ..> javax.swing.JFrame
+lactoseintolerant.GameFlow ..> javax.swing.JPanel
+lactoseintolerant.GameFrame ..> java.awt.Component
+lactoseintolerant.GameFrame ..> java.util.ArrayList
+lactoseintolerant.GameFrame --|> javax.swing.JFrame
+lactoseintolerant.GamePanel ..> java.lang.Override
+lactoseintolerant.GamePanel ..> java.awt.Color
+lactoseintolerant.GamePanel ..> java.awt.Font
+lactoseintolerant.GamePanel ..> java.awt.Graphics
+lactoseintolerant.GamePanel ..> java.awt.Polygon
+lactoseintolerant.GamePanel ..> java.awt.Rectangle
+lactoseintolerant.GamePanel ..> java.awt.event.ActionEvent
+lactoseintolerant.GamePanel ..> java.awt.event.ActionListener
+lactoseintolerant.GamePanel ..> java.awt.event.KeyEvent
+lactoseintolerant.GamePanel ..> java.awt.geom.Rectangle2D
+lactoseintolerant.GamePanel ..> java.text.DecimalFormat
+lactoseintolerant.GamePanel ..> java.util.ArrayList
+lactoseintolerant.GamePanel ..> javax.swing.Timer
+lactoseintolerant.GamePanel --|> lactoseintolerant.CPanel
+lactoseintolerant.GamePanel --|> java.awt.event.KeyListener
+lactoseintolerant.GamePanel --|> java.lang.Runnable
+lactoseintolerant.GaragePanel ..> java.lang.Override
+lactoseintolerant.GaragePanel ..> java.awt.Color
+lactoseintolerant.GaragePanel ..> java.awt.Component
+lactoseintolerant.GaragePanel ..> java.awt.Font
+lactoseintolerant.GaragePanel ..> java.awt.Graphics
+lactoseintolerant.GaragePanel ..> java.awt.event.ActionEvent
+lactoseintolerant.GaragePanel ..> java.awt.event.ActionListener
+lactoseintolerant.GaragePanel ..> java.awt.event.MouseEvent
+lactoseintolerant.GaragePanel ..> java.awt.image.BufferedImage
+lactoseintolerant.GaragePanel ..> java.io.File
+lactoseintolerant.GaragePanel ..> java.util.ArrayList
+lactoseintolerant.GaragePanel ..> javax.swing.ImageIcon
+lactoseintolerant.GaragePanel ..> javax.swing.JFrame
+lactoseintolerant.GaragePanel --|> lactoseintolerant.CPanel
+lactoseintolerant.GaragePanel ..> java.awt.event.MouseListener
+lactoseintolerant.GraphicsAssets ..> java.awt.image.BufferedImage
+lactoseintolerant.GraphicsAssets ..> java.io.File
+lactoseintolerant.GraphicsAssets ..> java.io.IOException
+lactoseintolerant.GraphicsAssets ..> java.util.ArrayList
+lactoseintolerant.GraphicsAssets ..> javax.imageio.ImageIO
+lactoseintolerant.ImageUtils ..> java.awt.Graphics2D
+lactoseintolerant.ImageUtils ..> java.awt.GraphicsConfiguration
+lactoseintolerant.ImageUtils ..> java.awt.GraphicsDevice
+lactoseintolerant.ImageUtils ..> java.awt.GraphicsEnvironment
+lactoseintolerant.ImageUtils ..> java.awt.Transparency
+lactoseintolerant.ImageUtils ..> java.awt.image.BufferedImage
+lactoseintolerant.ImageUtils ..> javax.swing.ImageIcon
+lactoseintolerant.InstPanel ..> java.awt.Component
+lactoseintolerant.InstPanel ..> java.util.ArrayList
+lactoseintolerant.InstPanel --|> lactoseintolerant.CPanel
+lactoseintolerant.LevelManager --|> lactoseintolerant.LevelInfo
+lactoseintolerant.LoadingPanel --|> lactoseintolerant.CPanel
+lactoseintolerant.MainMenu ..> java.lang.Override
+lactoseintolerant.MainMenu ..> java.awt.Graphics
+lactoseintolerant.MainMenu ..> java.awt.Point
+lactoseintolerant.MainMenu ..> java.awt.Rectangle
+lactoseintolerant.MainMenu ..> java.awt.event.MouseEvent
+lactoseintolerant.MainMenu ..> java.awt.image.BufferedImage
+lactoseintolerant.MainMenu ..> javax.swing.ImageIcon
+lactoseintolerant.MainMenu ..> javax.swing.JButton
+lactoseintolerant.MainMenu ..> javax.swing.JFrame
+lactoseintolerant.MainMenu --|> lactoseintolerant.Menu
+lactoseintolerant.MainMenu ..> java.awt.event.MouseListener
+lactoseintolerant.MapManager ..> java.awt.Color
+lactoseintolerant.MapManager ..> java.awt.Graphics
+lactoseintolerant.MapManager ..> java.awt.Polygon
+lactoseintolerant.MapManager ..> java.awt.Rectangle
+lactoseintolerant.MapManager ..> java.awt.image.BufferedImage
+lactoseintolerant.MapManager ..> java.util.ArrayList
+lactoseintolerant.Menu ..> java.awt.Component
+lactoseintolerant.Menu ..> java.util.ArrayList
+lactoseintolerant.Menu --|> lactoseintolerant.CPanel
+lactoseintolerant.OpeningPanel ..> java.lang.Override
+lactoseintolerant.OpeningPanel ..> java.awt.Color
+lactoseintolerant.OpeningPanel ..> java.awt.Graphics
+lactoseintolerant.OpeningPanel ..> java.awt.image.BufferedImage
+lactoseintolerant.OpeningPanel ..> java.io.IOException
+lactoseintolerant.OpeningPanel ..> java.util.ArrayList
+lactoseintolerant.OpeningPanel --|> lactoseintolerant.CPanel
+lactoseintolerant.OptionsMenu --|> lactoseintolerant.Menu
+lactoseintolerant.PauseMenu --|> lactoseintolerant.Menu
+lactoseintolerant.Player ..> java.awt.Color
+lactoseintolerant.Player ..> java.awt.Graphics
+lactoseintolerant.Player ..> java.awt.Graphics2D
+lactoseintolerant.Player ..> java.awt.Polygon
+lactoseintolerant.Player ..> java.awt.Rectangle
+lactoseintolerant.Player ..> java.awt.Shape
+lactoseintolerant.Player ..> java.awt.geom.AffineTransform
+lactoseintolerant.Player ..> java.awt.geom.Rectangle2D
+lactoseintolerant.Player ..> java.awt.image.BufferedImage
+lactoseintolerant.Player ..> java.util.ArrayList
+lactoseintolerant.ShapeUtils ..> java.awt.Point
+lactoseintolerant.ShapeUtils ..> java.awt.Polygon
+lactoseintolerant.ShapeUtils ..> java.awt.Rectangle
+lactoseintolerant.StartGameFlow --|> lactoseintolerant.GameFrame
+lactoseintolerant.Triangle ..> java.awt.Point
+lactoseintolerant.Triangle --|> java.awt.Polygon
+lactoseintolerant.Weapon ..> java.awt.Graphics
+@enduml
