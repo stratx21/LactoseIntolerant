@@ -305,7 +305,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
     private void drawTimer(Graphics p){
         try{
         p.setColor(Color.black);
-        p.setFont(Font.createFont(Font.TRUETYPE_FONT,new File("src/Fonts/straight.ttf")).deriveFont(18f));
+        p.setFont(Font.createFont(Font.TRUETYPE_FONT,GamePanel.class.getResource("Fonts/straight.ttf").openStream()).deriveFont(18f));
         p.drawString(""+new DecimalFormat("000.000").format((time-3000)/1000.0f),10,95);
         } catch(Exception e){
             ErrorLogger.logError(e,"GamePanel.drawTimer(Graphics)");
