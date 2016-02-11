@@ -17,6 +17,7 @@ public class LactoseIntolerant {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        LactoseIntolerant.class.getResource("/Fonts/AA_typewriter.ttf");
         JFrame.setDefaultLookAndFeelDecorated(true);
         new StartGameFlow();
     }
