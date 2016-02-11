@@ -183,7 +183,8 @@ public class CButton extends JButton implements MouseListener{
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        super.setIcon(icons[0]);
+        if(!disabled&&!pernamantSelect)
+            super.setIcon(icons[0]);
         released();
     }
 
