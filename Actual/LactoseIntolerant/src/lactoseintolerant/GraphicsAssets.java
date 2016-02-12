@@ -169,6 +169,24 @@ public class GraphicsAssets {
             images.add(importFromString("Graphics/Options00.png"));//92
             images.add(importFromString("Graphics/Options01.png"));//93
             
+            //faces::
+            images.add(importFromString("Graphics/faceMoneyIncrease1.png"));//94
+            images.add(importFromString("Graphics/faceMoneyIncrease2.png"));//95
+            images.add(importFromString("Graphics/faceMoneyIncrease3.png"));//96
+            images.add(importFromString("Graphics/faceArmorIncrease1.png"));//97
+            images.add(importFromString("Graphics/faceArmorIncrease2.png"));//98
+            images.add(importFromString("Graphics/faceArmorIncrease3.png"));//99
+            
+            images.add(importFromString("Graphics/faceMoneyIncrease1_1.png"));//100
+            images.add(importFromString("Graphics/faceMoneyIncrease2_1.png"));//101
+            images.add(importFromString("Graphics/faceMoneyIncrease3_1.png"));//102
+            images.add(importFromString("Graphics/faceArmorIncrease1_1.png"));//103
+            images.add(importFromString("Graphics/faceArmorIncrease2_1.png"));//104
+            images.add(importFromString("Graphics/faceArmorIncrease3_1.png"));//105
+            
+            for(int i=94;i<106;i++)
+                System.out.println(images.get(i));
+            
         } catch(Exception e){
             ErrorLogger.logError(e,"GraphicsAssets.importImages");
         }

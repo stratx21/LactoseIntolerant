@@ -38,7 +38,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     //speed, health, boost, machine gun, missiles
     
     public CButton[][] upgradesButtons=new CButton[3][6];
-    public CButton[] upgradesCarTypes=new CButton[5];
+    public CButton[] upgradesCarTypes=new CButton[5],
+            teamButtons=null;
     
     
      
@@ -52,6 +53,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public CButton menu0=null,menu1=null,menu2=null,menu3=null;
     
     public int missionIndex=1,allowedLevels=1;
+    
+    private String teamDisplay=null;
     
     public String toSplitString="::::";
     
@@ -401,6 +404,19 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 }
                 break;
             case 2: //team
+                //add a display for String teamDisplay, to show info such as please fire one team member before hiring another, prices, etc
+                p.setColor(new Color(127,127,127));
+                p.fillRect(getNewSizeX(0.390),getNewSizeY(0.155)-5,getNewSizeX(0.175),getNewSizeY(0.035)+10);
+                
+                try{
+                if(teamDisplay!=null){
+                    p.setColor(gold);
+                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/Square.ttf").openStream()).deriveFont((float)(0.045714*FRAME_SIZE[1])));
+                    p.drawString(teamDisplay,getNewSizeX(0.405),getNewSizeY(0.187));
+                }
+                } catch(Exception e){
+                    ErrorLogger.logError(e,"GaragePanel.paintComponent(java.awt.Graphics) : case 2, team, Font");
+                }
                 break;
             case 3: //menu
                 p.setColor(new Color(0,0,0,110));
@@ -437,6 +453,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 removeAllUpgradesButtons();
                 break;
             case 2:
+                for(int i=0;i<teamButtons.length;i++)
+                    if(teamButtons[i]!=null)
+                        this.remove(teamButtons[i]);
                 break;
             case 3:
                 this.remove(menu0);
@@ -458,6 +477,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 addUpgradesComponents();
                 break;
             case 2:
+                addTeamComponents();
                 break;
             case 3:
                 setMenuButtonComponents();
@@ -475,6 +495,56 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         for(int i=0;i<5;i++)
             this.remove(upgradesCarTypes[i]);
+    }
+    
+    private void addTeamComponents(){
+        TeamManager.maxTeam=currentCar+1;
+        teamButtons=new CButton[TeamManager.ownedTeamtype.size()+6];//owned team plus 6 to choose from to buy
+        
+        final int sideLength=125,between=15;
+        
+        //owned
+        for(int i=0;i<TeamManager.ownedTeamtype.size();i++)
+            this.add(teamButtons[i]=new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamtype.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+TeamManager.ownedTeamtype.get(i))),
+                                new ImageIcon(GraphicsAssets.getImage(100+TeamManager.ownedTeamtype.get(i)))},
+                false){
+
+                @Override
+                public void released(){
+                    teamDisplay="aefjkn";
+                    rpnt();
+                }
+            });
+        
+        //possible to buy
+        for(int i=0;i<6;i++)
+            this.add(teamButtons[i+TeamManager.ownedTeamtype.size()]=new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+i)),
+                                new ImageIcon(GraphicsAssets.getImage(100+i))},
+                false){
+
+                @Override
+                public void released(){
+                    
+                }
+                
+                @Override
+                public void entered(){
+                    
+                }
+            });
+        
+        //getNewSizeX(150+i*(sideLength+between)),getNewSizeY(0.350),getNewSizeX(sideLength),getNewSizeY(sideLength),
+        
+        
+        
+        System.out.println(TeamManager.ownedTeamtype.size());
+        
+        for(int i=0;i<teamButtons.length;i++)
+            System.out.println(teamButtons[i]);
+        
+        repaint();
     }
     
     ///upgradesCarTypes
@@ -797,6 +867,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             });
     }
     
+    //overriden to go back to the main menu
     public void backToMainMenu(){}
     
     public void rmv(Component c){

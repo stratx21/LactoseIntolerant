@@ -76,6 +76,10 @@ public class Profile {
         },
     };
     
+    public final static double[] teamPrices=new double[]{
+        0.0,0.0,0.0,0.0,0.0,0.0
+    };
+    
     /**
      * contains prices of the 5 different types of cars; the first, the sudan, is zero
      * since the user already owns this car at the beginning of the game; This
@@ -156,29 +160,30 @@ public class Profile {
         if (fc.showOpenDialog(null)==JFileChooser.APPROVE_OPTION) {
                 inputSaveFile=fc.getSelectedFile();
             }
-            
-        String[] in=new Scanner(inputSaveFile).nextLine().split(":");
-        
-        for(int i=0;i<in.length;i++)
-            System.out.println(in[i]);
-        
-        money=Double.parseDouble(in[0]);
-        
-        int c=1;
-        for(int k=0;k<5;k++)
-            for(int i=0;i<3;i++)
-                for(int j=0;j<6;j++){
-                    upgrades[k][i][j]=Boolean.parseBoolean(in[c]);
-                    c++;
-                }
-        for(int i=0;i<5;i++){
-            boughtCars[i]=Boolean.parseBoolean(in[c]);
-            c++;
-        }
-        
-        for(int i=0;i<completedMissions.length;i++){
-            completedMissions[i]=Boolean.parseBoolean(in[c]);
-            c++;
+        if(inputSaveFile!=null){
+            String[] in=new Scanner(inputSaveFile).nextLine().split(":");
+
+            for(int i=0;i<in.length;i++)
+                System.out.println(in[i]);
+
+            money=Double.parseDouble(in[0]);
+
+            int c=1;
+            for(int k=0;k<5;k++)
+                for(int i=0;i<3;i++)
+                    for(int j=0;j<6;j++){
+                        upgrades[k][i][j]=Boolean.parseBoolean(in[c]);
+                        c++;
+                    }
+            for(int i=0;i<5;i++){
+                boughtCars[i]=Boolean.parseBoolean(in[c]);
+                c++;
+            }
+
+            for(int i=0;i<completedMissions.length;i++){
+                completedMissions[i]=Boolean.parseBoolean(in[c]);
+                c++;
+            }
         }
     }
     

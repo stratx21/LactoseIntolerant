@@ -11,6 +11,8 @@ package lactoseintolerant;
  */
 public class TeamManager {
     
+    public static int maxTeam=0;
     
-    java.util.ArrayList<Integer> team=new java.util.ArrayList<Integer>();
+    
+    public static java.util.ArrayList<Integer> ownedTeamtype=new java.util.ArrayList<Integer>();
 }
