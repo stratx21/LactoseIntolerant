@@ -19,7 +19,11 @@ public class LactoseIntolerant {
     public static void main(String[] args) {
         LactoseIntolerant.class.getResource("/Fonts/AA_typewriter.ttf");
         JFrame.setDefaultLookAndFeelDecorated(true);
-        new StartGameFlow();
+        try{
+            new StartGameFlow();
+        }catch(Exception e){
+            ErrorLogger.logError(e,"main : full perspective");
+        }
     }
     
     //to go to menu and everything, toggle commented parts in StartGameFlow.
