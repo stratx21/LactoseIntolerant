@@ -25,6 +25,8 @@ public class CButton extends JButton implements MouseListener{
     
     public int xIndex,yIndex;//when applicable 
     
+    public int ID;
+    
     ImageIcon[] icons=null;
     ImageIcon g;
     public boolean pernamantSelect=false;
@@ -75,6 +77,16 @@ public class CButton extends JButton implements MouseListener{
         this.addMouseListener(this);
         
         setContentAreaFilled(true);
+    }
+    
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,int id){
+        this(x,y,xs,ys,ic);
+        ID=id;
+    }
+    
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,boolean border,int id){
+        this(x,y,xs,ys,ic,border);
+        ID=id;
     }
     
     public void changeIconSizes(){
