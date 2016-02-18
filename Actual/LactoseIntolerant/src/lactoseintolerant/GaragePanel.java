@@ -56,6 +56,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     private String teamDisplay=null;
     
+    private boolean showDeleteConfirmation=false,clickedDeleteOnce=false;
+    
     public String toSplitString="::::";
     
     public static final int[] rewards=new int[]{
@@ -367,7 +369,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 //                        p.drawString(lines[i],(int)(FRAME_SIZE[0]*1.2),y);
 //                        y+=(int)(FRAME_SIZE[1]*.1);
                     }
-                }catch(Exception e){
+                }catch(IOException | FontFormatException e){
                     ErrorLogger.logError(e,"paintComponent - GaragePanel");
                 }
                 break;
@@ -399,7 +401,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     }
                     
                     
-                }catch(Exception e){
+                }catch(IOException | FontFormatException e){
                     ErrorLogger.logError(e,"paintComponent, case 1 - GaragePanel");
                 }
                 break;
@@ -409,12 +411,18 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 p.fillRect(getNewSizeX(0.390),getNewSizeY(0.155)-5,getNewSizeX(0.175),getNewSizeY(0.035)+10);
                 
                 try{
-                if(teamDisplay!=null){
-                    p.setColor(gold);
-                    p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/Square.ttf").openStream()).deriveFont((float)(0.045714*FRAME_SIZE[1])));
-                    p.drawString(teamDisplay,getNewSizeX(0.405),getNewSizeY(0.187));
-                }
-                } catch(Exception e){
+                    if(teamDisplay!=null){
+                        p.setColor(gold);
+                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/Square.ttf").openStream()).deriveFont((float)(0.045714*FRAME_SIZE[1])));
+                        p.drawString(teamDisplay,getNewSizeX(0.405),getNewSizeY(0.187));
+                    }
+                    
+                    if(showDeleteConfirmation){
+                        p.setColor(Color.red);
+                        p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/Square.ttf").openStream()).deriveFont((float)(0.025714*FRAME_SIZE[1])));
+                        p.drawString("click again if you wish to delete this member from your team.",getNewSizeX(0.25),getNewSizeY(0.25));
+                    }
+                } catch(IOException | FontFormatException e){
                     ErrorLogger.logError(e,"GaragePanel.paintComponent(java.awt.Graphics) : case 2, team, Font");
                 }
                 break;
@@ -499,39 +507,84 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     private void addTeamComponents(){
         TeamManager.maxTeam=currentCar+1;
-        teamButtons=new CButton[TeamManager.ownedTeamtype.size()+6];//owned team plus 6 to choose from to buy
+        teamButtons=new CButton[TeamManager.ownedTeamType.size()+6];//owned team plus 6 to choose from to buy
         
         final int sideLength=125,between=15;
         
         //owned
-        for(int i=0;i<TeamManager.ownedTeamtype.size();i++)
-            this.add(teamButtons[i]=new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamtype.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
-                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+TeamManager.ownedTeamtype.get(i))),
-                                new ImageIcon(GraphicsAssets.getImage(100+TeamManager.ownedTeamtype.get(i)))},
-                false){
+        for(int i=0;i<TeamManager.ownedTeamType.size();i++)
+            this.add(teamButtons[i]=new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamType.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+TeamManager.ownedTeamType.get(i))),
+                                new ImageIcon(GraphicsAssets.getImage(100+TeamManager.ownedTeamType.get(i)))},
+                false,i){
 
                 @Override
                 public void released(){
-                    teamDisplay="aefjkn";
+                    if(clickedDeleteOnce){
+                        TeamManager.ownedTeamType.remove(ID);
+                        //this.remove(teamButtons[i]);
+                        for(int i=0;i<teamButtons.length;i++)
+                            if(teamButtons[i]!=null)
+                                this.remove(teamButtons[i]);
+                        addTeamComponents();
+                    } else clickedDeleteOnce=true;
                     rpnt();
+                }
+                
+                @Override
+                public void entered(){
+                    showDeleteConfirmation=true;
+                }
+                
+                @Override
+                public void exited(){
+                    showDeleteConfirmation=false;
                 }
             });
         
         //possible to buy
         for(int i=0;i<6;i++)
-            this.add(teamButtons[i+TeamManager.ownedTeamtype.size()]=new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
+            this.add(teamButtons[i+TeamManager.ownedTeamType.size()]=new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+i)),
                                 new ImageIcon(GraphicsAssets.getImage(100+i))},
-                false){
+                false,i){
 
                 @Override
                 public void released(){
+                    System.out.println("A");
+                    int a=0;
+                    for(int i=0;i<Profile.boughtCars.length;i++)
+                        if(Profile.boughtCars[i])
+                            a=i;
+                    System.out.println("B");
+                    if(TeamManager.ownedTeamType.size()<a+1){//can buy another
+                        if(Profile.money>Profile.teamPrices[ID]){//has enough money to buy
+                            Profile.money-=Profile.teamPrices[ID];
+                            TeamManager.ownedTeamType.add(ID);
+                            System.out.println("C");
+                            for(int i=0;i<teamButtons.length;i++)
+                                if(teamButtons[i]!=null)
+                                    this.remove(teamButtons[i]);
+                            System.out.println("D");
+                            addTeamComponents();
+                        }
+                    System.out.println("E");
                     
+                    } else{//cannot buy another; they are at the max number of team members for the car they havev attained
+                        
+                    }
+                        
+                        
                 }
                 
                 @Override
                 public void entered(){
-                    
+                    teamDisplay=Profile.teamPrices[ID]+"";
+                }
+                
+                @Override
+                public void exited(){
+                    teamDisplay=null;
                 }
             });
         
@@ -539,7 +592,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         
         
-        System.out.println(TeamManager.ownedTeamtype.size());
+        System.out.println(TeamManager.ownedTeamType.size());
         
         for(int i=0;i<teamButtons.length;i++)
             System.out.println(teamButtons[i]);
@@ -934,7 +987,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         this.repaint();
     }
     
-    private Color gold =new Color(255,215,0);
+    private final Color gold =new Color(255,215,0);
     
     private void drawMoneyDisplay(Graphics p){
         try{
@@ -949,7 +1002,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public boolean missionSuccess=false;
     
     private boolean roundDone=false,died=false,justStarting=true;
-    private int frameRateMillisecondsInGame=20;
+    private final int frameRateMillisecondsInGame=20;
     public long time=0,lastTime=0,thisTime=0,
             lastNeededTime=0,yourTime=0;
     public int frameRate=0;
