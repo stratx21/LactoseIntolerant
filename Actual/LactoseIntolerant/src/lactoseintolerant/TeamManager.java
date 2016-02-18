@@ -14,5 +14,5 @@ public class TeamManager {
     public static int maxTeam=0;
     
     
-    public static java.util.ArrayList<Integer> ownedTeamtype=new java.util.ArrayList<Integer>();
+    public static java.util.ArrayList<Integer> ownedTeamType=new java.util.ArrayList<Integer>();
 }
