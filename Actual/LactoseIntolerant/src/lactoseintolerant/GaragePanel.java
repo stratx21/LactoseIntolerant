@@ -492,7 +492,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 break;
         }
         repaint();
-    } 
+    }
     
     
     private void removeAllUpgradesButtons(){
@@ -505,6 +505,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             this.remove(upgradesCarTypes[i]);
     }
     
+    boolean b=false;
     private void addTeamComponents(){
         TeamManager.maxTeam=currentCar+1;
         teamButtons=new CButton[TeamManager.ownedTeamType.size()+6];//owned team plus 6 to choose from to buy
@@ -513,7 +514,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //owned
         for(int i=0;i<TeamManager.ownedTeamType.size();i++)
-            this.add(teamButtons[i]=new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamType.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
+            this.add(/*teamButtons[i]=*/new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamType.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+TeamManager.ownedTeamType.get(i))),
                                 new ImageIcon(GraphicsAssets.getImage(100+TeamManager.ownedTeamType.get(i)))},
                 false,i){
@@ -544,7 +545,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //possible to buy
         for(int i=0;i<6;i++)
-            this.add(teamButtons[i+TeamManager.ownedTeamType.size()]=new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
+            this.add(/*teamButtons[i+TeamManager.ownedTeamType.size()]=*/new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+i)),
                                 new ImageIcon(GraphicsAssets.getImage(100+i))},
                 false,i){
@@ -566,6 +567,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 if(teamButtons[i]!=null)
                                     this.remove(teamButtons[i]);
                             System.out.println("D");
+                            try{Thread.sleep(20);}catch(Exception e){}
                             addTeamComponents();
                         }
                     System.out.println("E");
@@ -590,12 +592,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //getNewSizeX(150+i*(sideLength+between)),getNewSizeY(0.350),getNewSizeX(sideLength),getNewSizeY(sideLength),
         
+        if(!b){
+            b=true;
+            System.out.println("ejfnjerngtjrengjerngjrengjrngjrnjgnrjgnjrgnjrngjrngj");
+            addTeamComponents();
+            System.out.println("kwgkkk");
+        }
         
-        
-        System.out.println(TeamManager.ownedTeamType.size());
-        
-        for(int i=0;i<teamButtons.length;i++)
-            System.out.println(teamButtons[i]);
         
         repaint();
     }
@@ -1093,12 +1096,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 
                             try{
                                 String a;
+                                double s=0.0;
                                 if(!died){
                                     if(missionSuccess){
-                                        Profile.money+=rewards[missionIndex];
+                                        Profile.money+=s=(rewards[missionIndex]/2+rewards[missionIndex]*(player.health/player.startingHealth));
                                         Profile.completedMissions[missionIndex]=true;
                                     }
-                                    a=missionSuccess ? "You won!" : "You lost!";
+                                    a=missionSuccess ? "You won!":"You lost!";
                                 }else
                                     a="You died!";
 
@@ -1106,8 +1110,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/straight.ttf").openStream()).deriveFont(24f));
                                 p.drawString(a,400,300);
                                 if(!died){
-                                    p.drawString("Needed time:: "+lastNeededTime/1000+" s",400,350);
-                                    p.drawString("Your time::   "+yourTime/1000+" s",400,400);
+                                    p.drawString("Needed time::     "+lastNeededTime/1000+" s",400,350);
+                                    p.drawString("Your time::       "+yourTime/1000+" s",400,400);
+                                    p.drawString("Earned money::   $"+s,400,450);
                                 }
 
                                 add(new CButton(400,500,150,50,new ImageIcon[]{
@@ -1135,13 +1140,15 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 //    private void removeAllFromFrame(){
 //        Component[] c=frame.getComponents();
 //        for(int i=0;i<c.length;i++)
-//            
 //    }
     
     public void drawPauseMenu(Graphics p){
         
     }
-    
+    /**
+     * change the <code>JPanel</code> object displayed by the game's
+     * <code>JFrame</code> object from gamePanel back to GaragePanel
+     */
     public void changeBackToGarage(){
         frame.getContentPane().removeAll();
         frame.getContentPane().repaint();

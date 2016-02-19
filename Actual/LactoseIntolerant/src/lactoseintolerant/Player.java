@@ -66,6 +66,8 @@ public class Player{
     
     public boolean collidedMap=false;
     
+    public double startingHealth=100;
+    
     public boolean cantBeHitToRight=false,cantBeHitToLeft=false;
     
     public Rectangle upperSpan=new Rectangle(),lowerSpan=new Rectangle();
@@ -86,7 +88,7 @@ public class Player{
         switch(CAR_TYPE=t){ //original sudan that Gabe made the graphics for
             case 0:
                 currentImage=GraphicsAssets.getImage(2);
-                health=100;//cars.getTopSpeed();
+                startingHealth=health=100;//cars.getTopSpeed();
                 ACCELERATION=5;//cars.getAcceleration();
                 speed=ORIGINAL_TOP_SPEED=TOP_SPEED=75;//cars.getTopSpeed();
                 imageSize=new int[]{76,93};
