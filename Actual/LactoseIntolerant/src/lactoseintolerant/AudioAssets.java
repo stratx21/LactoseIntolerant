@@ -20,7 +20,7 @@ public class AudioAssets {
     
     public static void play(final String name){
         try{
-            AudioInputStream audioIn=AudioSystem.getAudioInputStream(AudioAssets.class.getResource("src/Audio/"+name+".wav"));
+            AudioInputStream audioIn=AudioSystem.getAudioInputStream(AudioAssets.class.getResource("Audio/"+name+".wav"));
             Clip clip=AudioSystem.getClip();
             clip.open(audioIn);
             clip.start();
