@@ -85,20 +85,42 @@ public class Player{
     }
     
     public Player(int t){
+        imageSize=new int[]{76,93};
+        IMG_BLANK_SPACE=new int[]{22,11};
+        originalPoints=new int[][]{{22,10},{53,10},{53,82},{22,82}};
+        CAR_PIXELS_HORIZONTAL=33;
+        rectSize=new int[]{31,36};
+        addForOriginRect=new int[]{7,-7};
+        currentImage=GraphicsAssets.getImage(t+2);
+        
         switch(CAR_TYPE=t){ //original sudan that Gabe made the graphics for
             case 0:
-                currentImage=GraphicsAssets.getImage(2);
                 startingHealth=health=100;//cars.getTopSpeed();
                 ACCELERATION=5;//cars.getAcceleration();
                 speed=ORIGINAL_TOP_SPEED=TOP_SPEED=75;//cars.getTopSpeed();
-                imageSize=new int[]{76,93};
-                IMG_BLANK_SPACE=new int[]{22,11};
-                originalPoints=new int[][]{{22,10},{53,10},{53,82},{22,82}};
-                CAR_PIXELS_HORIZONTAL=33;
-                rectSize=new int[]{31,36};
-                addForOriginRect=new int[]{7,-7};
-                ORIGINAL_HEALTH=100.0;
                 break;
+            case 1:
+                startingHealth=health=120;//cars.getTopSpeed();
+                ACCELERATION=3;//cars.getAcceleration();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=65;//cars.getTopSpeed();
+                break;
+            case 2:
+                startingHealth=health=90;//cars.getTopSpeed();
+                ACCELERATION=6;//cars.getAcceleration();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=90;//cars.getTopSpeed();
+                break;
+            case 3:
+                startingHealth=health=140;//cars.getTopSpeed();
+                ACCELERATION=3;//cars.getAcceleration();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=65;//cars.getTopSpeed();
+                break;
+            case 4:
+                startingHealth=health=175;//cars.getTopSpeed();
+                ACCELERATION=5;//cars.getAcceleration();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=80;//cars.getTopSpeed();
+                break;
+                
+            
         }
         
         setUpUpgradedStats();

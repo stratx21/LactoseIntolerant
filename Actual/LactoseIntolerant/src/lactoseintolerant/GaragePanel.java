@@ -456,20 +456,30 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     this.remove(next);
                     this.remove(play);
                 }
+                prev=null;
+                next=null;
+                play=null;
                 break;
             case 1:
                 removeAllUpgradesButtons();
                 break;
             case 2:
                 for(int i=0;i<teamButtons.length;i++)
-                    if(teamButtons[i]!=null)
+                    if(teamButtons[i]!=null){
                         this.remove(teamButtons[i]);
+                        teamButtons[i]=null;
+                    }
                 break;
             case 3:
                 this.remove(menu0);
                 this.remove(menu1);
                 this.remove(menu2);
                 this.remove(menu3);
+                
+                menu0=null;
+                menu1=null;
+                menu2=null;
+                menu3=null;
                 
 //                this.revalidate();
                 this.repaint();
@@ -505,14 +515,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             this.remove(upgradesCarTypes[i]);
     }
     
-    private boolean isLessThan(int a,int b){
-        return a<b;
-    }
-    
     boolean b=false;
     private void addTeamComponents(){
         TeamManager.maxTeam=currentCar+1;
-        teamButtons=new CButton[TeamManager.ownedTeamType.size()+6];//owned team plus 6 to choose from to buy
+        teamButtons=new CButton[12];//owned team plus 6 to choose from to buy
         
         final int sideLength=125,between=15;
         

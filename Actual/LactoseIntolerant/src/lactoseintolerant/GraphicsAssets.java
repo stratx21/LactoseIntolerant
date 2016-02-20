@@ -34,10 +34,10 @@ public class GraphicsAssets {
             
             //Player cars:: 
             images.add(importFromString("Graphics/SudanGame.png"));//2
-            images.add((BufferedImage)(null));//3
-            images.add((BufferedImage)(null));//4
-            images.add((BufferedImage)(null));//5
-            images.add((BufferedImage)(null));//6
+            images.add(importFromString("Graphics/VanGame.png"));//3
+            images.add(importFromString("Graphics/RaceCarGame.png"));//4
+            images.add(importFromString("Graphics/ArmoredVanGame.png"));//5
+            images.add(importFromString("Graphics/TankGame.png"));//6
             images.add((BufferedImage)(null));//7
             images.add((BufferedImage)(null));//8
             images.add((BufferedImage)(null));//9
@@ -196,7 +196,7 @@ public class GraphicsAssets {
             return ImageIO.read(in);
         else
             return null;
-        } catch(Exception e ){System.out.println("skldgnrkegnkerngjrngr    "+loc);}
+        } catch(Exception e ){System.out.println("Graphics image failed to be read by the ImageIO::    "+loc);}
         //(BufferedImage)(ImageIO.read(GraphicsAssets.class.getResourceAsStream(loc)));
         return null;
     }
