@@ -121,7 +121,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             + "doing, so he wants you to transport ::::"
             + "a doctor who knows how to use the ::::"
             + "medical equipment. He is willing to::::"
-            + "give $160,000 for this job, but you:::"
+            + "give $160,000 for this job, but you::::"
             + "must transport him before the time::::"
             + "runs out!",
         "Mission 8: ::::"
@@ -212,7 +212,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
      * javax.swing.JFrame passed in as JFrame f
      * 
      * @param f the javax.swing.JFrame Container that is used for the game
-     * @param level the level that the user is currently on. 
+     * @param level the level that the user is currently on.
      */
     public GaragePanel(JFrame f,int level){
         System.out.println("setting up GaragePanel...");
@@ -505,6 +505,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             this.remove(upgradesCarTypes[i]);
     }
     
+    private boolean isLessThan(int a,int b){
+        return a<b;
+    }
+    
     boolean b=false;
     private void addTeamComponents(){
         TeamManager.maxTeam=currentCar+1;
@@ -513,21 +517,17 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         final int sideLength=125,between=15;
         
         //owned
-        for(int i=0;i<TeamManager.ownedTeamType.size();i++)
-            this.add(/*teamButtons[i]=*/new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamType.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
-                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+TeamManager.ownedTeamType.get(i))),
-                                new ImageIcon(GraphicsAssets.getImage(100+TeamManager.ownedTeamType.get(i)))},
+        for(int i=0;i<6;i++)
+            this.add(teamButtons[i]=new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamType.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(i<TeamManager.ownedTeamType.size()?(94+TeamManager.ownedTeamType.get(i)):94)),
+                                new ImageIcon(GraphicsAssets.getImage(i<TeamManager.ownedTeamType.size()?(100+TeamManager.ownedTeamType.get(i)):100))},
                 false,i){
 
                 @Override
                 public void released(){
                     if(clickedDeleteOnce){
                         TeamManager.ownedTeamType.remove(ID);
-                        //this.remove(teamButtons[i]);
-                        for(int i=0;i<teamButtons.length;i++)
-                            if(teamButtons[i]!=null)
-                                this.remove(teamButtons[i]);
-                        addTeamComponents();
+                        setBoughtVisibility();
                     } else clickedDeleteOnce=true;
                     rpnt();
                 }
@@ -543,9 +543,11 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 }
             });
         
+        setBoughtVisibility();
+        
         //possible to buy
         for(int i=0;i<6;i++)
-            this.add(/*teamButtons[i+TeamManager.ownedTeamType.size()]=*/new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
+            this.add(teamButtons[i+6]=new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+i)),
                                 new ImageIcon(GraphicsAssets.getImage(100+i))},
                 false,i){
@@ -563,12 +565,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                             Profile.money-=Profile.teamPrices[ID];
                             TeamManager.ownedTeamType.add(ID);
                             System.out.println("C");
-                            for(int i=0;i<teamButtons.length;i++)
-                                if(teamButtons[i]!=null)
-                                    this.remove(teamButtons[i]);
                             System.out.println("D");
-                            try{Thread.sleep(20);}catch(Exception e){}
-                            addTeamComponents();
+                            TeamManager.ownedTeamType.add(ID);
+                            setBoughtVisibility();
                         }
                     System.out.println("E");
                     
@@ -592,15 +591,15 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //getNewSizeX(150+i*(sideLength+between)),getNewSizeY(0.350),getNewSizeX(sideLength),getNewSizeY(sideLength),
         
-        if(!b){
-            b=true;
-            System.out.println("ejfnjerngtjrengjerngjrengjrngjrnjgnrjgnjrgnjrngjrngj");
-            addTeamComponents();
-            System.out.println("kwgkkk");
-        }
-        
-        
         repaint();
+    }
+    
+    private void setBoughtVisibility(){
+        for(int i=0;i<TeamManager.ownedTeamType.size();i++)
+            teamButtons[i].setVisible(true);
+        
+        for(int i=TeamManager.ownedTeamType.size()-1;i<6;i++) //if the owned member does not exist then the button should be invisible
+            teamButtons[i].setVisible(false);
     }
     
     ///upgradesCarTypes

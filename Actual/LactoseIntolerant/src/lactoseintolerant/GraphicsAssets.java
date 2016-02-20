@@ -184,9 +184,6 @@ public class GraphicsAssets {
             images.add(importFromString("Graphics/faceArmorIncrease2_1.png"));//104
             images.add(importFromString("Graphics/faceArmorIncrease3_1.png"));//105
             
-            for(int i=94;i<106;i++)
-                System.out.println(images.get(i));
-            
         } catch(Exception e){
             ErrorLogger.logError(e,"GraphicsAssets.importImages");
         }

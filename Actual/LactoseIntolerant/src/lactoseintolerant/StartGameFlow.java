@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 /**
  *
- * @author Josh
+ * @author Josh Holland 
  */
 public class StartGameFlow extends JFrame{
     private CPanel currentPanel;
@@ -43,19 +43,13 @@ public class StartGameFlow extends JFrame{
         }
         
         setNewPanelType(new MainMenu(this));
-       
-        
     }
     
-    
-    public void setSIZE(){ 
-
+    public void setSIZE(){
         FRAME_SIZE[0]=this.getWidth();
         FRAME_SIZE[1]=this.getHeight();
 
         this.setSize(FRAME_SIZE[0],FRAME_SIZE[1]);
-
-        //TODO make game scale dinamicly
     }
     
     private void setNewPanelType(CPanel cp){    
@@ -65,6 +59,4 @@ public class StartGameFlow extends JFrame{
         this.add(currentPanel);
         this.setVisible(true);
     }
-    
-    
 }
