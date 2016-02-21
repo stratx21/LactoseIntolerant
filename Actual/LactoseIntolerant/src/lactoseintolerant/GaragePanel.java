@@ -1084,8 +1084,6 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 
                         thisTime=System.currentTimeMillis()-lastTime;
 
-        //                System.out.println(t+", "+time);
-
                         int delay=0;
                         if(thisTime<frameRateMillisecondsInGame)
                             delay=frameRateMillisecondsInGame-(int)thisTime;

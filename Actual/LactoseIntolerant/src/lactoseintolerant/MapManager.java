@@ -93,11 +93,11 @@ public class MapManager {
                     tD-=STRAIGHT_LENGTH_PIXELS;
                     break;
                 case 1://median
-                    images.add(GraphicsAssets.getImage(11));
+                    images.add(GraphicsAssets.getImage(11+3*currentLevel.TYPE));
                     tD-=MEDIAN_LENGTH_PIXELS;
                     break;
                 case 2://intersection
-                    images.add(GraphicsAssets.getImage(12));
+                    images.add(GraphicsAssets.getImage(12+3*currentLevel.TYPE));
                     tD-=INTERSECTION_LENGTH_PIXELS;
                     break;
             }

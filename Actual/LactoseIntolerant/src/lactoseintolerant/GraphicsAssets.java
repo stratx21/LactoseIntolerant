@@ -46,7 +46,7 @@ public class GraphicsAssets {
             //maps:: 
             images.add(importFromString("Graphics/straightGrass.png"));//10 - straight
             images.add(importFromString("Graphics/median.png"));//11 - median
-            images.add(importFromString("Graphics/straight.png"));//12 - intersection
+            images.add(importFromString("Graphics/straightGrass.png"));//12 - intersection
             
             images.add(importFromString("Graphics/straightDesert.png"));//13
             images.add(importFromString("Graphics/median.png"));
