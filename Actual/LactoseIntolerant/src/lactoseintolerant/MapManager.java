@@ -89,7 +89,7 @@ public class MapManager {
         for(int i=0;i<currentLevel.levelInfo.length;i++){
             switch(currentLevel.levelInfo[i]){
                 case 0://straight
-                    images.add(GraphicsAssets.getImage(10));
+                    images.add(GraphicsAssets.getImage(10+3*currentLevel.TYPE));
                     tD-=STRAIGHT_LENGTH_PIXELS;
                     break;
                 case 1://median
