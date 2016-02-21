@@ -9,7 +9,7 @@ package lactoseintolerant;
  *
  * @author 0001058857
  */
-public class LevelManager extends LevelInfo{
+public class LevelManager {
     public CListener done=null;
     
     //0-straight, 1-median, 2-intersection
