@@ -127,6 +127,7 @@ public class CButton extends JButton implements MouseListener{
         //////Method rescaling buton label
         //////
         //ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
+        
         Image image = icons[0].getImage(); // transform it
         Image newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
         g = new ImageIcon(newimg);

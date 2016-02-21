@@ -120,25 +120,25 @@ public class Profile {
         JFileChooser sv=new JFileChooser();
         if(sv.showSaveDialog(null)==JFileChooser.APPROVE_OPTION){
         try{
-            FileWriter save=new FileWriter(sv.getSelectedFile()+".txt");
-            System.out.println(sv.getSelectedFile());//returns file name and the directory location
-            //save.write......
-            
-            save.write(money+":");
-            for(int k=0;k<5;k++)
-                for(int i=0;i<3;i++){
-                    for(int j=0;j<6;j++){
-                        save.write(upgrades[k][i][j]+":");
+            try (FileWriter save = new FileWriter(sv.getSelectedFile()+".txt")) {
+                System.out.println(sv.getSelectedFile());//returns file name and the directory location
+                //save.write......
+                
+                save.write(money+":");
+                for(int k=0;k<5;k++)
+                    for(int i=0;i<3;i++){
+                        for(int j=0;j<6;j++){
+                            save.write(upgrades[k][i][j]+":");
+                        }
                     }
-                }
-            
-            for(int i=0;i<5;i++)
-                save.write(boughtCars[i]+":");
-            
-            for(int i=0;i<completedMissions.length;i++)
-                save.write(completedMissions[i]+":");
-            
-            save.close();
+                
+                for(int i=0;i<5;i++)
+                    save.write(boughtCars[i]+":");
+                
+                for(int i=0;i<completedMissions.length;i++)
+                    save.write(completedMissions[i]+":");
+            } //returns file name and the directory location
+            //save.write......
         } catch(Exception ex){
             ex.printStackTrace();
         }

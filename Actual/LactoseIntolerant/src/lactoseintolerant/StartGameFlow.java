@@ -24,7 +24,7 @@ public class StartGameFlow extends JFrame{
         this.setIconImage(GraphicsAssets.getIcon());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setSize(FRAME_SIZE[0],FRAME_SIZE[1]);
+//        this.setSize(FRAME_SIZE[0],FRAME_SIZE[1]);
         this.setVisible(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         setSIZE();
@@ -48,7 +48,6 @@ public class StartGameFlow extends JFrame{
     public void setSIZE(){
         FRAME_SIZE[0]=this.getWidth();
         FRAME_SIZE[1]=this.getHeight();
-
         this.setSize(FRAME_SIZE[0],FRAME_SIZE[1]);
     }
     

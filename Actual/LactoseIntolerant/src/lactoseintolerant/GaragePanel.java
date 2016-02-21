@@ -241,33 +241,6 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         switchBottomButtonComponents();
     }
     
-    /**
-     * take the original measurements used and translate them to the new sizes
-     * that should be used instead, depending on the frame's size, which
-     * depends on the screen since the game is full screen. 
-     * 
-     * @param a the original size divided by 1000 since that is the original x
-     *      size that was used
-     * @return the new x dimension
-     */
-    public int getNewSizeX(double a){
-        return (int)(a*FRAME_SIZE[0]);
-    }
-    
-    /**
-     * take the original measurements used and translate them to the new sizes
-     * that should be used instead, depending on the frame's size, which
-     * depends on the screen since the game is full screen. 
-     * 
-     * @param a the original size divided by 1000 to make it simpler than dividing
-     *      by 700, the original y size; this function formats the number to as
-     *      if it was divided by 1000. 
-     * @return the new y dimension
-     */
-    public int getNewSizeY(double a){
-        return (int)(a*1.42857*FRAME_SIZE[1]);
-    }
-    
     private final double BOTTOM_BUTTONS_Y_RATIO=11.0/14.0;
     
     private void addLowerModeButtons(){
@@ -345,6 +318,35 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         else
             play.disable(false);
     }
+    
+//    /**
+//     * take the original measurements used and translate them to the new sizes
+//     * that should be used instead, depending on the frame's size, which
+//     * depends on the screen since the game is full screen. 
+//     * 
+//     * @param a the original size divided by 1000 since that is the original x
+//     *      size that was used
+//     * @return the new x dimension
+//     */
+//    @Override
+//    public int getNewSizeX(double a){
+//        return (int)(a*FRAME_SIZE[0]);
+//    }
+//    
+//    /**
+//     * take the original measurements used and translate them to the new sizes
+//     * that should be used instead, depending on the frame's size, which
+//     * depends on the screen since the game is full screen. 
+//     * 
+//     * @param a the original size divided by 1000 to make it simpler than dividing
+//     *      by 700, the original y size; this function formats the number to as
+//     *      if it was divided by 1000. 
+//     * @return the new y dimension
+//     */
+//    @Override
+//    public int getNewSizeY(double a){
+//        return (int)(a*1.42857*FRAME_SIZE[1]);
+//    }
     
     
     @Override
@@ -569,7 +571,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                             a=i;
                     System.out.println("B");
                     if(TeamManager.ownedTeamType.size()<a+1){//can buy another
-                        if(Profile.money>Profile.teamPrices[ID]){//has enough money to buy
+                        if(Profile.money>=Profile.teamPrices[ID]){//has enough money to buy
                             Profile.money-=Profile.teamPrices[ID];
                             TeamManager.ownedTeamType.add(ID);
                             System.out.println("C");
@@ -640,7 +642,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     currentCar=1;
                     removeAllUpgradesButtons();
                     addUpgradesComponents();
-                } else if(Profile.carPrices[1]<Profile.money){//has enough to buy it
+                } else if(Profile.carPrices[1]<=Profile.money){//has enough to buy it
                     Profile.money-=Profile.carPrices[1];
                     Profile.boughtCars[1]=true;
                     currentCar=1;
@@ -677,7 +679,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     currentCar=2;
                     removeAllUpgradesButtons();
                     addUpgradesComponents();
-                } else if(Profile.carPrices[2]<Profile.money){//has enough to buy it
+                } else if(Profile.carPrices[2]<=Profile.money){//has enough to buy it
                     Profile.money-=Profile.carPrices[2];
                     Profile.boughtCars[2]=true;
                     currentCar=2;
@@ -715,7 +717,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     currentCar=3;
                     removeAllUpgradesButtons();
                     addUpgradesComponents();
-                } else if(Profile.carPrices[3]<Profile.money){//has enough to buy it
+                } else if(Profile.carPrices[3]<=Profile.money){//has enough to buy it
                     Profile.money-=Profile.carPrices[3];
                     Profile.boughtCars[3]=true;
                     currentCar=3;
@@ -753,7 +755,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     currentCar=4;
                     removeAllUpgradesButtons();
                     addUpgradesComponents();
-                } else if(Profile.carPrices[4]<Profile.money){//has enough to buy it
+                } else if(Profile.carPrices[4]<=Profile.money){//has enough to buy it
                     Profile.money-=Profile.carPrices[4];
                     Profile.boughtCars[4]=true;
                     currentCar=4;
@@ -797,7 +799,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                     public void released(){
                                         if(!Profile.upgrades[currentCar][xIndex][yIndex]){
                                             double t;
-                                            if(Profile.money>(t=Profile.prices[currentCar][xIndex][yIndex])
+                                            if(Profile.money>=(t=Profile.prices[currentCar][xIndex][yIndex])
                                                     &&(xIndex==0||Profile.upgrades[currentCar][0][yIndex])
                                                     &&(xIndex<2||Profile.upgrades[currentCar][1][yIndex])
                                                     &&(xIndex<3||Profile.upgrades[currentCar][2][yIndex])){//can buy it
@@ -942,6 +944,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     }
     
     private void addNextPrevPlayButtons(){  // x 63, y  24
+        
+        System.out.println(super.getNewSizeX(0.025));
         //prev::
         //this.add(prev=new CButton((int)(FRAME_SIZE[0]*.5),(int)(FRAME_SIZE[1]*1.2),(int)(FRAME_SIZE[0]*.4),(int)(FRAME_SIZE[1]*.3),
         this.add(prev=new CButton(getNewSizeX(0.025),getNewSizeY(0.400),getNewSizeX(0.063),getNewSizeY(0.024),
@@ -1040,7 +1044,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 public void actionPerformed(boolean a){
                     if(!missionSuccessCalculated){
                         if(missionSuccess=!(died=a))//if player did not die, then the success depends on the time. 
-                            missionSuccess=(yourTime=gamePanel.time-3000)<(lastNeededTime=gamePanel.objectiveTime);
+                            missionSuccess=(yourTime=gamePanel.time-3000)<=(lastNeededTime=gamePanel.objectiveTime);
 
                         if(missionSuccess&&(allowedLevels<gamePanel.level+1))
                             allowedLevels=gamePanel.level+1;

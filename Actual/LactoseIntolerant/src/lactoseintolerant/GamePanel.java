@@ -108,6 +108,35 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
     }
     
     /**
+     * take the original measurements used and translate them to the new sizes
+     * that should be used instead, depending on the frame's size, which
+     * depends on the screen since the game is full screen. 
+     * 
+     * @param a the original size divided by 1000 since that is the original x
+     *      size that was used
+     * @return the new x dimension
+     */
+    @Override
+    public int getNewSizeX(double a){
+        return (int)(a*FRAME_SIZE[0]);
+    }
+    
+    /**
+     * take the original measurements used and translate them to the new sizes
+     * that should be used instead, depending on the frame's size, which
+     * depends on the screen since the game is full screen. 
+     * 
+     * @param a the original size divided by 1000 to make it simpler than dividing
+     *      by 700, the original y size; this function formats the number to as
+     *      if it was divided by 1000. 
+     * @return the new y dimension
+     */
+    @Override
+    public int getNewSizeY(double a){
+        return (int)(a*1.42857*FRAME_SIZE[1]);
+    }
+    
+    /**
      * the function for drawing parts for the GamePanel. Calls the functions to
      * draw the panel
      * 
@@ -148,6 +177,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
         drawSpeedBar(p);
         drawHealthBar(p);
         drawTimer(p);
+        drawProgressBar(p);
         if(hasWeapon)
             drawWeaponDelay(p);
     }
@@ -298,6 +328,13 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
 //        p.drawString(dec.format(player.health),60,10);
     }
     
+    private void drawProgressBar(Graphics p){
+        p.setColor(Color.red);
+        p.fillRect(getNewSizeX(0.7),getNewSizeY(0.050),getNewSizeX(0.035),getNewSizeY(0.6));
+        p.setColor(Color.green);
+        p.fillRect(getNewSizeX(0.7),getNewSizeY(0.65-(map.curIndex*1.0/map.currentLevel.levelInfo.length)*0.6),getNewSizeX(0.035),getNewSizeY(map.curIndex/map.currentLevel.levelInfo.length));
+    }
+    
     /**
      * draw the timer to show the player how much time they have been playing 
      * for so they can beat the objective time
@@ -306,7 +343,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
      */
     private void drawTimer(Graphics p){
         try{
-            p.setColor(Color.black);
+            p.setColor(Color.white);
             p.setFont(Font.createFont(Font.TRUETYPE_FONT,GamePanel.class.getResource("Fonts/straight.ttf").openStream()).deriveFont(18f));
             p.drawString(""+new DecimalFormat("000.000").format((time-3000)/1000.0f),10,250);
         } catch(Exception e){
