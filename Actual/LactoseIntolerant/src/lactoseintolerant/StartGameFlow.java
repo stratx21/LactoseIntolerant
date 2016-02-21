@@ -7,16 +7,12 @@ package lactoseintolerant;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 /**
  *
  * @author Josh Holland 
  */
 public class StartGameFlow extends JFrame{
     private CPanel currentPanel;
-    private Button button;
     public static int[] FRAME_SIZE=new int[2];
     
     public StartGameFlow(){  
@@ -45,7 +41,7 @@ public class StartGameFlow extends JFrame{
         setNewPanelType(new MainMenu(this));
     }
     
-    public void setSIZE(){
+    private void setSIZE(){
         FRAME_SIZE[0]=this.getWidth();
         FRAME_SIZE[1]=this.getHeight();
         this.setSize(FRAME_SIZE[0],FRAME_SIZE[1]);
