@@ -320,7 +320,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
         
         p.setColor(new Color(R,G,B));
         if(player.health>=0)
-        p.fillRect(10,10,(int)player.health,15);
+            p.fillRect(10,10,(int)player.health,15);
         else
             p.fillRect(10,10,0,15);
 //        p.setColor(Color.gray);

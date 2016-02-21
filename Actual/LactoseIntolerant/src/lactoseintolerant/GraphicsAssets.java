@@ -45,19 +45,19 @@ public class GraphicsAssets {
             
             //maps:: 
             images.add(importFromString("Graphics/straightGrass.png"));//10 - straight
-            images.add(importFromString("Graphics/median.png"));//11 - median
+            images.add(importFromString("Graphics/medianGrass.png"));//11 - median
             images.add(importFromString("Graphics/straightGrass.png"));//12 - intersection
             
             images.add(importFromString("Graphics/straightDesert.png"));//13
-            images.add(importFromString("Graphics/median.png"));
+            images.add(importFromString("Graphics/mediandesert.png"));
             images.add(importFromString("Graphics/straightDesert.png"));//15
             
             images.add(importFromString("Graphics/straightRock.png"));//16
-            images.add(importFromString("Graphics/median.png"));
+            images.add(importFromString("Graphics/medianstone.png"));
             images.add(importFromString("Graphics/straightRock.png"));//18
             
             images.add(importFromString("Graphics/straightRed.png"));//19
-            images.add(importFromString("Graphics/median.png"));
+            images.add(importFromString("Graphics/medianred.png"));
             images.add(importFromString("Graphics/straightRed.png"));//21
             
             //Civilian cars::

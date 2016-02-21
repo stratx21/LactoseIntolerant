@@ -1111,6 +1111,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                     if(missionSuccess){
                                         Profile.money+=s=(rewards[missionIndex]/2+rewards[missionIndex]*(player.health/player.startingHealth));
                                         Profile.completedMissions[missionIndex]=true;
+                                        missionIndex++;
                                     }
                                     a=missionSuccess ? "You won!":"You lost!";
                                 }else
