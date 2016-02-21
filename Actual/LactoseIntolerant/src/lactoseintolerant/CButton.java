@@ -67,7 +67,7 @@ public class CButton extends JButton implements MouseListener{
         
        
         super.setBounds(x,y,xs,ys);
-         this.setIcon(ic[0]);
+        this.setIcon(ic[0]);
         this.addMouseListener(this);
         
         setContentAreaFilled(true);
@@ -158,14 +158,10 @@ public class CButton extends JButton implements MouseListener{
         icons=ic;
         
         //ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
-        Image image = icons[0].getImage(); // transform it
-        Image newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        ic[0] = new ImageIcon(newimg);
+        ic[0] = new ImageIcon(icons[0].getImage().getScaledInstance(xs, ys,  java.awt.Image.SCALE_FAST));
         
+        ic[1] = new ImageIcon(icons[1].getImage().getScaledInstance(xs, ys,  java.awt.Image.SCALE_FAST));
         
-             image = icons[1].getImage(); // transform it
-         newimg = image.getScaledInstance(xs, ys,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-        ic[1] = new ImageIcon(newimg);
         
         this.setIcon(ic[0]);
         super.setBounds(x,y,xs,ys);

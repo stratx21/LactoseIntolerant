@@ -603,8 +603,9 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         for(int i=0;i<TeamManager.ownedTeamType.size();i++)
             teamButtons[i].setVisible(true);
         
-        for(int i=TeamManager.ownedTeamType.size()-1;i<6;i++) //if the owned member does not exist then the button should be invisible
-            teamButtons[i].setVisible(false);
+        if(TeamManager.ownedTeamType.size()>0)
+            for(int i=TeamManager.ownedTeamType.size()-1;i<6;i++) //if the owned member does not exist then the button should be invisible
+                teamButtons[i].setVisible(false);
     }
     
     ///upgradesCarTypes
