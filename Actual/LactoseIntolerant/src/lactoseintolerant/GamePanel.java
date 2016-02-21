@@ -306,9 +306,9 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
      */
     private void drawTimer(Graphics p){
         try{
-        p.setColor(Color.black);
-        p.setFont(Font.createFont(Font.TRUETYPE_FONT,GamePanel.class.getResource("Fonts/straight.ttf").openStream()).deriveFont(18f));
-        p.drawString(""+new DecimalFormat("000.000").format((time-3000)/1000.0f),10,95);
+            p.setColor(Color.black);
+            p.setFont(Font.createFont(Font.TRUETYPE_FONT,GamePanel.class.getResource("Fonts/straight.ttf").openStream()).deriveFont(18f));
+            p.drawString(""+new DecimalFormat("000.000").format((time-3000)/1000.0f),10,250);
         } catch(Exception e){
             ErrorLogger.logError(e,"GamePanel.drawTimer(Graphics)");
         }
@@ -1800,6 +1800,8 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
     private void spawnEnemy(){
         EnemyFlow toAdd=new EnemyFlow(0);
         toAdd.screenLocation[0]=laneStarts[(int)(Math.random()*8)]-toAdd.IMG_BLANK_SPACE[0]+28;
+        
+        toAdd.TOP_SPEED=player.TOP_SPEED+20;
         
         if((int)(Math.random()*2)==0)
             toAdd.screenLocation[1]=-200;

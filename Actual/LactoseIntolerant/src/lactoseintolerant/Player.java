@@ -212,14 +212,9 @@ public class Player{
             speedChange=0;
         }
         
-        if(brakes){
-            speedChange=-1*brakeDecrease;
-            if(speed>-1*TOP_SPEED/2){
-                speed+=speedChange;
-            }
-        }
-        
-        
+        if(brakes)
+            if(speed>0)
+                speed+=speedChange=-1*brakeDecrease;
         
         if(//canTurnLeft&&
                 turningLeft&&speed!=0){ //other effecting observed elsewhere, partially keyPressed(KeyEvent).

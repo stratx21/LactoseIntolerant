@@ -1052,19 +1052,18 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 w,currentCar){
                      @Override
                      public void paintComponent(Graphics p){
-                        time+=System.currentTimeMillis()-lastTime;
+                        long t;
+                        time+=(t=System.currentTimeMillis())-lastTime;
 
-                        lastTime=System.currentTimeMillis();
+                        lastTime=t;
 
                         gamePanel.paintC(p);
-
-                        int t=0;
 
                         if(!gamePanel.paused)
                             gamePanel.calcFlow();
                         else{
                             if(justStarting){
-                            p.setColor(new Color(0,0,0,(t=(int)(175-(time)/20))));
+                            p.setColor(new Color(0,0,0,(int)(175-(time)/20)));
                             p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
 
                             try{
@@ -1081,20 +1080,23 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 drawPauseMenu(p);
                             }
                         }
-
+                        
                         thisTime=System.currentTimeMillis()-lastTime;
 
                         int delay=0;
-                        if(thisTime<frameRateMillisecondsInGame)
+                        if(thisTime<frameRateMillisecondsInGame){
                             delay=frameRateMillisecondsInGame-(int)thisTime;
+                        }
 
-                        if(delay<frameRateMillisecondsInGame)
+                        if(delay>frameRateMillisecondsInGame){
                             delay=20;
+                            System.out.println("two? huh?");
+                        }
 
 
-                        frameRate=1000/delay;
-                         try{Thread.sleep(delay);}
-                         catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
+                        //frameRate=1000/delay;
+                        try{Thread.sleep(delay);}
+                        catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
 
                          if(!roundDone)
                             repaint();
