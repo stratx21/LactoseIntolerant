@@ -1004,7 +1004,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             p.setColor(gold);
             p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/AA_typewriter.ttf").openStream()).deriveFont((float)(0.025714*FRAME_SIZE[1])));
             p.drawString(formatMoney(Profile.money),getNewSizeX(0.005),getNewSizeY(0.018)+10);
-        } catch(Exception e){
+        } catch(IOException | FontFormatException e){
             ErrorLogger.logError(e,"drawMoneyDisplay(Graphics) - GaragePanel");
         }
     }
