@@ -29,6 +29,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     
     private GamePanel gamePanel=null;
     
+    public boolean missionSuccessCalculated=false;
+    
     private OptionsMenu optionsMenu=null;
     
     public int currentCar=0,currentCarDisplayed=0;
@@ -1036,15 +1038,18 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         frame.add(gamePanel=new GamePanel(new int[]{frame.getWidth(),frame.getHeight()},missionIndex,new CListener(){
                 @Override
                 public void actionPerformed(boolean a){
-                    if(missionSuccess=!(died=a))//if player did not die, then the success depends on the time. 
-                        missionSuccess=(yourTime=gamePanel.time-3000)<(lastNeededTime=gamePanel.objectiveTime);
-                    
-                    if(missionSuccess&&(allowedLevels<gamePanel.level+1))
-                        allowedLevels=gamePanel.level+1;
-                    
-                    roundDone=true;
+                    if(!missionSuccessCalculated){
+                        if(missionSuccess=!(died=a))//if player did not die, then the success depends on the time. 
+                            missionSuccess=(yourTime=gamePanel.time-3000)<(lastNeededTime=gamePanel.objectiveTime);
+
+                        if(missionSuccess&&(allowedLevels<gamePanel.level+1))
+                            allowedLevels=gamePanel.level+1;
+                        roundDone=true;
+                        missionSuccessCalculated=true;
+                    }
                 }
-                    },w){
+                    },
+                w,currentCar){
                      @Override
                      public void paintComponent(Graphics p){
                         time+=System.currentTimeMillis()-lastTime;
@@ -1117,7 +1122,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 if(!died){
                                     p.drawString("Needed time::     "+lastNeededTime/1000+" s",400,350);
                                     p.drawString("Your time::       "+yourTime/1000+" s",400,400);
-                                    p.drawString("Earned money::   $"+s,400,450);
+                                    p.drawString("Earned money::   $"+formatMoney(s),400,450);
                                 }
 
                                 add(new CButton(400,500,150,50,new ImageIcon[]{
@@ -1155,6 +1160,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
      * <code>JFrame</code> object from gamePanel back to GaragePanel
      */
     public void changeBackToGarage(){
+        missionSuccessCalculated=false;
         frame.getContentPane().removeAll();
         frame.getContentPane().repaint();
         frame.add(this);

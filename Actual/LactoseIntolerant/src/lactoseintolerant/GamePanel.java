@@ -48,7 +48,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
     /**
      *main Player object used throughout the code as the user
      */
-    public Player player=new Player();
+    public Player player=null;
     
     public Weapon playerWeapon=null;
     
@@ -84,7 +84,9 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
      * @param done
      * @param w
      */
-    public GamePanel(int[] size,int lv,CListener done,Weapon w){
+    public GamePanel(int[] size,int lv,CListener done,Weapon w,int plyrType){
+        player=new Player(plyrType);
+        
         if(w!=null&&(playerWeapon=w).TYPE==0)
             weaponIsBoost=true;
         
