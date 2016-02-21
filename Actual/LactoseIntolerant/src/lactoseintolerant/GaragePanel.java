@@ -319,34 +319,34 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             play.disable(false);
     }
     
-//    /**
-//     * take the original measurements used and translate them to the new sizes
-//     * that should be used instead, depending on the frame's size, which
-//     * depends on the screen since the game is full screen. 
-//     * 
-//     * @param a the original size divided by 1000 since that is the original x
-//     *      size that was used
-//     * @return the new x dimension
-//     */
-//    @Override
-//    public int getNewSizeX(double a){
-//        return (int)(a*FRAME_SIZE[0]);
-//    }
-//    
-//    /**
-//     * take the original measurements used and translate them to the new sizes
-//     * that should be used instead, depending on the frame's size, which
-//     * depends on the screen since the game is full screen. 
-//     * 
-//     * @param a the original size divided by 1000 to make it simpler than dividing
-//     *      by 700, the original y size; this function formats the number to as
-//     *      if it was divided by 1000. 
-//     * @return the new y dimension
-//     */
-//    @Override
-//    public int getNewSizeY(double a){
-//        return (int)(a*1.42857*FRAME_SIZE[1]);
-//    }
+    /**
+     * take the original measurements used and translate them to the new sizes
+     * that should be used instead, depending on the frame's size, which
+     * depends on the screen since the game is full screen. 
+     * 
+     * @param a the original size divided by 1000 since that is the original x
+     *      size that was used
+     * @return the new x dimension
+     */
+    @Override
+    public int getNewSizeX(double a){
+        return (int)(a*FRAME_SIZE[0]);
+    }
+    
+    /**
+     * take the original measurements used and translate them to the new sizes
+     * that should be used instead, depending on the frame's size, which
+     * depends on the screen since the game is full screen. 
+     * 
+     * @param a the original size divided by 1000 to make it simpler than dividing
+     *      by 700, the original y size; this function formats the number to as
+     *      if it was divided by 1000. 
+     * @return the new y dimension
+     */
+    @Override
+    public int getNewSizeY(double a){
+        return (int)(a*1.42857*FRAME_SIZE[1]);
+    }
     
     
     @Override
@@ -564,22 +564,17 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 
                 @Override
                 public void released(){
-                    System.out.println("A");
                     int a=0;
                     for(int i=0;i<Profile.boughtCars.length;i++)
                         if(Profile.boughtCars[i])
                             a=i;
-                    System.out.println("B");
                     if(TeamManager.ownedTeamType.size()<a+1){//can buy another
                         if(Profile.money>=Profile.teamPrices[ID]){//has enough money to buy
                             Profile.money-=Profile.teamPrices[ID];
                             TeamManager.ownedTeamType.add(ID);
-                            System.out.println("C");
-                            System.out.println("D");
                             TeamManager.ownedTeamType.add(ID);
                             setBoughtVisibility();
                         }
-                    System.out.println("E");
                     
                     } else{//cannot buy another; they are at the max number of team members for the car they havev attained
                         
@@ -1149,6 +1144,8 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
          frame.addKeyListener(gamePanel);
          
          frame.requestFocus();
+         
+         gamePanel.FRAME_SIZE=FRAME_SIZE;
     }
     
 //    private void removeAllFromFrame(){
