@@ -330,9 +330,9 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
     
     private void drawProgressBar(Graphics p){
         p.setColor(Color.red);
-        p.fillRect(getNewSizeX(1),getNewSizeY(0.050),getNewSizeX(0.007),getNewSizeY(0.6));
+        p.fillRect(getNewSizeX(0.8),getNewSizeY(0.050),getNewSizeX(0.007),getNewSizeY(0.6));
         p.setColor(Color.green);
-        p.fillRect(getNewSizeX(1),getNewSizeY(0.65-((map.curIndex+1)*1.0/map.currentLevel.levelInfo.length)*0.6),getNewSizeX(0.007),getNewSizeY(0.6*(map.curIndex+1)*1.0/map.currentLevel.levelInfo.length));
+        p.fillRect(getNewSizeX(0.8),getNewSizeY(0.65-((map.curIndex+1)*1.0/map.currentLevel.levelInfo.length)*0.6),getNewSizeX(0.007),getNewSizeY(0.6*(map.curIndex+1)*1.0/map.currentLevel.levelInfo.length));
     }
     
     /**

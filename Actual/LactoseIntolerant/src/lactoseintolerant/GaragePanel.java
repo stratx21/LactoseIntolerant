@@ -1039,13 +1039,17 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 @Override
                 public void actionPerformed(boolean a){
                     if(!missionSuccessCalculated){
-                        if(missionSuccess=!(died=a))//if player did not die, then the success depends on the time. 
+                        if(missionSuccess=!(died=a)){//if player did not die, then the success depends on the time.
                             missionSuccess=(yourTime=gamePanel.time-3000)<=(lastNeededTime=gamePanel.objectiveTime);
+                        }
 
                         if(missionSuccess&&(allowedLevels<gamePanel.level+1))
                             allowedLevels=gamePanel.level+1;
                         roundDone=true;
                         missionSuccessCalculated=true;
+                        
+                        if(missionSuccess)
+                            missionIndex++;
                     }
                 }
                     },
@@ -1111,7 +1115,6 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                     if(missionSuccess){
                                         Profile.money+=s=(rewards[missionIndex]/2+rewards[missionIndex]*(player.health/player.startingHealth));
                                         Profile.completedMissions[missionIndex]=true;
-                                        missionIndex++;
                                     }
                                     a=missionSuccess ? "You won!":"You lost!";
                                 }else
