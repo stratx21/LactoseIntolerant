@@ -582,9 +582,11 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                         if(Profile.money>=Profile.teamPrices[ID]){//has enough money to buy
                             Profile.money-=Profile.teamPrices[ID];
                             TeamManager.ownedTeamType.add(ID);
-                            teamButtons[TeamManager.ownedTeamType.size()-1].icons=new ImageIcon[]{
+                            CButton t;
+                            (t=teamButtons[TeamManager.ownedTeamType.size()-1]).icons=new ImageIcon[]{
                                 new ImageIcon(GraphicsAssets.getImage(94+ID)),
                                 new ImageIcon(GraphicsAssets.getImage(100+ID))};
+                            t.repaint();
                             setBoughtVisibility();
                         }
                     } else{//cannot buy another; they are at the max number of team members for the car they havev attained
