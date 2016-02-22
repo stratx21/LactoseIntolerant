@@ -27,6 +27,7 @@ public class AudioAssets {
                 clip.loop(-1);
             else
                 clip.start();
+            
         } catch(IOException | LineUnavailableException | UnsupportedAudioFileException e){
             System.err.println("Error getting audio/playing:: "+e);
             ErrorLogger.logError(e,"AudioAssets.play(String)");
