@@ -32,7 +32,8 @@ public class ErrorLogger {   //also static stuffs
         System.err.println("/-Error [Exception type used] in function<"+(o=f)
                 +"> -\\ Error :: "+e);
         error=e+"";
-        promptDeveloper(""+e);
+        promptDeveloper(""+e+"\n*Emailing information can be found in the "
+                + "text document*");
     }
     
     //--------Log error fo type [IOException]::
@@ -40,7 +41,8 @@ public class ErrorLogger {   //also static stuffs
         System.err.println("/-Error [IOException type used] in function<"+(o=f)
                 +"> -\\ IO Error :: "+e);
         error=e+"";
-        promptDeveloper(""+e);
+        promptDeveloper(""+e+"\n*Emailing information can be found in the "
+                + "text document*");
     }
     
     private static void writeToFile(String err,String comnt){
@@ -90,6 +92,9 @@ public class ErrorLogger {   //also static stuffs
                 }
                 f.write("\"");
                 
+                f.newLine();
+                f.write("\n**Note:: You can copy this crash report and "
+                + "email it to the developers at etdickey@gmail.com**");
                 f.newLine();
                 f.write("------------------------------------------------"
                         +"--------------------------------------------------");
