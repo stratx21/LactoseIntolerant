@@ -1431,7 +1431,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                     else
                         enemy.angle=0;
                     
-                    enemy.speed+=2.5*(player.speed-enemy.speed)+3;
+                    enemy.speed+=(player.speed-enemy.speed)+3;
                     player.speed*=3/5;
                     
                 } else if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]+(verticalDetectRatioPlayerOnTop)*player.CAR_PIXELS_VERTICAL<enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]){//player is above enemy
