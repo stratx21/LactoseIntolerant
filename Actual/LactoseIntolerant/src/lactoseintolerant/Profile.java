@@ -110,7 +110,7 @@ public class Profile {
     //money the user has; the value here, if not influenced by an import of data
     //by save file, is the default amount of money the user will start with in
     //a new game. 
-    public static double money=10000.00;
+    public static double money=10000000.00;
     
     /**
      * save current progress in a save file, using the JFileChooser to let the
