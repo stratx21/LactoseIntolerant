@@ -352,6 +352,12 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     @Override
     public void paintComponent(Graphics p){
         
+        if(shouldCheck){
+            setBoughtVisibility();
+            System.out.println("aaaaaaaaaaaaaaa");
+            shouldCheck=false;
+        }
+        
         p.drawImage(background,0,0,FRAME_SIZE[0],FRAME_SIZE[1],null);
         drawMoneyDisplay(p);
         
@@ -500,6 +506,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 break;
             case 2:
                 addTeamComponents();
+                setBoughtVisibility();
                 break;
             case 3:
                 setMenuButtonComponents();
@@ -519,7 +526,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             this.remove(upgradesCarTypes[i]);
     }
     
-    boolean b=false;
+    boolean b=false,shouldCheck=false;
     private void addTeamComponents(){
         TeamManager.maxTeam=currentCar+1;
         teamButtons=new CButton[12];//owned team plus 6 to choose from to buy
@@ -536,7 +543,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 @Override
                 public void released(){
                     if(clickedDeleteOnce){
-                        TeamManager.ownedTeamType.remove(ID);
+                        TeamManager.ownedTeamType.remove((int)ID);
                         setBoughtVisibility();
                         clickedDeleteOnce=false;
                     } else clickedDeleteOnce=true;
@@ -546,11 +553,14 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 @Override
                 public void entered(){
                     showDeleteConfirmation=true;
+                    rpnt();
                 }
                 
                 @Override
                 public void exited(){
                     showDeleteConfirmation=false;
+                    clickedDeleteOnce=false;
+                    rpnt();
                 }
             });
         
@@ -564,22 +574,22 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 @Override
                 public void released(){
                     int a=0;
-                    for(int i=0;i<Profile.boughtCars.length;i++)
+                    for(int i=0;i<Profile.boughtCars.length;i++)//determine how many team members the user can hold (based on the top car bought), stored in a
                         if(Profile.boughtCars[i])
-                            a=i;
+                            a=i+1;
                     if(TeamManager.ownedTeamType.size()<a+1){//can buy another
+                        System.out.println(ID);
                         if(Profile.money>=Profile.teamPrices[ID]){//has enough money to buy
                             Profile.money-=Profile.teamPrices[ID];
                             TeamManager.ownedTeamType.add(ID);
-                            TeamManager.ownedTeamType.add(ID);
+                            teamButtons[TeamManager.ownedTeamType.size()-1].icons=new ImageIcon[]{
+                                new ImageIcon(GraphicsAssets.getImage(94+ID)),
+                                new ImageIcon(GraphicsAssets.getImage(100+ID))};
                             setBoughtVisibility();
                         }
-                    
                     } else{//cannot buy another; they are at the max number of team members for the car they havev attained
                         
-                    }
-                        
-                        
+                    }  
                 }
                 
                 @Override
@@ -594,8 +604,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
             });
         
         //getNewSizeX(150+i*(sideLength+between)),getNewSizeY(0.350),getNewSizeX(sideLength),getNewSizeY(sideLength),
-        
+//        System.out.println("TeamManager.ownedTeamType.size()="+TeamManager.ownedTeamType.size());
         setBoughtVisibility();
+//        System.out.println("after check");
+        shouldCheck=true;
         
         this.repaint();
     }
@@ -612,6 +624,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 (a=teamButtons[i]).setVisible(false);
                 a.repaint();
             }
+        
+        else if(shouldCheck){
+            for(int i=TeamManager.ownedTeamType.size();i<6;i++){ //if the owned member does not exist then the button should be invisible
+                (a=teamButtons[i]).setVisible(false);
+                a.repaint();
+            }
+        }
     }
     
     ///upgradesCarTypes
