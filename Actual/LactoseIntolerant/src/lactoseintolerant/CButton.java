@@ -172,6 +172,28 @@ public class CButton extends JButton implements MouseListener{
         if(!border)
             setBorder(BorderFactory.createEmptyBorder());
     }
+    
+    public CButton(int x,int y,int xs,int ys,ImageIcon[] ic,boolean border,int id,boolean scaled){
+        ID=id;
+        icons=ic;
+        
+        if(scaled){
+            //ImageIcon imageIcon = new ImageIcon("./img/imageName.png"); // load the image to a imageIcon
+            ic[0] = new ImageIcon(icons[0].getImage().getScaledInstance(xs, ys,  java.awt.Image.SCALE_FAST));
+
+            ic[1] = new ImageIcon(icons[1].getImage().getScaledInstance(xs, ys,  java.awt.Image.SCALE_FAST));
+        }
+        
+        
+        this.setIcon(ic[0]);
+        super.setBounds(x,y,xs,ys);
+        this.addMouseListener(this);
+        
+        setContentAreaFilled(true);
+        
+        if(!border)
+            setBorder(BorderFactory.createEmptyBorder());
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {clicked();}

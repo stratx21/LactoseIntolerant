@@ -424,7 +424,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     if(showDeleteConfirmation){
                         p.setColor(Color.red);
                         p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/Square.ttf").openStream()).deriveFont((float)(0.025714*FRAME_SIZE[1])));
-                        p.drawString("click again if you wish to delete this member from your team.",getNewSizeX(0.25),getNewSizeY(0.25));
+                        p.drawString("click again if you wish to delete this member from your team.",getNewSizeX(0.35),getNewSizeY(0.35));
                     }
                 } catch(IOException | FontFormatException e){
                     ErrorLogger.logError(e,"GaragePanel.paintComponent(java.awt.Graphics) : case 2, team, Font");
@@ -524,20 +524,21 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         TeamManager.maxTeam=currentCar+1;
         teamButtons=new CButton[12];//owned team plus 6 to choose from to buy
         
-        final int sideLength=125,between=15;
+        final int sideLength=166,between=15;
         
         //owned
         for(int i=0;i<6;i++)
-            this.add(teamButtons[i]=new CButton(getNewSizeX(FRAME_SIZE[0]/2-sideLength/2-(TeamManager.ownedTeamType.size()*(sideLength+between))/2+i*(sideLength+between)),getNewSizeY(0.015),getNewSizeX(sideLength),getNewSizeY(sideLength),
+            this.add(teamButtons[i]=new CButton(FRAME_SIZE[0]/2-(3-i)*(sideLength+between),100,sideLength,sideLength,
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(i<TeamManager.ownedTeamType.size()?(94+TeamManager.ownedTeamType.get(i)):94)),
                                 new ImageIcon(GraphicsAssets.getImage(i<TeamManager.ownedTeamType.size()?(100+TeamManager.ownedTeamType.get(i)):100))},
-                false,i){
+                false,i,false){
 
                 @Override
                 public void released(){
                     if(clickedDeleteOnce){
                         TeamManager.ownedTeamType.remove(ID);
                         setBoughtVisibility();
+                        clickedDeleteOnce=false;
                     } else clickedDeleteOnce=true;
                     rpnt();
                 }
@@ -553,14 +554,12 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 }
             });
         
-        setBoughtVisibility();
-        
         //possible to buy
         for(int i=0;i<6;i++)
-            this.add(teamButtons[i+6]=new CButton(getNewSizeX((88+i*(sideLength+between))/1000.0),getNewSizeY(0.400),getNewSizeX(sideLength/1000.0),getNewSizeY(sideLength/1000.0),
+            this.add(teamButtons[i+6]=new CButton(FRAME_SIZE[0]/2-(3-i)*(sideLength+between),400,sideLength,sideLength,
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(94+i)),
                                 new ImageIcon(GraphicsAssets.getImage(100+i))},
-                false,i){
+                false,i,false){
 
                 @Override
                 public void released(){
@@ -596,16 +595,23 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         
         //getNewSizeX(150+i*(sideLength+between)),getNewSizeY(0.350),getNewSizeX(sideLength),getNewSizeY(sideLength),
         
-        repaint();
+        setBoughtVisibility();
+        
+        this.repaint();
     }
     
     private void setBoughtVisibility(){
-        for(int i=0;i<TeamManager.ownedTeamType.size();i++)
-            teamButtons[i].setVisible(true);
+        CButton a;
+        for(int i=0;i<TeamManager.ownedTeamType.size();i++){
+            (a=teamButtons[i]).setVisible(true);
+            a.repaint();
+        }
         
         if(TeamManager.ownedTeamType.size()>0)
-            for(int i=TeamManager.ownedTeamType.size()-1;i<6;i++) //if the owned member does not exist then the button should be invisible
-                teamButtons[i].setVisible(false);
+            for(int i=TeamManager.ownedTeamType.size()-1;i<6;i++){ //if the owned member does not exist then the button should be invisible
+                (a=teamButtons[i]).setVisible(false);
+                a.repaint();
+            }
     }
     
     ///upgradesCarTypes
