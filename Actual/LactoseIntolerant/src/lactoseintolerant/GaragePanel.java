@@ -1042,7 +1042,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                         if(missionSuccess=!(died=a)){//if player did not die, then the success depends on the time.
                             missionSuccess=(yourTime=gamePanel.time-3000)<=(lastNeededTime=gamePanel.objectiveTime);
                         }
-
+                        
                         if(missionSuccess&&(allowedLevels<gamePanel.level+1))
                             allowedLevels=gamePanel.level+1;
                         roundDone=true;
