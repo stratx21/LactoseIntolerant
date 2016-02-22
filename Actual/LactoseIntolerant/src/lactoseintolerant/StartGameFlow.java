@@ -37,7 +37,7 @@ public class StartGameFlow extends JFrame{
             try{Thread.sleep(200);}
             catch(Exception e){ErrorLogger.logError(e,"StartGameFlow");}
         }
-        
+        AudioAssets.play("music");
         setNewPanelType(new MainMenu(this));
     }
     
