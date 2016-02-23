@@ -51,13 +51,16 @@ public class OpeningPanel extends CPanel{
             done=true;
         }
            
-        
         if(currentState==2&&!imported){
             GraphicsAssets.importImages();
-            System.out.println("aaaaaaaaaaa");
+//            System.out.println("aaaaaaaaaaa"); I FOUND IT!!! HA!
             imported=true;
         }
         
+        if(currentState==2&&ping%14==0)
+            AudioAssets.play("Sheep");
+        else if(currentState==2&&ping%17==0)
+            AudioAssets.play("JoshSheep");
         ping++;
         
         if(!done&&currentState!=totalStates)

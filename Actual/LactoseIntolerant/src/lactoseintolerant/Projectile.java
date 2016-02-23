@@ -52,18 +52,18 @@ public class Projectile {
      */
     public Projectile(double angle,int type,int lv,int xC,int yC){
         switch(TYPE=type){
-            case 1:
-                damage=4+5*lv;
+            case 1: //minigun shot
+                damage=2+3*lv;
                 speed=125;
                 size=new int[]{9*StartGameFlow.FRAME_SIZE[0]/1000,8*StartGameFlow.FRAME_SIZE[1]/700};
                 break;
-            case 2:
-                damage=50+lv*10;
+            case 2: //mine
+                damage=120+lv*20;
                 speed=0;
                 imageGroup=new BufferedImage[]{GraphicsAssets.getImage(70),GraphicsAssets.getImage(68)};
                 size=new int[]{25*StartGameFlow.FRAME_SIZE[0]/1000,25*StartGameFlow.FRAME_SIZE[1]/700};
                 break;
-            case 3:
+            case 3: //missile
                 speed=150+50*lv;
                 damage=100+30*lv;
                 size=new int[]{30*StartGameFlow.FRAME_SIZE[0]/1000,46*StartGameFlow.FRAME_SIZE[1]/700};

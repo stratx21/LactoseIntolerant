@@ -219,6 +219,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public GaragePanel(JFrame f,int level){
         System.out.println("setting up GaragePanel...");
         
+        for(int i=0;i<Profile.completedMissions.length;i++)
+            if(Profile.completedMissions[i])
+                level=i;
+        
         frame=f;
         
         frame.getContentPane().removeAll();
@@ -371,7 +375,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     String[] lines=missionInfo[missionIndex-1].split(toSplitString);
                     p.setColor(Color.black);
                     p.setFont(Font.createFont(Font.TRUETYPE_FONT,GaragePanel.class.getResource("/Fonts/AA_typewriter.ttf").openStream()).deriveFont((float)(0.025714*FRAME_SIZE[1])));
-                    int y=170,addToY=getNewSizeY(0.025);
+                    int y=getNewSizeY(0.19),addToY=getNewSizeY(0.025);
 //                    y=(int)(FRAME_SIZE[1]*.6);
                     for(int i=0;i<lines.length;i++){
                         p.drawString(lines[i],getNewSizeX(0.235),y+=addToY);
@@ -881,7 +885,6 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
         repaint();
     }
     
-    
     private void setMenuButtonComponents(){
         //save
         this.add(menu0=new CButton(getNewSizeX(0.375),getNewSizeY(0.03),getNewSizeX(0.250),getNewSizeY(0.1),
@@ -1043,6 +1046,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
     public long time=0,lastTime=0,thisTime=0,
             lastNeededTime=0,yourTime=0;
     public int frameRate=0;
+    public boolean gameDisabled=false;
     private void setUpGamePanel(){
         frame.remove(this);
         
@@ -1067,7 +1071,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                 public void actionPerformed(boolean a){
                     if(!missionSuccessCalculated){
                         if(missionSuccess=!(died=a)){//if player did not die, then the success depends on the time.
-                            missionSuccess=(yourTime=gamePanel.time-3000)<=(lastNeededTime=gamePanel.objectiveTime);
+                            missionSuccess=(yourTime=gamePanel.time-3000)<=(lastNeededTime=gamePanel.map.currentLevel.objectiveTime);
                         }
                         
                         if(missionSuccess&&(allowedLevels<gamePanel.level+1))
@@ -1093,7 +1097,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                         if(!gamePanel.paused)
                             gamePanel.calcFlow();
                         else{
-                            if(justStarting){
+                            if(justStarting&&!gameDisabled){
+                                
+                                
+                            if((175-(time)/20)>0)
                             p.setColor(new Color(0,0,0,(int)(175-(time)/20)));
                             p.fillRect(0,0,FRAME_SIZE[0],FRAME_SIZE[1]);
 
@@ -1105,8 +1112,10 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                                 ErrorLogger.logError(e,"GamePanel overriden in GaragePanel; error using font");
                             }
 
-                            if(time>3000)
+                            if(time>3000){
                                 gamePanel.paused=false;
+                                justStarting=false;
+                            }
                             } else{ //pause menu
                                 drawPauseMenu(p);
                             }
@@ -1121,15 +1130,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 
                         if(delay>frameRateMillisecondsInGame){
                             delay=20;
-                            System.out.println("two? huh?");
                         }
-
 
                         //frameRate=1000/delay;
                         try{Thread.sleep(delay);}
                         catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
 
-                         if(!roundDone)
+                         if(!roundDone&&!gameDisabled)
                             repaint();
                          else{
                             p.setColor(new Color(0,0,0,215));
@@ -1186,8 +1193,38 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
 //    }
     
     public void drawPauseMenu(Graphics p){
-        
+        System.out.println("setting up pause menu 1");
+        PauseMenu t=new PauseMenu(new CListener(){
+                @Override
+                public void actionPerformed(boolean a){
+                    System.out.println("reached action performed...");
+                    if(a)
+                        backToGamePanel();
+                    else
+                        changeBackToGarage();
+                }
+            },
+                frame);
+        gamePanel.shouldDisable=false;
     }
+    
+    private void backToGamePanel(){
+        System.out.println("back to game panel!!!");
+        gameDisabled=false;
+        gamePanel.paused=false;
+        
+        frame.getContentPane().removeAll();
+        frame.getContentPane().repaint();
+        frame.add(gamePanel);
+        frame.repaint();
+        
+        frame.addKeyListener(gamePanel);
+        
+        frame.setVisible(true);
+        
+        gamePanel.repaint();
+    }
+    
     /**
      * change the <code>JPanel</code> object displayed by the game's
      * <code>JFrame</code> object from gamePanel back to GaragePanel

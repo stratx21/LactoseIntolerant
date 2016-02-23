@@ -83,6 +83,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
      * @param lv
      * @param done
      * @param w
+     * @param plyrType the type of car that the user is using
      */
     public GamePanel(int[] size,int lv,CListener done,Weapon w,int plyrType){
         player=new Player(plyrType);
@@ -147,7 +148,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                 paintC(p);
                 calcFlow();
                 
-                System.out.println("painting!!!!!!!!(from GamePanel)");
+                System.out.println("painting(from GamePanel)");
                 
                 try{Thread.sleep(20);}
                 catch(Exception e){ErrorLogger.logError(e,"GameFlow.paintComponent");}
@@ -747,7 +748,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
             }
             }
             
-            System.out.println("hit  "+player.turningLeft+player.turningRight+"  "+time);
+//            System.out.println("hit  "+player.turningLeft+player.turningRight+"  "+time);
             
         } else civ.collidingWithPlayer=false;
     }
@@ -1115,9 +1116,8 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                 i--;
             }
         }        
-        }catch(Exception e)
-        {
-            System.out.println("Now it has a " + e);
+        }catch(Exception e){
+            ErrorLogger.logError(e,"GamePanel.checkAIProjectileCollisions");
         }
     }
     
@@ -1421,7 +1421,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
             if(!enemy.collidingWithPlayer){//just started colliding
                 enemy.collidingWithPlayer=true;
                 enemy.health-=3;
-                player.health-=0.07;
+                player.health-=0.17;
                 if(player.screenLocation[1]+player.IMG_BLANK_SPACE[1]>enemy.screenLocation[1]+enemy.IMG_BLANK_SPACE[1]+enemy.CAR_PIXELS_VERTICAL*(verticalDetectRatioPlayerOnBottom)){//player is below enemy
                     //player top is below 3/4 down of the enemyilian, and therefore the enemyilian should be pushed up and the angle changed
                     enemy.hitPlayerFromSide=false;
@@ -1534,7 +1534,8 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                 if((playerIsToRightOfEnemy(enemy)||(enemy.rightNextToSide&&!enemy.hitMapOnRightSideOfCar))&&!enemy.hittingRightSideOfMap){
                     if((enemy.rightNextToSide&&!enemy.hitMapOnRightSideOfCar)){
                         player.screenLocation[0]=enemy.screenLocation[0]+enemy.imageSize[0]-enemy.IMG_BLANK_SPACE[0]-player.IMG_BLANK_SPACE[0]+15;
-//                        player.angle=15;
+                        player.angle=10;
+                        System.out.println("player angle changed to 10");
                         enemy.angle=0;
                     } else{
                         enemy.screenLocation[0]=player.screenLocation[0]+player.IMG_BLANK_SPACE[0]+enemy.IMG_BLANK_SPACE[0]-enemy.imageSize[0]+(int)(player.angle/3)
@@ -1545,7 +1546,8 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                 } else{
                     if((enemy.rightNextToSide&&enemy.hitMapOnRightSideOfCar)){
                     player.screenLocation[0]=enemy.screenLocation[0]+enemy.IMG_BLANK_SPACE[0]+player.IMG_BLANK_SPACE[0]-player.imageSize[0]-leftExtraSpace;
-//                    player.angle=-15;
+                    player.angle=-10;
+                    System.out.println("player angle changed to -10");
                     enemy.angle=0;
                     } else{
                         enemy.screenLocation[0]=player.screenLocation[0]+player.imageSize[0]-player.IMG_BLANK_SPACE[0]-enemy.IMG_BLANK_SPACE[0]+(int)(player.angle/3)
@@ -1739,8 +1741,14 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                 }
                 weaponHeld=true;
                 break;
+            case 'P':
+                paused=true;
+                shouldDisable=true;
+                break;
         }
     }
+    
+    public boolean shouldDisable=false;
     
     @Override
     public void keyReleased(KeyEvent e) {

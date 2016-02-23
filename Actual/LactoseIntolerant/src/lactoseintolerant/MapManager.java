@@ -74,7 +74,7 @@ public class MapManager {
         
         currentLevel=new LevelManager(lv,c);
         
-        imageStraight=GraphicsAssets.getImage(10+(TYPE=type));//    V   x3
+        imageStraight=GraphicsAssets.getImage(10+(TYPE=currentLevel.TYPE));//    V   x3
         imageMedian=GraphicsAssets.getImage(11+(type));
         imageIntersection=GraphicsAssets.getImage(12+(type)); //constant images^
         

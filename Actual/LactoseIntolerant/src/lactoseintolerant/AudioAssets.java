@@ -17,17 +17,17 @@ import javax.sound.sampled.LineUnavailableException;
  * @author 0001058857
  */
 public class AudioAssets {
+    public static Clip music=null;
     
     public static void play(final String name){
         try{
             AudioInputStream audioIn=AudioSystem.getAudioInputStream(AudioAssets.class.getResource("Audio/"+name+".wav"));
             Clip clip=AudioSystem.getClip();
             clip.open(audioIn);
-            if(name.equalsIgnoreCase("music"))
-                clip.loop(-1);
-            else
+            if(name.equalsIgnoreCase("music")&&Profile.musicOn)
+                (music=clip).loop(-1);
+            else if(Profile.soundEffectsOn)
                 clip.start();
-            
         } catch(IOException | LineUnavailableException | UnsupportedAudioFileException e){
             System.err.println("Error getting audio/playing:: "+e);
             ErrorLogger.logError(e,"AudioAssets.play(String)");

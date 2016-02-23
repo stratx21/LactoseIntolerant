@@ -97,12 +97,12 @@ public class Player{
             case 0:
                 startingHealth=health=100;//cars.getTopSpeed();
                 ACCELERATION=5;//cars.getAcceleration();
-                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=75;//cars.getTopSpeed();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=80;//cars.getTopSpeed();
                 break;
             case 1:
                 startingHealth=health=120;//cars.getTopSpeed();
                 ACCELERATION=3;//cars.getAcceleration();
-                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=65;//cars.getTopSpeed();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=80;//cars.getTopSpeed();
                 break;
             case 2:
                 startingHealth=health=90;//cars.getTopSpeed();
@@ -112,12 +112,12 @@ public class Player{
             case 3:
                 startingHealth=health=140;//cars.getTopSpeed();
                 ACCELERATION=3;//cars.getAcceleration();
-                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=65;//cars.getTopSpeed();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=75;//cars.getTopSpeed();
                 break;
             case 4:
                 startingHealth=health=175;//cars.getTopSpeed();
-                ACCELERATION=5;//cars.getAcceleration();
-                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=80;//cars.getTopSpeed();
+                ACCELERATION=3;//cars.getAcceleration();
+                speed=ORIGINAL_TOP_SPEED=TOP_SPEED=65;//cars.getTopSpeed();
                 break;
                 
             

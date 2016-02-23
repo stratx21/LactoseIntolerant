@@ -184,6 +184,14 @@ public class GraphicsAssets {
             images.add(importFromString("Graphics/faceArmorIncrease2_1.png"));//104
             images.add(importFromString("Graphics/faceArmorIncrease3_1.png"));//105
             
+            //pause menu::
+            images.add(importFromString("Graphics/resumePause.png"));//106
+            images.add(importFromString("Graphics/resumePause2nd.png"));//107
+            images.add(importFromString("Graphics/OptionsPause.png"));//108
+            images.add(importFromString("Graphics/OptionsPause2nd.png"));//109
+            images.add(importFromString("Graphics/ExitPause.png"));//110
+            images.add(importFromString("Graphics/ExitPause2nd.png"));//111
+            
         } catch(Exception e){
             ErrorLogger.logError(e,"GraphicsAssets.importImages");
         }
