@@ -1083,8 +1083,13 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                         missionSuccessCalculated=true;
                         
                         if(missionSuccess){
-                            missionIndex++;
-                            AudioAssets.play("Beat A Level");
+                            if(missionIndex<15){
+                                missionIndex++;
+                                AudioAssets.play("Beat A Level");
+                            } else{
+                                AudioAssets.music.stop();
+                                AudioAssets.play("ylvis_the_fox");
+                            }
                         }
                     }
                 }
