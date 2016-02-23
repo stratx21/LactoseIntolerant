@@ -26,6 +26,8 @@ public class AudioAssets {
             clip.open(audioIn);
             if(name.equalsIgnoreCase("music")&&Profile.musicOn)
                 (music=clip).loop(-1);
+            else if(name.equalsIgnoreCase("ylvis_the_fox")&&Profile.musicOn)
+                (music=clip).loop(-1);
             else if(Profile.soundEffectsOn)
                 clip.start();
         } catch(IOException | LineUnavailableException | UnsupportedAudioFileException e){
