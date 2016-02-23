@@ -9,7 +9,7 @@ line to get money and unlock achievements.
 
 **INSTRUCTIONS**
 
-- Move your car fowards to the end of the level as fast as possible to beat the missions and win.
+- Move your car forwards to the end of the level as fast as possible to beat the missions and win.
 *IN THE GARAGE*
 - This will be the first screen you come to, with your first mission written across the middle.
 	From here, you can start any mission up to and including the current one, you can go to
@@ -18,7 +18,7 @@ line to get money and unlock achievements.
 	settings in the game as well as the option to quit.
 - Under the upgrades tab is where you manage what cars you have and what upgrades you have bought
 	for them.
-- To choose a car and weapon (if you have bought any thusfar), simply click the weapon and it will
+- To choose a car and weapon (if you have bought any thus far), simply click the weapon and it will
 	automatically be used when you start your next mission.
 *IN THE GAME PLAY*
 - The 'W', 'S', 'A', and 'D' keys on your keyboard are the keys used to control your car:
@@ -44,4 +44,4 @@ line to get money and unlock achievements.
 
 The game was created by the Wizard Council using NetBeans IDE 8.1 on Windows:
 
-Josh - Team Lead, Ethan Dickey - Documentation, Gabe - Presentation, Sawyer - Graphics and Sound.
+Josh Holland - Team Lead, Ethan Dickey - Documentation, Gabe Peterson - Presentation, Sawyer Hill - Graphics and Sound.
