@@ -212,6 +212,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                 e.calculate(-1*(getHowFarGoesUpForAIs((int)e.speed)/2-playerScreenChange),screenDistortY);
                 checkEnemyCollisions(e,i);
             } else{
+                AudioAssets.play("Explosion");
                 explosions.add(new Explosion(e.screenLocation[0]+e.imageSize[0],e.screenLocation[1]+e.imageSize[1]/2,55));
                 enemies.remove(i);
                 i--;
@@ -230,6 +231,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
                 c.calculate(-1*(getHowFarGoesUpForAIs((int)c.speed)/2-playerScreenChange),screenDistortY);
                 checkCivilianCollisions(c,i);
             }else{
+                AudioAssets.play("Explosion");
                 explosions.add(new Explosion(c.screenLocation[0]+c.imageSizeActual[0]/2,c.screenLocation[1]+c.imageSizeActual[1]/2,55));
                 civilians.remove(i);
                 i--;
