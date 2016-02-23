@@ -26,7 +26,7 @@ public class InstPanel extends CPanel implements MouseListener{ //Instructions P
     
     
     public InstPanel(CListener l,int[] frmSize){
-        FRAME_SIZE=frmSize;
+        FRAME_SIZE=StartGameFlow.FRAME_SIZE;
         done=l;
     }
     

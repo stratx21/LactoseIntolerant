@@ -192,6 +192,13 @@ public class GraphicsAssets {
             images.add(importFromString("Graphics/ExitPause.png"));//110
             images.add(importFromString("Graphics/ExitPause2nd.png"));//111
             
+            //options menu::
+            images.add(importFromString("Graphics/Exit.png"));//112
+            images.add(importFromString("Graphics/MusicON.png"));//113
+            images.add(importFromString("Graphics/MusicOFF.png"));//114
+            images.add(importFromString("Graphics/SoundON.png"));//115
+            images.add(importFromString("Graphics/SoundOFF.png"));//116
+            
         } catch(Exception e){
             ErrorLogger.logError(e,"GraphicsAssets.importImages");
         }
