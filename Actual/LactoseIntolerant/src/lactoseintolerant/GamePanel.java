@@ -358,6 +358,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
     //player functions:::::
     
     private void spawnProjectile(int yInc){
+        AudioAssets.play("Death");
         playerWeapon.projectiles.add(new Projectile(
                             player.angle,playerWeapon.TYPE,
                             playerWeapon.LEVEL,
