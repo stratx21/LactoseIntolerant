@@ -582,7 +582,7 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                         if(Profile.boughtCars[i])
                             a=i+1;
                     if(TeamManager.ownedTeamType.size()<a+1){//can buy another
-                        System.out.println(ID);
+                        System.out.println(TeamManager.ownedTeamType);
                         if(Profile.money>=Profile.teamPrices[ID]){//has enough money to buy
                             Profile.money-=Profile.teamPrices[ID];
                             TeamManager.ownedTeamType.add(ID);
@@ -596,16 +596,19 @@ public class GaragePanel extends CPanel /*implements MouseListener*/{
                     } else{//cannot buy another; they are at the max number of team members for the car they havev attained
                         
                     }  
+                    rpnt();
                 }
                 
                 @Override
                 public void entered(){
                     teamDisplay=Profile.teamPrices[ID]+"";
+                    rpnt();
                 }
                 
                 @Override
                 public void exited(){
                     teamDisplay=null;
+                    rpnt();
                 }
             });
         
