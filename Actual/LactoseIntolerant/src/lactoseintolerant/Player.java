@@ -144,6 +144,11 @@ public class Player{
         } else if(Profile.upgrades[CAR_TYPE][0][1]){
             health+=7;
         }
+        int a;
+        for(int i=0;i<TeamManager.ownedTeamType.size();i++){
+            if((a=TeamManager.ownedTeamType.get(i))>2)
+                health+=a*2;
+        }
     }
     
     
