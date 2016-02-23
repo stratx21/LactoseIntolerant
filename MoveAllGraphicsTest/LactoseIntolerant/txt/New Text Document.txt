@@ -1,3 +1,0 @@
-to end round, try using, in MapManager / LevelMager, if levelInfo.length-1 is the current index and it cant go on,
-then have a variable turn true that it should expire and maybe fade out then turn the instance
-of GamePanel to null, go to GaragePanel. 
