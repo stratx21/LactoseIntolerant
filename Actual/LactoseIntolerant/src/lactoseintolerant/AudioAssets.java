@@ -24,7 +24,7 @@ public class AudioAssets {
             AudioInputStream audioIn=AudioSystem.getAudioInputStream(AudioAssets.class.getResource("Audio/"+name+".wav"));
             Clip clip=AudioSystem.getClip();
             clip.open(audioIn);
-            if(name.equalsIgnoreCase("music")&&Profile.musicOn)
+            if((name.equalsIgnoreCase("music")||name.equals("ylis_the_fox"))&&Profile.musicOn)
                 (music=clip).loop(-1);
             else if(name.equalsIgnoreCase("ylvis_the_fox")&&Profile.musicOn)
                 (music=clip).loop(-1);
