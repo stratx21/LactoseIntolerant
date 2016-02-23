@@ -82,7 +82,6 @@ public class OptionsMenu extends Menu{
                 done.actionPerformed();
             }
         });
-        System.out.println("aaaa");
         //sound
         this.add(buttons[1]=new CButton(getNewSizeX(0.2),getNewSizeY(0.3),getNewSizeX(0.2),getNewSizeY(0.1),
                 new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(Profile.soundEffectsOn?115:116)),
@@ -99,27 +98,25 @@ public class OptionsMenu extends Menu{
                 Profile.soundEffectsOn=!Profile.soundEffectsOn;
             }
         });
-        System.out.println("bbbbb");
         //music
         this.add(buttons[2]=new CButton(getNewSizeX(0.2),getNewSizeY(0.45),getNewSizeX(0.2),getNewSizeY(0.1),
-                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(Profile.musicOn?115:113)),
-                                new ImageIcon(GraphicsAssets.getImage(Profile.musicOn?115:114))}){
+                new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(Profile.musicOn?113:114)),
+                                new ImageIcon(GraphicsAssets.getImage(Profile.musicOn?113:114))}){
                     
             @Override
             public void released(){
                 if(Profile.soundEffectsOn){
                     Profile.soundEffectsOn=false;
                     AudioAssets.music.stop();
-                    icons=new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(116)),new ImageIcon(GraphicsAssets.getImage(116))};
+                    icons=new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(113)),new ImageIcon(GraphicsAssets.getImage(113))};
                 } else{
                     Profile.soundEffectsOn=true;
                     AudioAssets.play("music");
-                    icons=new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(115)),new ImageIcon(GraphicsAssets.getImage(115))};
+                    icons=new ImageIcon[]{new ImageIcon(GraphicsAssets.getImage(114)),new ImageIcon(GraphicsAssets.getImage(114))};
                 }
                 changeIconSizes();
             }
         });
-        System.out.println("22222");
     }
     boolean a=true;
     @Override
