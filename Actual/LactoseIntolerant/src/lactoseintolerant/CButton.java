@@ -207,6 +207,7 @@ public class CButton extends JButton implements MouseListener{
     public void mouseReleased(MouseEvent e) {
         if(!disabled&&!pernamantSelect)
             super.setIcon(icons[0]);
+        AudioAssets.play("JoshSheep");
         released();
     }
 
