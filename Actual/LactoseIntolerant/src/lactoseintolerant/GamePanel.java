@@ -1421,6 +1421,7 @@ public class GamePanel extends CPanel implements java.awt.event.KeyListener,Runn
             ||player.lowerSpan.intersects(enemy.lowerSpan)){
             
             if(!enemy.collidingWithPlayer){//just started colliding
+                AudioAssets.play("Police On Screen");
                 enemy.collidingWithPlayer=true;
                 enemy.health-=3;
                 player.health-=0.17;
